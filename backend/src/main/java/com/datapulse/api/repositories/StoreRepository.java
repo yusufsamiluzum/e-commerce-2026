@@ -1,0 +1,16 @@
+package com.datapulse.api.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.datapulse.api.entities.Store;
+
+@Repository
+public interface StoreRepository extends JpaRepository<Store, Long> {
+    
+    // Optional: A custom query method that might be useful later 
+    // for the Corporate dashboard to find all stores owned by a specific user
+    List<Store> findByOwnerId(Long ownerId);
+}
