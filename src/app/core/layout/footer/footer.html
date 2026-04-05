@@ -1,0 +1,74 @@
+<footer class="bg-gray-900 text-gray-300 pt-16 pb-8 border-t border-gray-800 mt-auto">
+  <div class="container mx-auto px-4 max-w-7xl">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      
+      <div class="space-y-4">
+        <a routerLink="/" class="text-2xl font-bold text-white flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          DataPulse
+        </a>
+        <p class="text-sm text-gray-400 leading-relaxed">
+          Empowering your digital lifestyle with premium electronics and accessories. 
+          Discover reliability, performance, and innovation all in one place.
+        </p>
+        <div class="flex gap-4 pt-2">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <span class="sr-only">Twitter</span>
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/></svg>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <span class="sr-only">LinkedIn</span>
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Quick Links</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a routerLink="/catalog" class="hover:text-blue-500 transition-colors">Shop Catalog</a></li>
+          <li><a routerLink="/categories" class="hover:text-blue-500 transition-colors">Categories</a></li>
+          <li><a routerLink="/about" class="hover:text-blue-500 transition-colors">About Us</a></li>
+          <li><a routerLink="/corporate/partner" class="hover:text-blue-500 transition-colors flex items-center gap-2">Sell with Us <span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded">NEW</span></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Support</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a routerLink="/help" class="hover:text-blue-500 transition-colors">Help Center</a></li>
+          <li><a routerLink="/contact" class="hover:text-blue-500 transition-colors">Contact Us</a></li>
+          <li><a routerLink="/shipping" class="hover:text-blue-500 transition-colors">Shipping & Delivery</a></li>
+          <li><a routerLink="/returns" class="hover:text-blue-500 transition-colors">Returns & Exchanges</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Stay in the Loop</h3>
+        <p class="text-sm text-gray-400 mb-4">Subscribe to our newsletter for exclusive offers and tech news.</p>
+        <form class="flex flex-col gap-2" (submit)="$event.preventDefault()">
+          <input type="email" placeholder="Enter your email" 
+                 class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors text-sm">
+            Subscribe
+          </button>
+        </form>
+      </div>
+      
+    </div>
+
+    <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+      <p>&copy; {{ currentYear }} DataPulse Inc. All rights reserved.</p>
+      
+      <div class="flex gap-6">
+        <a routerLink="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a routerLink="/terms" class="hover:text-white transition-colors">Terms of Service</a>
+        <a routerLink="/cookies" class="hover:text-white transition-colors">Cookie Settings</a>
+      </div>
+    </div>
+    
+  </div>
+</footer>
