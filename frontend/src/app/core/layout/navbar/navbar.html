@@ -10,7 +10,7 @@
 
     <nav class="hidden md:flex gap-6 font-medium text-sm text-gray-600">
       
-      @if (auth.currentUserRole() === 'GUEST' || auth.currentUserRole() === 'USER') {
+      @if (auth.currentUserRole() === 'GUEST' || auth.currentUserRole() === 'INDIVIDUAL') {
         <a routerLink="/catalog" class="hover:text-blue-600 transition-colors">Shop Products</a>
         <a routerLink="/categories" class="hover:text-blue-600 transition-colors">Categories</a>
       }
@@ -29,7 +29,7 @@
 
     <div class="flex items-center gap-4">
       
-      @if (auth.currentUserRole() === 'USER') {
+      @if (auth.currentUserRole() === 'INDIVIDUAL') {
         <button class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
