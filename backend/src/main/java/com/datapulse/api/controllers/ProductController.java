@@ -1,11 +1,16 @@
 package com.datapulse.api.controllers;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.datapulse.api.dto.ProductDto;
 import com.datapulse.api.services.ProductService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -19,8 +24,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> getProducts(@RequestParam(required = false) String search) {
-        return ResponseEntity.ok(productService.getAllProducts(search));
+    public ResponseEntity<List<ProductDto>> getProducts(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) java.math.BigDecimal minPrice,
+            @RequestParam(required = false) java.math.BigDecimal maxPrice,
+            @RequestParam(required = false) String sort) {
+        return ResponseEntity.ok(productService.getAllProducts(search, categoryId, minPrice, maxPrice, sort));
     }
 
     @GetMapping("/{id}")

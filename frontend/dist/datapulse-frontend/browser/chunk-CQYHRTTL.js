@@ -1,0 +1,1 @@
+import{Ba as m,G as i,Qa as s,l as t}from"./chunk-BJ3XBHMG.js";var u=[],e=class o{static \u0275fac=function(r){return new(r||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[s.forChild(u),s]})};var n=class o{static \u0275fac=function(r){return new(r||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[m,e]})};export{n as AiAssistantModule};

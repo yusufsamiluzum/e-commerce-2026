@@ -38,26 +38,22 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) 
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
             .authorizeHttpRequests(auth -> auth
-                // Allow preflight checks
+                // Preflight (OPTIONS) isteklerine izin ver
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
                 
-                // Public endpoints
+                // Herkese açık endpointler
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/products", "/api/products/**").permitAll() 
-                .requestMatchers("/error").permitAll() // CRITICAL: Stop Spring from blocking its own error messages 
+                .requestMatchers("/api/products", "/api/products/**").permitAll()
+                // BURAYI EKLEDİK: Kategorilere herkes erişebilsin
+                .requestMatchers("/api/categories", "/api/categories/**").permitAll() 
+                .requestMatchers("/error").permitAll() 
                 
-                // --- ROLE-BASED ACCESS CONTROL (RBAC) ---
-                // Here we restrict paths to specific roles (matching the roles from the Jwt filter)
-                // "hasRole('ADMIN')" looks for "ROLE_ADMIN" in UserDetails
+                // Rol bazlı kısıtlamalar (Admin, Corporate vb.)
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                
-                // For instance, let's say only corporate and admin can manage bulk data
                 .requestMatchers("/api/corporate/**").hasAnyRole("CORPORATE", "ADMIN")
-                
-                // User paths that are generic maybe specific to ONLY logged-in users regardless of rank
                 .requestMatchers("/api/user/**").authenticated()
-                // ----------------------------------------
                 
+                // Geri kalan her şey giriş gerektirsin
                 .anyRequest().authenticated() 
             )
             .authenticationProvider(authenticationProvider)

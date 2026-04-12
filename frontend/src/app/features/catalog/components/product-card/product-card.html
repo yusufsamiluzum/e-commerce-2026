@@ -1,4 +1,5 @@
 <div
+  [routerLink]="['/catalog', product.id]"
   class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 relative group cursor-pointer"
 >
   @if (product.badge) {
@@ -12,6 +13,7 @@
   }
 
   <button
+    (click)="$event.stopPropagation()"
     class="absolute top-3 right-3 z-10 bg-white rounded-full p-1.5 shadow-sm text-gray-400 hover:text-red-500 transition-colors"
   >
     <svg

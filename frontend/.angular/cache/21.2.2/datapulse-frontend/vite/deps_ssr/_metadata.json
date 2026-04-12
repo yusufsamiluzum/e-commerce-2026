@@ -1,67 +1,73 @@
 {
-  "hash": "b55c3bf8",
-  "configHash": "23a803e7",
+  "hash": "c3b87977",
+  "configHash": "5b8e12ca",
   "lockfileHash": "3ab6f88d",
-  "browserHash": "21f27cd1",
+  "browserHash": "14858472",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "96b08ef1",
+      "fileHash": "2494af56",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "d70535d5",
+      "fileHash": "2021b555",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "7a56029b",
+      "fileHash": "756b0d0a",
+      "needsInterop": false
+    },
+    "@angular/forms": {
+      "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
+      "file": "@angular_forms.js",
+      "fileHash": "3720e412",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "41081c5c",
+      "fileHash": "529f8708",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "adbc1604",
+      "fileHash": "782ce563",
       "needsInterop": false
     },
     "@angular/ssr": {
       "src": "../../../../../../node_modules/@angular/ssr/fesm2022/ssr.mjs",
       "file": "@angular_ssr.js",
-      "fileHash": "a7daa154",
+      "fileHash": "1b194e51",
       "needsInterop": false
     },
     "@angular/ssr/node": {
       "src": "../../../../../../node_modules/@angular/ssr/fesm2022/node.mjs",
       "file": "@angular_ssr_node.js",
-      "fileHash": "11dd2543",
+      "fileHash": "9a48b415",
       "needsInterop": false
     },
     "express": {
       "src": "../../../../../../node_modules/express/index.js",
       "file": "express.js",
-      "fileHash": "291c8fad",
+      "fileHash": "09997592",
       "needsInterop": true
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/cjs/index.js",
       "file": "rxjs.js",
-      "fileHash": "e979f15b",
+      "fileHash": "4c2ebf6b",
       "needsInterop": true
     },
     "rxjs/operators": {
       "src": "../../../../../../node_modules/rxjs/dist/cjs/operators/index.js",
       "file": "rxjs_operators.js",
-      "fileHash": "add3abed",
+      "fileHash": "e34bea75",
       "needsInterop": true
     }
   },
@@ -69,32 +75,32 @@
     "xhr2-E5RTESSH": {
       "file": "xhr2-E5RTESSH.js"
     },
-    "chunk-FUEWFASS": {
-      "file": "chunk-FUEWFASS.js"
+    "chunk-GXXADMZF": {
+      "file": "chunk-GXXADMZF.js"
     },
-    "chunk-GMWPA5RQ": {
-      "file": "chunk-GMWPA5RQ.js"
+    "chunk-SIKC6A57": {
+      "file": "chunk-SIKC6A57.js"
     },
-    "chunk-4PK67UHX": {
-      "file": "chunk-4PK67UHX.js"
+    "chunk-SH2BJQXG": {
+      "file": "chunk-SH2BJQXG.js"
     },
-    "chunk-5EXDTVTK": {
-      "file": "chunk-5EXDTVTK.js"
+    "chunk-OEN5DLGU": {
+      "file": "chunk-OEN5DLGU.js"
     },
-    "chunk-Y474J3EF": {
-      "file": "chunk-Y474J3EF.js"
+    "chunk-CU4LAPAK": {
+      "file": "chunk-CU4LAPAK.js"
     },
-    "chunk-Q5HTA5CF": {
-      "file": "chunk-Q5HTA5CF.js"
+    "chunk-LXYLCRZQ": {
+      "file": "chunk-LXYLCRZQ.js"
     },
-    "chunk-XBVUWVNP": {
-      "file": "chunk-XBVUWVNP.js"
-    },
-    "chunk-C27DBZK2": {
-      "file": "chunk-C27DBZK2.js"
+    "chunk-I7O6HDDW": {
+      "file": "chunk-I7O6HDDW.js"
     },
     "chunk-2UVUUPPC": {
       "file": "chunk-2UVUUPPC.js"
+    },
+    "chunk-C27DBZK2": {
+      "file": "chunk-C27DBZK2.js"
     },
     "chunk-K54IFBYX": {
       "file": "chunk-K54IFBYX.js"

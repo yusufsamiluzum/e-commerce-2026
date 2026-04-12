@@ -1,0 +1,2 @@
+import './polyfills.server.mjs';
+import{Cb as m,S as i,eb as n,j as t}from"./chunk-SCFPKJQZ.mjs";import"./chunk-T55IDOPT.mjs";var u=[],r=class o{static \u0275fac=function(e){return new(e||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[m.forChild(u),m]})};var s=class o{static \u0275fac=function(e){return new(e||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[n,r]})};export{s as CorporateModule};

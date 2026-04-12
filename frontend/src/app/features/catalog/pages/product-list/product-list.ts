@@ -4,21 +4,51 @@ import { Observable } from 'rxjs';
 import { ProductService } from '../../../../core/services/product';
 import { ProductCardComponent } from '../../components/product-card/product-card';
 import { Product } from '../../../../shared/models/product.model';
+import { CategoryComponent } from '../../components/category/category';
+import { FilterComponent, FilterOptions } from '../../components/filter/filter';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, ProductCardComponent], // Import the card component here
+  imports: [CommonModule, ProductCardComponent, CategoryComponent, FilterComponent],
   templateUrl: './product-list.html',
+  styleUrls: ['./product-list.scss']
 })
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
 
-  // We use an Observable so the async pipe can automatically manage subscriptions
+  // Lists
   products$!: Observable<Product[]>;
+  categories$!: Observable<any[]>;
+
+  // Filters
+  filters = {
+    search: '',
+    categoryId: null as number | null,
+    minPrice: null as number | null,
+    maxPrice: null as number | null,
+    sort: ''
+  };
 
   ngOnInit(): void {
-    // Connects to your Spring Boot backend endpoint
-    this.products$ = this.productService.getProducts();
+    this.categories$ = this.productService.getCategories();
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.products$ = this.productService.getProducts(this.filters);
+  }
+
+  onCategorySelect(categoryId: number | null): void {
+    this.filters.categoryId = categoryId;
+    this.loadProducts();
+  }
+
+  onFiltersChange(filterOptions: FilterOptions): void {
+    this.filters.search = filterOptions.search;
+    this.filters.minPrice = filterOptions.minPrice;
+    this.filters.maxPrice = filterOptions.maxPrice;
+    this.filters.sort = filterOptions.sort;
+    this.loadProducts();
   }
 }

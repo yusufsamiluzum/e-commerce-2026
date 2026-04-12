@@ -1,0 +1,71 @@
+<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+  <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4 ml-1">Kategoriler</h3>
+  
+  <!-- Search Bar -->
+  <div class="relative mb-4">
+    <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </span>
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm" 
+      (keyup)="filterCategories()"
+      placeholder="Kategori Ara..." 
+      class="pl-9 pr-3 py-2 border border-gray-200 rounded-lg w-full text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+    />
+  </div>
+
+  <ul class="space-y-1">
+    <li>
+      <button 
+        (click)="selectCategory(null, $event)"
+        type="button"
+        class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none"
+        [ngClass]="{
+          'bg-blue-50 text-blue-600': selectedCategoryId === null,
+          'text-gray-600 hover:bg-gray-50': selectedCategoryId !== null
+        }">
+        Tüm Kategoriler
+      </button>
+    </li>
+
+    <ng-container *ngTemplateOutlet="categoryTree; context:{ $implicit: filteredCategories }"></ng-container>
+  </ul>
+</div>
+
+<ng-template #categoryTree let-nodes>
+  @for (category of nodes; track category.id) {
+    <li>
+      <div 
+        class="flex items-center w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 cursor-pointer"
+        [ngClass]="{
+          'bg-blue-50 text-blue-600': selectedCategoryId === category.id,
+          'text-gray-600 hover:bg-gray-50': selectedCategoryId !== category.id
+        }"
+        (click)="selectCategory(category.id, $event)">
+        
+        <button 
+          *ngIf="category.children && category.children.length > 0"
+          (click)="toggleExpand(category, $event)"
+          class="mr-2 focus:outline-none text-gray-400 hover:text-gray-600 flex items-center justify-center p-1 rounded hover:bg-gray-200 transition-colors"
+          style="width: 20px; height: 20px;">
+          <svg *ngIf="expanded[category.id]" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg *ngIf="!expanded[category.id]" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+        <span *ngIf="!category.children || category.children.length === 0" class="mr-2 w-[20px] inline-block"></span>
+        
+        <span class="flex-1 truncate">{{ category.name }}</span>
+      </div>
+
+      <ul *ngIf="category.children && category.children.length > 0" [class.hidden]="!expanded[category.id]" class="pl-4 mt-1 space-y-1">
+        <ng-container *ngTemplateOutlet="categoryTree; context:{ $implicit: category.children }"></ng-container>
+      </ul>
+    </li>
+  }
+</ng-template>

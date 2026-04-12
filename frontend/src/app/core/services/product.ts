@@ -12,12 +12,19 @@ export class ProductService {
   private apiUrl = 'http://localhost:8080/api/products';
 
   // Fetch all products, optionally passing search/filter params
-  getProducts(search?: string, category?: string): Observable<Product[]> {
+  getProducts(filters: any = {}): Observable<Product[]> {
     let params = new HttpParams();
-    if (search) params = params.set('search', search);
-    if (category) params = params.set('category', category);
+    if (filters.search) params = params.set('search', filters.search);
+    if (filters.categoryId) params = params.set('categoryId', filters.categoryId);
+    if (filters.minPrice) params = params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice) params = params.set('maxPrice', filters.maxPrice);
+    if (filters.sort) params = params.set('sort', filters.sort);
 
     return this.http.get<Product[]>(this.apiUrl, { params });
+  }
+
+  getCategories(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:8080/api/categories/tree');
   }
 
   // Fetch a single product for the details page

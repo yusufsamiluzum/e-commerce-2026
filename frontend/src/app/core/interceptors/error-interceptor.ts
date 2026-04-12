@@ -5,21 +5,17 @@ import { throwError } from 'rxjs';
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Create a clean error message
       let errorMsg = '';
       
-      if (error.error instanceof ErrorEvent) {
-        // Client-side or network error
+      // SSR (Node.js) ortamında ErrorEvent tanımlı değildir, bu yüzden kontrol ekliyoruz
+      if (typeof ErrorEvent !== 'undefined' && error.error instanceof ErrorEvent) {
         errorMsg = `[Client Error] ${error.error.message}`;
       } else {
-        // Backend server error (like your 404)
-        errorMsg = `[Backend Error] Status: ${error.status}, URL: ${error.url}`;
+        // Backend'den gelen hata (Senin Spring Boot GlobalExceptionHandler'ından gelen cevap)
+        errorMsg = `[Backend Error] Status: ${error.status}, URL: ${error.url}, Message: ${error.error?.message || error.message}`;
       }
 
-      // Print the clean message instead of the giant object
       console.error(errorMsg);
-
-      // Pass the error along so the rest of the app knows it failed
       return throwError(() => new Error(errorMsg));
     })
   );

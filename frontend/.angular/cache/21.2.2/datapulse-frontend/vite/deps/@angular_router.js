@@ -1,6 +1,7 @@
 import {
   Title
-} from "./chunk-VBDZRDMO.js";
+} from "./chunk-OZ54PBDC.js";
+import "./chunk-EQRXY6SZ.js";
 import {
   HashLocationStrategy,
   Location,
@@ -11,7 +12,6 @@ import {
   PlatformNavigation,
   ViewportScroller
 } from "./chunk-NCRKH7YR.js";
-import "./chunk-EQRXY6SZ.js";
 import {
   LOCATION_INITIALIZED,
   PlatformLocation
