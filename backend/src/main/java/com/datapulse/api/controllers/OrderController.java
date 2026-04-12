@@ -1,9 +1,10 @@
 package com.datapulse.api.controllers;
 
 import com.datapulse.api.dto.OrderRequest;
+import com.datapulse.api.dto.OrderDto;
 import com.datapulse.api.entities.Order;
 import com.datapulse.api.services.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,19 +13,16 @@ import com.datapulse.api.repositories.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
     private final UserRepository userRepository;
-
-    @Autowired
-    public OrderController(OrderService orderService, UserRepository userRepository) {
-        this.orderService = orderService;
-        this.userRepository = userRepository;
-    }
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest request) {
@@ -42,6 +40,40 @@ public class OrderController {
                 "message", "Order created successfully",
                 "orderId", order.getId()
             ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getMyOrders() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+                return ResponseEntity.status(401).body("User not authenticated");
+            }
+            String email = authentication.getName();
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
+            
+            List<OrderDto> orders = orderService.getUserOrders(user.getId());
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderDetails(@PathVariable Long id) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+                return ResponseEntity.status(401).body("User not authenticated");
+            }
+            String email = authentication.getName();
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
+
+            OrderDto orderDetails = orderService.getOrderDetails(id, user.getId());
+            return ResponseEntity.ok(orderDetails);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
         }

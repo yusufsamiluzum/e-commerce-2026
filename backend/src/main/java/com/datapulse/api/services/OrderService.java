@@ -1,33 +1,28 @@
 package com.datapulse.api.services;
 
+import com.datapulse.api.dto.OrderDto;
+import com.datapulse.api.dto.OrderItemDto;
 import com.datapulse.api.dto.OrderRequest;
 import com.datapulse.api.entities.*;
 import com.datapulse.api.exceptions.ResourceNotFoundException;
 import com.datapulse.api.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
-
-    @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-                        UserRepository userRepository, StoreRepository storeRepository, ProductRepository productRepository) {
-        this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.userRepository = userRepository;
-        this.storeRepository = storeRepository;
-        this.productRepository = productRepository;
-    }
 
     @Transactional
     public Order createOrder(OrderRequest request) {
@@ -72,5 +67,45 @@ public class OrderService {
 
         order.setTotalPrice(total);
         return orderRepository.save(order);
+    }
+
+    public List<OrderDto> getUserOrders(Long userId) {
+        List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+        return orders.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    public OrderDto getOrderDetails(Long orderId, Long userId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+        
+        if (!order.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Unauthorized access to order"); // Could be an AccessDeniedException
+        }
+        
+        return mapToDto(order);
+    }
+
+    private OrderDto mapToDto(Order order) {
+        List<OrderItemDto> itemDtos = order.getItems().stream().map(item -> {
+            Product product = item.getProduct();
+            return OrderItemDto.builder()
+                    .id(item.getId())
+                    .productId(product.getId())
+                    .productName(product.getName())
+                    .productImageUrl(product.getImageUrl())
+                    .quantity(item.getQuantity())
+                    .unitPrice(item.getUnitPrice())
+                    .totalPrice(item.getTotalPrice())
+                    .build();
+        }).collect(Collectors.toList());
+
+        return OrderDto.builder()
+                .id(order.getId())
+                .status(order.getStatus())
+                .totalPrice(order.getTotalPrice())
+                .orderDate(order.getOrderDate())
+                .storeName(order.getStore() != null ? order.getStore().getName() : "Unknown Store")
+                .items(itemDtos)
+                .build();
     }
 }

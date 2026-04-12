@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
       <h1 class="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
       <p class="text-lg text-gray-600 mb-8">Thank you for your purchase. Your order has been placed and will be processed shortly.</p>
       
-      <a routerLink="/individual/orders" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg shadow-sm transition-colors inline-block">
+      <a routerLink="/profile/orders" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg shadow-sm transition-colors inline-block">
         View Order History
       </a>
     </div>

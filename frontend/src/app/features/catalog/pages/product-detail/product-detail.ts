@@ -5,11 +5,12 @@ import { Observable, switchMap } from 'rxjs';
 import { ProductService } from '../../../../core/services/product';
 import { CartService } from '../../../../core/services/cart.service';
 import { Product } from '../../../../shared/models/product.model';
+import { ProductReviewsComponent } from '../../components/product-reviews/product-reviews.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule], // RouterModule allows us to use routerLink to go back
+  imports: [CommonModule, RouterModule, ProductReviewsComponent], // RouterModule allows us to use routerLink to go back
   templateUrl: './product-detail.html',
 })
 export class ProductDetailComponent implements OnInit {

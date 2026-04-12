@@ -43,10 +43,13 @@ public class SecurityConfig {
                 
                 // Herkese açık endpointler
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/products", "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
                 // BURAYI EKLEDİK: Kategorilere herkes erişebilsin
-                .requestMatchers("/api/categories", "/api/categories/**").permitAll() 
+                .requestMatchers(HttpMethod.GET, "/api/categories", "/api/categories/**").permitAll() 
                 .requestMatchers("/error").permitAll() 
+                
+                // Yorum Ekleme gibi POST işlemleri giriş gerektirsin
+                .requestMatchers(HttpMethod.POST, "/api/products/*/reviews").authenticated()
                 
                 // Rol bazlı kısıtlamalar (Admin, Corporate vb.)
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
