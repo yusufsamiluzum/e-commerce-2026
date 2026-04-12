@@ -1,51 +1,146 @@
-<header class="bg-white border-b border-gray-100 sticky top-0 z-50">
-  <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-    
-    <a routerLink="/" class="text-xl font-bold text-blue-600 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      DataPulse
-    </a>
+<header class="bg-gray-900 sticky top-0 z-50 shadow-md border-b border-gray-800">
+  <!-- Top announcement bar -->
+  <div class="bg-indigo-950 text-gray-300 text-xs py-1.5 px-4 text-center hidden sm:flex justify-between items-center border-b border-gray-800">
+    <div class="flex-1 text-center font-medium tracking-wide">
+      🚀 Free shipping on all orders over $50! 
+    </div>
+    <div class="flex gap-4 text-indigo-300">
+      <a href="#" class="hover:text-white transition-colors">Help Center</a>
+      <a href="#" class="hover:text-white transition-colors">Track Order</a>
+    </div>
+  </div>
 
-    <nav class="hidden md:flex gap-6 font-medium text-sm text-gray-600">
+  <!-- Main Navbar -->
+  <div class="container mx-auto px-4 py-3 lg:py-4">
+    <div class="flex items-center justify-between gap-4 lg:gap-8">
       
-      @if (auth.currentUserRole() === 'GUEST' || auth.currentUserRole() === 'INDIVIDUAL') {
-        <a routerLink="/catalog" class="hover:text-blue-600 transition-colors">Shop Products</a>
-        <a routerLink="/categories" class="hover:text-blue-600 transition-colors">Categories</a>
-      }
+      <!-- Logo -->
+      <a routerLink="/" class="text-2xl lg:text-3xl font-black text-white tracking-tight flex items-center gap-2 flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 lg:h-9 lg:w-9 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        DataPulse<span class="text-blue-500">.</span>
+      </a>
 
-      @if (auth.currentUserRole() === 'CORPORATE') {
-        <a routerLink="/corporate/dashboard" class="hover:text-blue-600 transition-colors">Dashboard</a>
-        <a routerLink="/corporate/inventory" class="hover:text-blue-600 transition-colors">Inventory</a>
-        <a routerLink="/corporate/orders" class="hover:text-blue-600 transition-colors">Store Orders</a>
-      }
-
-      @if (auth.currentUserRole() === 'ADMIN') {
-        <a routerLink="/admin/dashboard" class="hover:text-blue-600 transition-colors">Overview</a>
-        <a routerLink="/admin/users" class="hover:text-blue-600 transition-colors">Manage Users</a>
-      }
-    </nav>
-
-    <div class="flex items-center gap-4">
-      
-      @if (auth.currentUserRole() === 'INDIVIDUAL') {
-        <button class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+      <!-- Search Bar (Desktop) -->
+      <div class="hidden md:flex flex-1 max-w-2xl relative group">
+        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">3</span>
-        </button>
-      }
-
-      @if (auth.currentUserRole() === 'GUEST') {
-        <a routerLink="/login" class="text-sm font-medium text-gray-700 hover:text-blue-600">Sign In</a>
-        <a routerLink="/register" class="text-sm font-medium bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Register</a>
-      } @else {
-        <div class="h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer border border-gray-300">
-          <span class="text-xs font-bold text-gray-600">JD</span>
         </div>
-      }
+        <input type="text" placeholder="Search for products, categories, brands..." class="w-full bg-gray-800 border border-gray-700 rounded-lg py-2.5 pl-11 pr-24 text-white focus:bg-gray-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-sm placeholder-gray-400">
+        <button class="absolute inset-y-1.5 right-1.5 bg-blue-600 hover:bg-blue-700 text-white px-4 text-sm font-medium rounded-md transition-colors shadow-sm">
+          Search
+        </button>
+      </div>
+
+      <!-- Right Actions -->
+      <div class="flex items-center gap-5 lg:gap-7 flex-shrink-0">
+        
+        <!-- Guest Links -->
+        @if (auth.currentUserRole() === 'GUEST') {
+          <div class="hidden sm:flex items-center gap-4">
+            <a routerLink="/auth/login" class="text-sm font-semibold text-gray-300 hover:text-blue-400 transition-colors flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              Sign In
+            </a>
+            <a routerLink="/auth/register" class="text-sm font-semibold bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors shadow-sm">
+              Register
+            </a>
+          </div>
+        }
+
+        <!-- Cart icon -->
+        @if (auth.currentUserRole() === 'INDIVIDUAL' || auth.currentUserRole() === 'GUEST') {
+        <a routerLink="/cart" class="relative group p-1 flex items-center gap-2">
+          <div class="relative">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-300 group-hover:text-blue-400 transition-colors"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span
+              class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold h-[18px] w-[18px] flex items-center justify-center rounded-full shadow-sm ring-2 ring-gray-900 border-none">{{ cartService.totalItems() }}</span>
+          </div>
+          <div class="hidden lg:block text-left">
+            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Your Cart</p>
+            <p class="text-sm font-bold text-white leading-none">${{ cartService.totalPrice().toFixed(2) }}</p>
+          </div>
+        </a>
+        }
+
+        <!-- Profile/Logout for logged in -->
+        @if (auth.currentUserRole() !== 'GUEST') {
+          <div class="flex items-center gap-4 relative group">
+            <a [routerLink]="auth.currentUserRole() === 'ADMIN' ? '/admin/profile' : (auth.currentUserRole() === 'CORPORATE' ? '/corporate/profile' : '/individual/profile')" 
+               class="flex items-center gap-2.5 cursor-pointer">
+              <div class="h-10 w-10 bg-gray-800 text-blue-400 rounded-full flex items-center justify-center border border-gray-700 shadow-sm group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <div class="hidden lg:block text-left">
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-0.5">Welcome</p>
+                <p class="text-sm font-semibold text-white group-hover:text-blue-400 leading-none">Account</p>
+              </div>
+            </a>
+            <button (click)="logout()" title="Logout" class="p-2 text-gray-400 hover:text-red-500 hover:bg-gray-800 rounded-full transition-all">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+               </svg>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Mobile Search Bar (Visible only on small screens) -->
+    <div class="mt-4 flex md:hidden relative group">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+      <input type="text" placeholder="Search..." class="w-full bg-gray-800 border border-gray-700 rounded-lg py-2.5 pl-10 pr-4 text-white focus:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm">
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Category Bar -->
+  <div class="border-t border-gray-800 hidden md:block w-full">
+    <div class="container mx-auto px-4">
+      <nav class="flex items-center space-x-8 font-medium text-sm text-gray-300 h-12">
+        <a routerLink="/" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Home</a>
+        
+        @if (auth.currentUserRole() === 'INDIVIDUAL' || auth.currentUserRole() === 'GUEST') {
+          <a routerLink="/catalog" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Shop All</a>
+          <a routerLink="/deals" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500 text-red-500 font-semibold gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Deals
+          </a>
+        }
+        
+        @if (auth.currentUserRole() === 'INDIVIDUAL') {
+          <a routerLink="/individual/orders" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Purchase History</a>
+        }
+
+        @if (auth.currentUserRole() === 'CORPORATE') {
+          <a routerLink="/corporate/dashboard" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Dashboard</a>
+          <a routerLink="/corporate/catalog" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Products</a>
+          <a routerLink="/corporate/inventory" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Inventory</a>
+          <a routerLink="/corporate/orders" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Store Orders</a>
+        }
+
+        @if (auth.currentUserRole() === 'ADMIN') {
+          <a routerLink="/admin/dashboard" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Overview</a>
+          <a routerLink="/admin/users" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Manage Users</a>
+          <a routerLink="/admin/stores" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Stores</a>
+        }
+      </nav>
     </div>
   </div>
 </header>

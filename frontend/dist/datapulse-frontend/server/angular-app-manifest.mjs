@@ -13,44 +13,41 @@ export default {
   {
     "renderMode": 0,
     "preload": [
-      "chunk-EY57GLKN.js"
+      "chunk-5ONRJK4P.js",
+      "chunk-RZ5YXOKK.js"
     ],
     "route": "/catalog"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-EY57GLKN.js"
+      "chunk-5ONRJK4P.js",
+      "chunk-RZ5YXOKK.js"
     ],
     "route": "/catalog/*"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-D2BWDYU7.js"
+      "chunk-RKCZ2UQO.js"
     ],
-    "route": "/admin"
+    "route": "/cart"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-MMTEJQQC.js"
+      "chunk-427FNVYY.js",
+      "chunk-RZ5YXOKK.js"
     ],
-    "route": "/corporate"
+    "route": "/checkout"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-ZIOK2BMS.js"
+      "chunk-427FNVYY.js",
+      "chunk-RZ5YXOKK.js"
     ],
-    "route": "/individual"
-  },
-  {
-    "renderMode": 0,
-    "preload": [
-      "chunk-CQYHRTTL.js"
-    ],
-    "route": "/chat"
+    "route": "/checkout/success"
   },
   {
     "renderMode": 0,
@@ -60,8 +57,8 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 5447, hash: 'b4aa4dd34e183a7b7c583c0d40c4e321ca6452dec48cbabe3e6433a51f3df8dd', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1006, hash: '3c0559defe8911f373ca23a540da12cfe1c7fe70970fa2c71839f78c9fa75bf3', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'styles-QDH4S427.css': {size: 21073, hash: 'PPwYFMykTTo', text: () => import('./assets-chunks/styles-QDH4S427_css.mjs').then(m => m.default)}
+    'index.csr.html': {size: 7938, hash: '0a2aa8b2659d6090f9e564fd36c5f2072bfd95c1bc2d9e0a570181e1aab2eda2', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1006, hash: '79743e86283e2b49a6109c9f1d469327713740f6c6f4c22cc9d454203ee5f75a', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'styles-ACDG4CVK.css': {size: 37008, hash: 'npXCLxHq17U', text: () => import('./assets-chunks/styles-ACDG4CVK_css.mjs').then(m => m.default)}
   },
 };

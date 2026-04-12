@@ -32,7 +32,7 @@ public class Order {
     private OrderStatus status;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal grandTotal;
+    private BigDecimal totalPrice;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime orderDate;

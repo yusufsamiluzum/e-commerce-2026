@@ -3,6 +3,7 @@ package com.datapulse.api.controllers;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.datapulse.api.dto.AuthRequest;
 import com.datapulse.api.dto.AuthResponse;
+import com.datapulse.api.dto.RegisterAdminRequest;
+import com.datapulse.api.dto.RegisterCorporateRequest;
+import com.datapulse.api.dto.RegisterIndividualRequest;
 import com.datapulse.api.services.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
-// These endpoints are public (configured in SecurityConfig to allow everyone)
+// These endpoints are public (configured in SecurityConfig to allow everyone) except admin register
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -22,10 +26,41 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        AuthResponse responseBody = authService.login(request);
-        
+    @PostMapping("/register/individual")
+    public ResponseEntity<Void> registerIndividual(@RequestBody RegisterIndividualRequest request) {
+        authService.registerIndividual(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/register/corporate")
+    public ResponseEntity<Void> registerCorporate(@RequestBody RegisterCorporateRequest request) {
+        authService.registerCorporate(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/admin/register")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> registerAdmin(@RequestBody RegisterAdminRequest request) {
+        authService.registerAdmin(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login/individual")
+    public ResponseEntity<AuthResponse> loginIndividual(@RequestBody AuthRequest request) {
+        return processLogin(authService.loginIndividual(request));
+    }
+
+    @PostMapping("/login/corporate")
+    public ResponseEntity<AuthResponse> loginCorporate(@RequestBody AuthRequest request) {
+        return processLogin(authService.loginCorporate(request));
+    }
+
+    @PostMapping("/login/admin")
+    public ResponseEntity<AuthResponse> loginAdmin(@RequestBody AuthRequest request) {
+        return processLogin(authService.loginAdmin(request));
+    }
+
+    private ResponseEntity<AuthResponse> processLogin(AuthResponse responseBody) {
         // Package the JWT token into an HttpOnly cookie
         ResponseCookie cookie = ResponseCookie.from("access_token", responseBody.getToken())
             .httpOnly(true) // Browser JS cannot read this cookie, protects against XSS

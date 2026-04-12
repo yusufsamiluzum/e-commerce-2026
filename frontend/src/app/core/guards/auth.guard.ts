@@ -22,6 +22,7 @@ export const roleGuard: CanActivateFn = (route) => {
   const router = inject(Router);
   
   const expectedRoles: UserRole[] = route.data?.['roles'] || [];
+  const requireStore = route.data?.['requireStore'] === true;
 
   const currentUserRole = authService.currentUserRole();
   const hasRequiredRole = expectedRoles.includes(currentUserRole);
@@ -31,6 +32,13 @@ export const roleGuard: CanActivateFn = (route) => {
     // Possibly navigate to an access-denied or home page.
     console.warn(`[RBAC] Access Denied: User role '${currentUserRole}' is not authorized to reach this view. Required: ${expectedRoles.join(',')}. Redirecting home.`);
     router.navigate(['/']);
+    return false;
+  }
+
+  // Check if store requires setup for corporate route
+  if (requireStore && currentUserRole === 'CORPORATE' && !authService.hasStore()) {
+    console.warn(`[RBAC] Access Denied: User must set up store first.`);
+    router.navigate(['/corporate/store-setup']);
     return false;
   }
 

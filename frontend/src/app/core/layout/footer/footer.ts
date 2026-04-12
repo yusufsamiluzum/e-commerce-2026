@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-footer',
@@ -9,5 +10,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './footer.html'
 })
 export class Footer {
+  auth = inject(AuthService);
   currentYear = new Date().getFullYear(); // Automatically updates the copyright year
 }

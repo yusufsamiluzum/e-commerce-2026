@@ -1,1 +1,0 @@
-import{Ba as n,G as i,Qa as m,l as t}from"./chunk-BJ3XBHMG.js";var d=[],e=class o{static \u0275fac=function(r){return new(r||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[m.forChild(d),m]})};var s=class o{static \u0275fac=function(r){return new(r||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[n,e]})};export{s as IndividualModule};

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { ProductService } from '../../../../core/services/product';
+import { CartService } from '../../../../core/services/cart.service';
 import { Product } from '../../../../shared/models/product.model';
 
 @Component({
@@ -14,6 +15,7 @@ import { Product } from '../../../../shared/models/product.model';
 export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
+  private cartService = inject(CartService);
 
   product$!: Observable<Product>;
 
@@ -28,7 +30,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    // Placeholder for the shopping cart management requirement
-    console.log(`Added ${product.name} to cart!`);
+    this.cartService.addToCart(product, 1);
+    // Optional: show a quick success message
+    alert(`Added ${product.name} to cart!`);
   }
 }
