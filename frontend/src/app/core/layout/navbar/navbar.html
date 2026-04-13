@@ -76,14 +76,14 @@
         @if (auth.currentUserRole() !== 'GUEST') {
           <div class="flex items-center gap-4 relative group">
             
-            <a routerLink="/profile/orders" class="text-sm font-semibold text-gray-300 hover:text-blue-400 transition-colors flex items-center gap-1.5 hidden lg:flex">
+            <a routerLink="/individual/profile/orders" class="text-sm font-semibold text-gray-300 hover:text-blue-400 transition-colors flex items-center gap-1.5 hidden lg:flex">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
               Siparişlerim
             </a>
 
-            <a [routerLink]="auth.currentUserRole() === 'ADMIN' ? '/admin/profile' : (auth.currentUserRole() === 'CORPORATE' ? '/corporate/profile' : '/individual/profile')" 
+            <a [routerLink]="getProfileLink()" 
                class="flex items-center gap-2.5 cursor-pointer">
               <div class="h-10 w-10 bg-gray-800 text-blue-400 rounded-full flex items-center justify-center border border-gray-700 shadow-sm group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

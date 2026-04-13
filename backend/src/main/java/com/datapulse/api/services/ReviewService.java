@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.datapulse.api.dto.ReviewRequest;
 import com.datapulse.api.dto.ReviewResponse;
+import com.datapulse.api.dto.MyReviewResponse;
 import com.datapulse.api.entities.Product;
 import com.datapulse.api.entities.Review;
 import com.datapulse.api.entities.User;
@@ -26,6 +27,22 @@ public class ReviewService {
     public List<ReviewResponse> getReviewsByProductId(Long productId) {
         return reviewRepository.findByProductIdOrderByCreatedAtDesc(productId).stream()
                 .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyReviewResponse> getMyReviews(Long userId) {
+        return reviewRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
+                .map(review -> MyReviewResponse.builder()
+                        .id(review.getId())
+                        .productId(review.getProduct().getId())
+                        .productName(review.getProduct().getName())
+                        .productImageUrl(review.getProduct().getImageUrl())
+                        .starRating(review.getStarRating())
+                        .reviewText(review.getReviewText())
+                        .helpfulVotes(review.getHelpfulVotes())
+                        .createdAt(review.getCreatedAt())
+                        .build())
                 .collect(Collectors.toList());
     }
 

@@ -1,1 +1,167 @@
 @use 'tailwindcss';
+
+/* ─────────────────────────────────────────────
+   NATIVE VIEW TRANSITIONS API
+   Angular 17+ withViewTransitions() ile aktif
+   ───────────────────────────────────────────── */
+
+/* Eski sayfa — yerinde kal, kaybolma — karanlık ekranı önler */
+::view-transition-old(root) {
+  animation: none;
+}
+
+/* Yeni sayfa — üstune fade-in */
+::view-transition-new(root) {
+  animation: vt-fade-in 180ms ease-out both;
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─────────────────────────────────────────────
+   PROFIL LAYOUT — SAYFA GEÇİŞ ANİMASYONU
+   .profile-main içindeki her bileşen için
+   ───────────────────────────────────────────── */
+
+.profile-main > * {
+  animation: profile-enter 0.2s ease-out both;
+  will-change: opacity;
+}
+
+@keyframes profile-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────────
+   KART HOVERLERİ — Yumuşak yükseklik hissi
+   ───────────────────────────────────────────── */
+
+.card-hover {
+  transition:
+    transform       200ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow      200ms ease,
+    border-color    200ms ease;
+  will-change: transform;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.5);
+}
+
+/* ─────────────────────────────────────────────
+   BUTON MİKRO-ANİMASYONLARI
+   ───────────────────────────────────────────── */
+
+button, a[role="button"] {
+  transition:
+    opacity         150ms ease,
+    transform       120ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow      200ms ease,
+    background-color 180ms ease,
+    border-color    180ms ease;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─────────────────────────────────────────────
+   SKELETON LOADER — Geliştirilmiş puls
+   ───────────────────────────────────────────── */
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 25%,
+    rgba(255,255,255,0.07) 50%,
+    rgba(255,255,255,0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────
+   ROUTER-OUTLET — üst üste animasyonu önle
+   ───────────────────────────────────────────── */
+
+router-outlet + * {
+  display: block;
+}
+
+/* ─────────────────────────────────────────────
+   GEÇİŞ YARDIMCILARI
+   ───────────────────────────────────────────── */
+
+.transition-smooth {
+  transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Sidebar nav item geçişleri */
+.nav-menu-item {
+  transition:
+    color         180ms ease,
+    background    180ms ease,
+    border-color  180ms ease,
+    transform     150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-menu-item:hover {
+  transform: translateX(2px);
+}
+
+/* ─────────────────────────────────────────────
+   SCROLL — Tüm sayfa yumuşak kaydırma
+   ───────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Özel scrollbar — profil sidebar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+}
+
+*::-webkit-scrollbar { width: 4px; height: 4px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+/* ─────────────────────────────────────────────
+   FORM ELEMANLARI — Focus geçişleri
+   ───────────────────────────────────────────── */
+
+input, textarea, select {
+  transition:
+    border-color  180ms ease,
+    box-shadow    180ms ease,
+    background    180ms ease;
+}
+
+/* ─────────────────────────────────────────────
+   IMAGE — Yükleme fade-in
+   ───────────────────────────────────────────── */
+
+img {
+  transition: opacity 300ms ease;
+}

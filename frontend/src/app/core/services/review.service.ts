@@ -17,4 +17,12 @@ export class ReviewService {
   addReview(productId: number, review: ReviewRequest): Observable<Review> {
     return this.http.post<Review>(`${this.apiUrl}/${productId}/reviews`, review);
   }
+
+  getMyReviews(): Observable<any[]> {
+    return this.http.get<any[]>('http://localhost:8080/api/users/me/reviews');
+  }
+
+  deleteReview(reviewId: number): Observable<void> {
+    return this.http.delete<void>(`http://localhost:8080/api/products/reviews/${reviewId}`);
+  }
 }

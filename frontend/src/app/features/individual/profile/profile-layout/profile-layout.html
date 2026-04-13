@@ -1,0 +1,91 @@
+<div class="min-h-screen">
+  <div class="container mx-auto px-4 py-6 md:py-10">
+    <div class="flex flex-col md:flex-row gap-6 md:gap-8">
+
+      <!-- Sidebar -->
+      <aside class="w-full md:w-72 flex-shrink-0">
+        <div class="md:sticky md:top-24 rounded-2xl overflow-hidden border border-white/5 shadow-2xl"
+             style="background: linear-gradient(145deg, #111827 0%, #0f172a 100%);">
+
+          <!-- Sidebar Header: Avatar + İsim -->
+          <div class="p-6 pb-5 border-b border-white/5 hidden md:block"
+               style="background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(99,102,241,0.05) 100%);">
+            <div class="flex items-center gap-4">
+              <!-- Gradient Avatar -->
+              <div class="w-14 h-14 rounded-xl flex-shrink-0 flex items-center justify-center text-xl font-black text-white shadow-lg"
+                   style="background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-base font-bold text-white truncate">Hesabım</h2>
+                <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-blue-300 border border-blue-500/30"
+                      style="background: rgba(59,130,246,0.1);">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  Bireysel Müşteri
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="flex flex-row md:flex-col overflow-x-auto md:overflow-visible p-2 md:p-3 gap-1"
+               style="scrollbar-width: none;">
+            @for (item of menuItems; track item.path) {
+              <button
+                type="button"
+                [routerLink]="'./' + item.path"
+                routerLinkActive="active-nav-item"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="nav-menu-item group relative flex items-center gap-3 px-3 py-2.5 md:px-4 md:py-3 rounded-xl text-sm font-medium text-gray-400 transition-all duration-200 hover:text-white whitespace-nowrap min-w-max md:min-w-0 md:w-full
+                       hover:bg-white/5 border border-transparent hover:border-white/5">
+                <!-- Icon container -->
+                <span class="nav-icon w-8 h-8 flex-shrink-0 rounded-lg flex items-center justify-center transition-all duration-200
+                             bg-gray-800 group-hover:bg-gray-700">
+                  <i [class]="item.icon + ' text-sm'"></i>
+                </span>
+                <span class="hidden md:inline">{{ item.label }}</span>
+              </button>
+            }
+          </nav>
+
+          <!-- Bottom divider + help -->
+          <div class="hidden md:block p-4 border-t border-white/5">
+            <div class="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-400 cursor-pointer transition-colors">
+              <i class="fas fa-question-circle"></i>
+              <span>Yardım ve Destek</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 rounded-2xl border border-white/5 shadow-2xl overflow-hidden profile-main"
+            style="background: linear-gradient(145deg, #111827 0%, #0f172a 100%); min-height: 600px;">
+        <router-outlet></router-outlet>
+      </main>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .active-nav-item {
+    color: #93c5fd !important;
+    background: rgba(59, 130, 246, 0.12) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+  }
+  .active-nav-item .nav-icon {
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa;
+  }
+  nav::-webkit-scrollbar { display: none; }
+
+  /* Route geçişlerinde fade-in — flicker'ı yumuşatır */
+  .profile-main > * {
+    animation: profile-page-in 0.18s ease-out both;
+  }
+  @keyframes profile-page-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>

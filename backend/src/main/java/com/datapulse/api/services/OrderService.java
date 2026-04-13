@@ -79,10 +79,29 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
         
         if (!order.getUser().getId().equals(userId)) {
-            throw new RuntimeException("Unauthorized access to order"); // Could be an AccessDeniedException
+            throw new RuntimeException("Unauthorized access to order");
         }
         
         return mapToDto(order);
+    }
+
+    @Transactional
+    public OrderDto cancelOrder(Long orderId, Long userId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+
+        if (!order.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Unauthorized: this order does not belong to you");
+        }
+
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new IllegalStateException(
+                "Only PENDING orders can be cancelled. Current status: " + order.getStatus()
+            );
+        }
+
+        order.setStatus(OrderStatus.CANCELLED);
+        return mapToDto(orderRepository.save(order));
     }
 
     private OrderDto mapToDto(Order order) {

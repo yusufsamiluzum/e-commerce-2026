@@ -15,6 +15,13 @@ export class Navbar {
   cartService = inject(CartService); // Inject the cart service
   private router = inject(Router);
 
+  getProfileLink(): string {
+    const role = this.auth.currentUserRole();
+    if (role === 'ADMIN') return '/admin/profile/details';
+    if (role === 'CORPORATE') return '/corporate/profile/details';
+    return '/individual/profile/details';
+  }
+
   logout() {
     this.auth.logout();
     this.router.navigate(['/']);

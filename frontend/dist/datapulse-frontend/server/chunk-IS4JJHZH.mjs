@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{Ib as o,n as e,q as i}from"./chunk-MT26XRZ7.mjs";var a=class r{constructor(t){this.http=t}apiUrl="http://localhost:8080/api/orders";getUserOrders(){return this.http.get(this.apiUrl)}getOrderDetails(t){return this.http.get(`${this.apiUrl}/${t}`)}static \u0275fac=function(n){return new(n||r)(i(o))};static \u0275prov=e({token:r,factory:r.\u0275fac,providedIn:"root"})};export{a};

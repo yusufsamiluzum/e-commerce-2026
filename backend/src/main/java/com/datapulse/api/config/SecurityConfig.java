@@ -45,7 +45,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
                 // BURAYI EKLEDİK: Kategorilere herkes erişebilsin
-                .requestMatchers(HttpMethod.GET, "/api/categories", "/api/categories/**").permitAll() 
+                .requestMatchers(HttpMethod.GET, "/api/categories", "/api/categories/**").permitAll()
+                // Upload edilen görseller herkese açık (statik dosya)
+                .requestMatchers("/uploads/**").permitAll()
                 .requestMatchers("/error").permitAll() 
                 
                 // Yorum Ekleme gibi POST işlemleri giriş gerektirsin

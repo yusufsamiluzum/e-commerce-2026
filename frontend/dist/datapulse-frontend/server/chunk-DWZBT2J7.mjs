@@ -1,0 +1,2 @@
+import './polyfills.server.mjs';
+import{I as t,Jc as s,N as i}from"./chunk-3GPLBTP5.mjs";var o=class r{http=i(s);apiUrl="http://localhost:8080/api/users";getProfile(){return this.http.get(`${this.apiUrl}/profile`)}updateProfile(e){return this.http.put(`${this.apiUrl}/profile`,e)}getMyPreferences(){return this.http.get(`${this.apiUrl}/me/preferences`)}updateMyPreferences(e){return this.http.put(`${this.apiUrl}/me/preferences`,e)}static \u0275fac=function(n){return new(n||r)};static \u0275prov=t({token:r,factory:r.\u0275fac,providedIn:"root"})};export{o as a};

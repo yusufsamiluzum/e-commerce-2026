@@ -1,0 +1,337 @@
+<div class="p-6 md:p-8 space-y-6">
+
+  <!-- Page Header -->
+  <div class="pb-5 border-b border-white/5">
+    <h2 class="text-2xl font-black text-white tracking-tight">Tercihlerim</h2>
+    <p class="text-gray-500 text-sm mt-1">Bildirim, görünüm ve dil ayarlarınızı yönetin</p>
+  </div>
+
+  <!-- API Yükleme Hatası -->
+  @if (apiError()) {
+    <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium"
+         style="background: rgba(239,68,68,0.08);">
+      <i class="fas fa-exclamation-circle flex-shrink-0"></i> {{ apiError() }}
+    </div>
+  }
+
+  @if (!isLoaded()) {
+    <!-- Skeleton -->
+    <div class="max-w-2xl space-y-5">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="rounded-2xl border border-white/5 p-6 animate-pulse" style="background: rgba(255,255,255,0.02);">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-8 h-8 bg-gray-800 rounded-lg flex-shrink-0"></div>
+            <div class="space-y-2">
+              <div class="h-4 bg-gray-700 rounded-lg w-32"></div>
+              <div class="h-3 bg-gray-800 rounded w-48"></div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            @for (j of [1, 2]; track j) {
+              <div class="flex justify-between items-center p-4 rounded-xl border border-white/5"
+                   style="background: rgba(255,255,255,0.02);">
+                <div class="space-y-2">
+                  <div class="h-4 bg-gray-700 rounded w-36"></div>
+                  <div class="h-3 bg-gray-800 rounded w-52"></div>
+                </div>
+                <div class="w-11 h-6 bg-gray-700 rounded-full flex-shrink-0"></div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+  } @else {
+    <form [formGroup]="preferencesForm" (ngSubmit)="savePreferences()" class="max-w-2xl space-y-5">
+
+      <!-- ① Bildirim Ayarları -->
+      <div class="relative rounded-2xl border border-white/5 overflow-hidden"
+           style="background: rgba(255,255,255,0.02);">
+        <div class="absolute top-0 left-0 w-full h-0.5"
+             style="background: linear-gradient(90deg, #3b82f6, #6366f1);"></div>
+
+        <div class="p-6 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style="background: rgba(59,130,246,0.15);">
+              <i class="fas fa-bell text-blue-400"></i>
+            </span>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-base font-bold text-white">Bildirim Ayarları</h3>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold
+                             border border-yellow-500/30 text-yellow-400"
+                      style="background: rgba(234,179,8,0.08);">
+                  <i class="fas fa-clock text-[8px]"></i> Yakında Aktif
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">Tercihleriniz kaydedilir; bildirim sistemi entegrasyonu tamamlandığında devreye girer</p>
+            </div>
+          </div>
+
+          <!-- E-posta Toggle -->
+          <label class="flex items-center justify-between gap-4 p-4 rounded-xl border cursor-pointer
+                        transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                 [class]="emailOn
+                   ? 'border-blue-500/30 hover:border-blue-500/50'
+                   : 'border-white/5 hover:border-white/10'"
+                 [style]="emailOn ? 'background: rgba(59,130,246,0.05)' : 'background: rgba(255,255,255,0.02)'">
+            <div class="flex items-center gap-3 flex-1">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
+                   [style]="emailOn ? 'background: rgba(59,130,246,0.15)' : 'background: rgba(255,255,255,0.04)'">
+                <i class="fas fa-envelope text-sm" [class]="emailOn ? 'text-blue-400' : 'text-gray-600'"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold" [class]="emailOn ? 'text-white' : 'text-gray-400'">
+                  E-posta Bildirimleri
+                </p>
+                <p class="text-xs text-gray-500 mt-0.5">Sipariş güncellemeleri ve kampanyalar</p>
+              </div>
+            </div>
+            <!-- Toggle Switch -->
+            <div class="flex-shrink-0">
+              <input id="emailNotifications" formControlName="emailNotifications"
+                     type="checkbox" class="sr-only">
+              <div class="w-12 h-6 rounded-full relative transition-all duration-300 cursor-pointer"
+                   [style]="emailOn
+                     ? 'background: #2563eb; box-shadow: 0 0 12px rgba(37,99,235,0.4)'
+                     : 'background: rgba(255,255,255,0.08)'">
+                <div class="absolute top-0.5 w-5 h-5 rounded-full shadow-lg transition-all duration-300"
+                     [class]="emailOn ? 'bg-white left-6' : 'bg-gray-500 left-0.5'"></div>
+              </div>
+            </div>
+          </label>
+
+          <!-- SMS Toggle -->
+          <label class="flex items-center justify-between gap-4 p-4 rounded-xl border cursor-pointer
+                        transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                 [class]="smsOn
+                   ? 'border-blue-500/30 hover:border-blue-500/50'
+                   : 'border-white/5 hover:border-white/10'"
+                 [style]="smsOn ? 'background: rgba(59,130,246,0.05)' : 'background: rgba(255,255,255,0.02)'">
+            <div class="flex items-center gap-3 flex-1">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
+                   [style]="smsOn ? 'background: rgba(59,130,246,0.15)' : 'background: rgba(255,255,255,0.04)'">
+                <i class="fas fa-sms text-sm" [class]="smsOn ? 'text-blue-400' : 'text-gray-600'"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold" [class]="smsOn ? 'text-white' : 'text-gray-400'">
+                  SMS Bildirimleri
+                </p>
+                <p class="text-xs text-gray-500 mt-0.5">Kargo durumu ve acil uyarılar</p>
+              </div>
+            </div>
+            <div class="flex-shrink-0">
+              <input id="smsNotifications" formControlName="smsNotifications"
+                     type="checkbox" class="sr-only">
+              <div class="w-12 h-6 rounded-full relative transition-all duration-300 cursor-pointer"
+                   [style]="smsOn
+                     ? 'background: #2563eb; box-shadow: 0 0 12px rgba(37,99,235,0.4)'
+                     : 'background: rgba(255,255,255,0.08)'">
+                <div class="absolute top-0.5 w-5 h-5 rounded-full shadow-lg transition-all duration-300"
+                     [class]="smsOn ? 'bg-white left-6' : 'bg-gray-500 left-0.5'"></div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- ② Tema Seçimi -->
+      <div class="relative rounded-2xl border border-white/5 overflow-hidden"
+           style="background: rgba(255,255,255,0.02);">
+        <div class="absolute top-0 left-0 w-full h-0.5"
+             style="background: linear-gradient(90deg, #8b5cf6, #ec4899);"></div>
+
+        <div class="p-6 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style="background: rgba(139,92,246,0.15);">
+              <i class="fas fa-palette text-violet-400"></i>
+            </span>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-base font-bold text-white">Tema Seçimi</h3>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold
+                             border border-violet-500/30 text-violet-400"
+                      style="background: rgba(139,92,246,0.08);">
+                  <i class="fas fa-clock text-[8px]"></i> Yakında
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">Tema tercihiniz kaydedilir; uygulama geneli tema desteği yakında gelecek</p>
+            </div>
+          </div>
+
+          <!-- Görsel Tema Kartları -->
+          <input type="hidden" formControlName="theme">
+          <div class="grid grid-cols-3 gap-3">
+
+            <!-- Light -->
+            <button type="button" (click)="selectTheme('LIGHT')"
+              class="relative p-4 rounded-xl border text-center transition-all duration-200
+                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95 group"
+              [class]="theme === 'LIGHT'
+                ? 'border-violet-500/50 bg-violet-500/10'
+                : 'border-white/5 hover:border-white/15'"
+              [style]="theme !== 'LIGHT' ? 'background: rgba(255,255,255,0.02)' : ''">
+              @if (theme === 'LIGHT') {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 flex items-center justify-center">
+                  <i class="fas fa-check text-white text-[8px]"></i>
+                </div>
+              }
+              <div class="text-2xl mb-2">☀️</div>
+              <p class="text-xs font-bold" [class]="theme === 'LIGHT' ? 'text-violet-300' : 'text-gray-400'">Açık</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">Light mode</p>
+            </button>
+
+            <!-- Dark -->
+            <button type="button" (click)="selectTheme('DARK')"
+              class="relative p-4 rounded-xl border text-center transition-all duration-200
+                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+              [class]="theme === 'DARK'
+                ? 'border-violet-500/50 bg-violet-500/10'
+                : 'border-white/5 hover:border-white/15'"
+              [style]="theme !== 'DARK' ? 'background: rgba(255,255,255,0.02)' : ''">
+              @if (theme === 'DARK') {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 flex items-center justify-center">
+                  <i class="fas fa-check text-white text-[8px]"></i>
+                </div>
+              }
+              <div class="text-2xl mb-2">🌙</div>
+              <p class="text-xs font-bold" [class]="theme === 'DARK' ? 'text-violet-300' : 'text-gray-400'">Koyu</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">Dark mode</p>
+            </button>
+
+            <!-- System -->
+            <button type="button" (click)="selectTheme('SYSTEM')"
+              class="relative p-4 rounded-xl border text-center transition-all duration-200
+                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+              [class]="theme === 'SYSTEM'
+                ? 'border-violet-500/50 bg-violet-500/10'
+                : 'border-white/5 hover:border-white/15'"
+              [style]="theme !== 'SYSTEM' ? 'background: rgba(255,255,255,0.02)' : ''">
+              @if (theme === 'SYSTEM') {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 flex items-center justify-center">
+                  <i class="fas fa-check text-white text-[8px]"></i>
+                </div>
+              }
+              <div class="text-2xl mb-2">💻</div>
+              <p class="text-xs font-bold" [class]="theme === 'SYSTEM' ? 'text-violet-300' : 'text-gray-400'">Sistem</p>
+              <p class="text-[10px] text-gray-600 mt-0.5">Auto</p>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ Dil Seçimi -->
+      <div class="relative rounded-2xl border border-white/5 overflow-hidden"
+           style="background: rgba(255,255,255,0.02);">
+        <div class="absolute top-0 left-0 w-full h-0.5"
+             style="background: linear-gradient(90deg, #10b981, #06b6d4);"></div>
+
+        <div class="p-6 space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style="background: rgba(16,185,129,0.15);">
+              <i class="fas fa-globe text-emerald-400"></i>
+            </span>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-base font-bold text-white">Dil Seçimi</h3>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold
+                             border border-emerald-500/30 text-emerald-400"
+                      style="background: rgba(16,185,129,0.08);">
+                  <i class="fas fa-clock text-[8px]"></i> Yakında
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">Dil tercihiniz kaydedilir; çoklu dil desteği yakında eklenecek</p>
+            </div>
+          </div>
+
+          <input type="hidden" formControlName="language">
+          <div class="grid grid-cols-2 gap-3">
+
+            <!-- Türkçe -->
+            <button type="button" (click)="selectLanguage('TR')"
+              class="relative flex items-center gap-3 p-4 rounded-xl border text-left transition-all duration-200
+                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+              [class]="language === 'TR'
+                ? 'border-emerald-500/50 bg-emerald-500/8'
+                : 'border-white/5 hover:border-white/15'"
+              [style]="language !== 'TR' ? 'background: rgba(255,255,255,0.02)' : 'background: rgba(16,185,129,0.06)'">
+              @if (language === 'TR') {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                  <i class="fas fa-check text-white text-[8px]"></i>
+                </div>
+              }
+              <span class="text-2xl">🇹🇷</span>
+              <div>
+                <p class="text-sm font-bold" [class]="language === 'TR' ? 'text-emerald-300' : 'text-gray-400'">Türkçe</p>
+                <p class="text-[10px] text-gray-600">Turkish</p>
+              </div>
+            </button>
+
+            <!-- English -->
+            <button type="button" (click)="selectLanguage('EN')"
+              class="relative flex items-center gap-3 p-4 rounded-xl border text-left transition-all duration-200
+                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+              [class]="language === 'EN'
+                ? 'border-emerald-500/50 bg-emerald-500/8'
+                : 'border-white/5 hover:border-white/15'"
+              [style]="language !== 'EN' ? 'background: rgba(255,255,255,0.02)' : 'background: rgba(16,185,129,0.06)'">
+              @if (language === 'EN') {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                  <i class="fas fa-check text-white text-[8px]"></i>
+                </div>
+              }
+              <span class="text-2xl">🇬🇧</span>
+              <div>
+                <p class="text-sm font-bold" [class]="language === 'EN' ? 'text-emerald-300' : 'text-gray-400'">English</p>
+                <p class="text-[10px] text-gray-600">İngilizce</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      @if (saveSuccess()) {
+        <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-emerald-500/30 text-emerald-400 text-sm font-medium"
+             style="background: rgba(16,185,129,0.08);">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                style="background: rgba(16,185,129,0.15);">
+            <i class="fas fa-check-circle text-sm"></i>
+          </span>
+          Tercihleriniz başarıyla kaydedildi!
+        </div>
+      }
+      @if (saveError()) {
+        <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium"
+             style="background: rgba(239,68,68,0.08);">
+          <i class="fas fa-exclamation-circle flex-shrink-0"></i> {{ saveError() }}
+        </div>
+      }
+
+      <!-- Submit -->
+      <div class="flex items-center justify-between pt-2">
+        <p class="text-xs text-gray-600 hidden sm:flex items-center gap-1.5">
+          <i class="fas fa-lock"></i> Ayarlarınız güvenle saklanmaktadır.
+        </p>
+        <button type="submit"
+          [disabled]="isSaving() || !preferencesForm.dirty"
+          class="inline-flex items-center gap-2.5 px-7 py-3 rounded-xl text-sm font-bold text-white
+                 transition-all duration-200 hover:shadow-lg hover:shadow-violet-900/30
+                 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
+          style="background: linear-gradient(135deg, #8b5cf6, #6366f1);">
+          @if (isSaving()) {
+            <i class="fas fa-circle-notch fa-spin"></i> Kaydediliyor...
+          } @else {
+            <i class="fas fa-save"></i> Değişiklikleri Kaydet
+          }
+        </button>
+      </div>
+
+    </form>
+  }
+
+</div>

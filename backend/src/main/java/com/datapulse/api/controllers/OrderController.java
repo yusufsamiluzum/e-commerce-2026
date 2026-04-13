@@ -78,4 +78,24 @@ public class OrderController {
             return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
         }
     }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+                return ResponseEntity.status(401).body("User not authenticated");
+            }
+            String email = authentication.getName();
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
+
+            OrderDto cancelled = orderService.cancelOrder(id, user.getId());
+            return ResponseEntity.ok(cancelled);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(403).body(java.util.Map.of("error", e.getMessage()));
+        }
+    }
 }
+

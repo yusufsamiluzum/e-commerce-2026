@@ -1,1 +1,0 @@
-import"./chunk-7CGTOI24.js";var o=[{path:"orders",loadComponent:()=>import("./chunk-5MDPWETF.js").then(e=>e.OrderListComponent)},{path:"orders/:id",loadComponent:()=>import("./chunk-PADDJB5N.js").then(e=>e.OrderDetailComponent)}];export{o as profileRoutes};

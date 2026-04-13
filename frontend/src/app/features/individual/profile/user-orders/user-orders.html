@@ -1,0 +1,242 @@
+<div class="p-6 md:p-8 space-y-6">
+
+  <!-- Page Header -->
+  <div class="pb-5 border-b border-white/5">
+    <h2 class="text-2xl font-black text-white tracking-tight">Siparişlerim</h2>
+    <p class="text-gray-500 text-sm mt-1">Aktif siparişlerinizin güncel durumu</p>
+  </div>
+
+  <!-- API / İptal Hatası -->
+  @if (apiError() || cancelError()) {
+    <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium animate-fadeIn"
+         style="background: rgba(239,68,68,0.08);">
+      <i class="fas fa-exclamation-circle flex-shrink-0"></i>
+      {{ apiError() || cancelError() }}
+    </div>
+  }
+
+  @if (orders() === null) {
+    <!-- Skeleton -->
+    <div class="space-y-4">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="rounded-2xl border border-white/5 overflow-hidden animate-pulse"
+             style="background: rgba(255,255,255,0.02);">
+          <div class="flex justify-between px-5 py-4 border-b border-white/5">
+            <div class="flex gap-5">
+              <div class="h-4 bg-gray-800 rounded-lg w-20"></div>
+              <div class="h-4 bg-gray-800 rounded-lg w-32"></div>
+            </div>
+            <div class="h-7 bg-gray-700 rounded-lg w-28"></div>
+          </div>
+          <div class="px-5 py-4 border-b border-white/5 flex items-center gap-2">
+            @for (s of [1,2,3,4]; track s) {
+              <div class="w-7 h-7 bg-gray-800 rounded-full flex-shrink-0"></div>
+              @if (s < 4) { <div class="flex-1 h-0.5 bg-gray-800 rounded"></div> }
+            }
+          </div>
+          <div class="p-5 flex items-center gap-4">
+            <div class="w-16 h-16 bg-gray-800 rounded-xl flex-shrink-0"></div>
+            <div class="flex-1 space-y-2">
+              <div class="h-4 bg-gray-700 rounded-lg w-3/4"></div>
+              <div class="h-3 bg-gray-800 rounded-lg w-1/4"></div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+  } @else if (orders()!.length === 0) {
+    <!-- Boş durum -->
+    <div class="flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-white/5"
+         style="background: rgba(255,255,255,0.01);">
+      <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-5 shadow-lg"
+           style="background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.15));">
+        <i class="fas fa-box-open text-3xl text-blue-400"></i>
+      </div>
+      <h3 class="text-xl font-black text-white mb-2">Aktif Sipariş Bulunamadı</h3>
+      <p class="text-gray-500 max-w-sm text-sm leading-relaxed">
+        Teslim edilen siparişleriniz "Satın Alım Geçmişi" bölümünde görünür.
+      </p>
+      <button routerLink="/katalog"
+        class="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white
+               transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
+        style="background: linear-gradient(135deg, #3b82f6, #6366f1);">
+        <i class="fas fa-shopping-bag"></i> Alışverişe Başla
+      </button>
+    </div>
+
+  } @else {
+    <div class="space-y-5">
+      @for (order of orders()!; track order.id) {
+
+        <!-- İptal Onay Kartı -->
+        @if (confirmCancelId() === order.id) {
+          <div class="rounded-2xl border border-orange-500/30 overflow-hidden"
+               style="background: rgba(249,115,22,0.06);">
+            <div class="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style="background: rgba(249,115,22,0.15);">
+                  <i class="fas fa-ban text-orange-400"></i>
+                </span>
+                <div>
+                  <p class="text-sm font-bold text-white">
+                    #{{ order.id.toString().padStart(6,'0') }} siparişini iptal etmek istiyor musunuz?
+                  </p>
+                  <p class="text-xs text-gray-500 mt-0.5">Bu işlem geri alınamaz.</p>
+                </div>
+              </div>
+              <div class="flex gap-2 flex-shrink-0">
+                <button (click)="dismissCancel()"
+                  class="px-4 py-2 rounded-lg text-xs font-bold text-gray-300 border border-gray-600
+                         hover:border-gray-500 hover:text-white transition-all duration-200 active:scale-95"
+                  style="background: rgba(255,255,255,0.03);">
+                  Vazgeç
+                </button>
+                <button (click)="confirmCancel(order.id)"
+                  class="px-4 py-2 rounded-lg text-xs font-bold text-white transition-all duration-200
+                         hover:shadow-lg active:scale-95"
+                  style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                  <i class="fas fa-ban mr-1.5"></i>Evet, İptal Et
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Sipariş Kartı -->
+        <div class="relative rounded-2xl border overflow-hidden transition-all duration-300 group"
+             [class]="confirmCancelId() === order.id
+               ? 'border-orange-500/20 opacity-60 translate-y-0'
+               : order.status === 'CANCELLED'
+               ? 'border-red-500/10'
+               : 'border-white/5 hover:border-white/10 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/20'"
+             style="background: rgba(255,255,255,0.02);">
+
+          <!-- Renkli üst çizgi (duruma göre) -->
+          @switch (order.status) {
+            @case ('PENDING') {
+              <div class="absolute top-0 left-0 w-full h-0.5 opacity-60"
+                   style="background: linear-gradient(90deg, #f97316, #fb923c);"></div>
+            }
+            @case ('PROCESSING') {
+              <div class="absolute top-0 left-0 w-full h-0.5 opacity-60"
+                   style="background: linear-gradient(90deg, #6366f1, #818cf8);"></div>
+            }
+            @case ('SHIPPED') {
+              <div class="absolute top-0 left-0 w-full h-0.5 opacity-60"
+                   style="background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
+            }
+            @case ('CANCELLED') {
+              <div class="absolute top-0 left-0 w-full h-0.5 opacity-40"
+                   style="background: linear-gradient(90deg, #ef4444, #f87171);"></div>
+            }
+          }
+
+          <!-- Header -->
+          <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-white/5"
+               style="background: rgba(255,255,255,0.02);">
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-hashtag text-gray-600 text-xs"></i>
+                <span class="font-black text-white text-sm">#{{ order.id.toString().padStart(6, '0') }}</span>
+              </div>
+              @if (order.orderDate) {
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-calendar-alt text-gray-600 text-xs"></i>
+                  <span class="text-gray-400 text-xs">{{ order.orderDate | date:'dd MMM yyyy' }}</span>
+                </div>
+              }
+              @if (order.storeName) {
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-store text-gray-600 text-xs"></i>
+                  <span class="text-blue-400 text-xs font-semibold">{{ order.storeName }}</span>
+                </div>
+              }
+              <div class="flex items-center gap-2">
+                <i class="fas fa-tag text-gray-600 text-xs"></i>
+                <span class="text-white font-black text-sm">${{ order.totalPrice | number:'1.2-2' }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <!-- Durum Badge -->
+              <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-bold border"
+                    [class]="getStatusColor(order.status)">
+                <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" [class]="getStatusDotColor(order.status)"></span>
+                {{ getStatusText(order.status) }}
+              </span>
+
+              <!-- İptal butonu — sadece PENDING -->
+              @if (order.status === 'PENDING') {
+                @if (cancellingId() === order.id) {
+                  <button disabled
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold
+                           border border-red-500/20 text-red-400 opacity-60 cursor-not-allowed"
+                    style="background: rgba(239,68,68,0.05);">
+                    <i class="fas fa-circle-notch fa-spin text-[10px]"></i> İptal ediliyor...
+                  </button>
+                } @else {
+                  <button (click)="askCancel(order.id)"
+                    [disabled]="confirmCancelId() !== null"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold border
+                           border-red-500/30 text-red-400 transition-all duration-200
+                           hover:bg-red-500/10 hover:border-red-500/50
+                           active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+                    style="background: rgba(239,68,68,0.04);">
+                    <i class="fas fa-ban text-[10px]"></i> İptal Et
+                  </button>
+                }
+              }
+            </div>
+          </div>
+
+          <!-- İlerleme Tracker (iptal değilse) -->
+          @if (order.status !== 'CANCELLED') {
+            <div class="px-6 pt-5 pb-4 border-b border-white/5">
+              <div class="flex items-center">
+                @for (step of progressSteps; track $index) {
+                  <div class="flex items-center" [class.flex-1]="$index < progressSteps.length - 1">
+                    <div class="flex flex-col items-center gap-1.5 flex-shrink-0">
+                      <div class="w-8 h-8 rounded-full flex items-center justify-center text-[11px] border transition-all duration-300"
+                           [class]="getStepClass($index, order.status)">
+                        <i class="fas {{ step.icon }}"></i>
+                      </div>
+                      <span class="text-[9px] font-bold whitespace-nowrap hidden sm:block transition-colors"
+                            [class]="$index < getProgressStep(order.status) ? 'text-blue-400' : 'text-gray-600'">
+                        {{ step.label }}
+                      </span>
+                    </div>
+                    @if ($index < progressSteps.length - 1) {
+                      <div class="flex-1 h-0.5 mx-2 rounded transition-all duration-500 mb-4"
+                           [class]="getConnectorClass($index, order.status)"></div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Ürünler -->
+          <div class="divide-y divide-white/5">
+            @for (item of (order.items || []); track item.id) {
+              <div class="px-5 py-2">
+                <app-order-item
+                  [imageUrl]="item.productImageUrl"
+                  [name]="item.productName"
+                  [quantity]="item.quantity"
+                  [unitPrice]="item.unitPrice"
+                  [totalPrice]="item.totalPrice">
+                </app-order-item>
+              </div>
+            } @empty {
+              <div class="px-5 py-4 text-xs text-gray-600 italic">Ürün detayları yükleniyor...</div>
+            }
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

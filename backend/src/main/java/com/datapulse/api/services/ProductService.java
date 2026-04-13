@@ -9,9 +9,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.datapulse.api.dto.ProductDto;
+import com.datapulse.api.dto.ProductImageDto;
 import com.datapulse.api.entities.Category;
 import com.datapulse.api.entities.Product;
 import com.datapulse.api.repositories.CategoryRepository;
+import com.datapulse.api.repositories.ProductImageRepository;
 import com.datapulse.api.repositories.ProductRepository;
 import com.datapulse.api.repositories.ProductSpecification;
 
@@ -20,10 +22,14 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductImageRepository imageRepository;
 
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository productRepository,
+                          CategoryRepository categoryRepository,
+                          ProductImageRepository imageRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.imageRepository = imageRepository;
     }
 
     public List<ProductDto> getAllProducts(String search, Long categoryId, BigDecimal minPrice, BigDecimal maxPrice, String sortBy) {
@@ -74,10 +80,25 @@ public class ProductService {
                 .map(Category::getName).orElse("General");
         }
         dto.setCategory(categoryName); 
-        dto.setRating(product.getAverageRating()); // Use the real DB value
-        dto.setReviewCount(product.getReviewCount()); // Use the real DB value
-        dto.setImageUrl(product.getImageUrl()); // Use the real DB value
-        
+        dto.setRating(product.getAverageRating());
+        dto.setReviewCount(product.getReviewCount());
+        dto.setImageUrl(product.getImageUrl());
+
+        // Görsel galerisi — displayOrder'a göre sıralı
+        List<ProductImageDto> images = imageRepository
+                .findByProductIdOrderByDisplayOrderAsc(product.getId())
+                .stream()
+                .map(img -> ProductImageDto.builder()
+                        .id(img.getId())
+                        .productId(product.getId())
+                        .imageUrl(img.getImageUrl())
+                        .altText(img.getAltText())
+                        .displayOrder(img.getDisplayOrder())
+                        .isPrimary(img.getIsPrimary())
+                        .build())
+                .collect(Collectors.toList());
+        dto.setImages(images);
+
         return dto;
     }
 }

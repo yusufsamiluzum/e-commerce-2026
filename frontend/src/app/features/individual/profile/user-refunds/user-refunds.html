@@ -1,0 +1,129 @@
+<div class="p-6 md:p-8 space-y-6">
+
+  <!-- Page Header -->
+  <div class="pb-5 border-b border-white/5">
+    <h2 class="text-2xl font-black text-white tracking-tight">İade Taleplerim</h2>
+    <p class="text-gray-500 text-sm mt-1">İade başvurularınız ve güncel durumları</p>
+  </div>
+
+  <!-- API Hatası -->
+  @if (apiError()) {
+    <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium"
+         style="background: rgba(239,68,68,0.08);">
+      <i class="fas fa-exclamation-circle"></i> {{ apiError() }}
+    </div>
+  }
+
+  @if (refunds() === null) {
+    <!-- Skeleton Loader: veri henüz gelmedi -->
+    <div class="space-y-4">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="rounded-2xl border border-white/5 p-5 md:p-6 animate-pulse flex flex-col md:flex-row justify-between gap-5"
+             style="background: rgba(255,255,255,0.02);">
+          <div class="flex-1 space-y-3">
+            <div class="flex gap-2.5 flex-wrap">
+              <div class="h-5 bg-gray-700 rounded-lg w-28"></div>
+              <div class="h-5 bg-gray-800 rounded-lg w-20"></div>
+              <div class="h-6 bg-gray-800 rounded-lg w-24"></div>
+            </div>
+            <div class="h-3 bg-gray-800 rounded w-40"></div>
+            <div class="h-10 bg-gray-800 rounded-xl"></div>
+          </div>
+          <div class="flex flex-col items-end justify-center gap-2 min-w-[100px]">
+            <div class="h-2 bg-gray-800 rounded w-16"></div>
+            <div class="h-7 bg-gray-700 rounded w-24"></div>
+          </div>
+        </div>
+      }
+    </div>
+
+  } @else if (refunds()!.length === 0) {
+    <!-- Boş Durum -->
+    <div class="flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-white/5"
+         style="background: rgba(255,255,255,0.01);">
+      <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-5 shadow-lg"
+           style="background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(234,88,12,0.1));">
+        <i class="fas fa-undo-alt text-3xl text-orange-400"></i>
+      </div>
+      <h3 class="text-xl font-black text-white mb-2">Henüz İade Talebiniz Yok</h3>
+      <p class="text-gray-500 max-w-sm text-sm leading-relaxed">Şimdiye kadar herhangi bir iade işlemi gerçekleştirmediniz. İade ettiğiniz ürünler burada listelenecektir.</p>
+    </div>
+
+  } @else {
+    <!-- İade Listesi -->
+    <div class="space-y-4">
+      @for (refund of refunds()!; track refund.id) {
+
+        <div class="relative rounded-2xl border border-white/5 overflow-hidden hover:border-white/10
+                    transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+             style="background: rgba(255,255,255,0.02);">
+          <!-- left accent -->
+          <div class="absolute top-0 left-0 w-full h-0.5"
+               [style.background]="refund.status === 'COMPLETED'
+                 ? 'linear-gradient(90deg, #10b981, #059669)'
+                 : refund.status === 'PENDING'
+                 ? 'linear-gradient(90deg, #eab308, #ca8a04)'
+                 : 'linear-gradient(90deg, #ef4444, #dc2626)'">
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-5 p-5 md:p-6">
+
+            <!-- Sol: İade Bilgisi -->
+            <div class="space-y-3 flex-1">
+              <!-- Sipariş + Kalem + Durum -->
+              <div class="flex flex-wrap items-center gap-2.5">
+                <span class="font-black text-white text-base flex items-center gap-2">
+                  <i class="fas fa-hashtag text-gray-600 text-sm"></i>
+                  Sipariş {{ refund.orderId }}
+                </span>
+                <span class="text-xs text-gray-500 border border-gray-700/60 px-2 py-0.5 rounded-md"
+                      style="background: rgba(255,255,255,0.02);">
+                  Kalem #{{ refund.orderItemId }}
+                </span>
+
+                @switch (refund.status) {
+                  @case ('COMPLETED') {
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border border-emerald-500/30 text-emerald-400"
+                          style="background: rgba(16,185,129,0.08);"><i class="fas fa-check-circle text-[10px]"></i> Tamamlandı</span>
+                  }
+                  @case ('PENDING') {
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border border-yellow-500/30 text-yellow-400"
+                          style="background: rgba(234,179,8,0.08);"><i class="fas fa-clock text-[10px]"></i> Beklemede</span>
+                  }
+                  @case ('REJECTED') {
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border border-red-500/30 text-red-400"
+                          style="background: rgba(239,68,68,0.08);"><i class="fas fa-times-circle text-[10px]"></i> Reddedildi</span>
+                  }
+                  @default {
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border border-gray-600/50 text-gray-400"
+                          style="background: rgba(255,255,255,0.03);">{{ refund.status }}</span>
+                  }
+                }
+              </div>
+
+              <!-- Tarih -->
+              <p class="text-xs text-gray-500 flex items-center gap-2">
+                <i class="fas fa-calendar-alt text-gray-700"></i>
+                İşlem Tarihi: {{ refund.processedAt | date:'medium' }}
+              </p>
+
+              <!-- Sebep -->
+              <div class="rounded-xl px-3.5 py-2.5 border border-white/5" style="background: rgba(255,255,255,0.02);">
+                <span class="text-[10px] font-bold text-gray-600 uppercase tracking-wider">Sebep: </span>
+                <span class="text-sm text-gray-300">{{ refund.reason }}</span>
+              </div>
+            </div>
+
+            <!-- Sağ: İade Tutarı -->
+            <div class="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-2 md:min-w-[120px]">
+              <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider">İade Tutarı</p>
+              <p class="text-2xl font-black text-orange-400">${{ refund.refundAmount?.toFixed(2) }}</p>
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

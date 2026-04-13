@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import"./chunk-T55IDOPT.mjs";var o=[{path:"orders",loadComponent:()=>import("./chunk-SEWSUWDK.mjs").then(e=>e.OrderListComponent),\u0275entryName:"src/app/features/profile/pages/order-list/order-list.component.ts"},{path:"orders/:id",loadComponent:()=>import("./chunk-COFQQNPJ.mjs").then(e=>e.OrderDetailComponent),\u0275entryName:"src/app/features/profile/pages/order-detail/order-detail.component.ts"}];export{o as profileRoutes};

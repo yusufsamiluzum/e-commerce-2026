@@ -1,6 +1,7 @@
 package com.datapulse.api.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class ProductDto {
     private Double rating;
     private Integer reviewCount;
     private String imageUrl;
+    private List<ProductImageDto> images;
     private BadgeDto badge;
 
     // Getters and Setters (or use Lombok @Data)
