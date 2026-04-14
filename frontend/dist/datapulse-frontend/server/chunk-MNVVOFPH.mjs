@@ -1,2 +1,0 @@
-import './polyfills.server.mjs';
-import{I as i,Jc as a,N as s}from"./chunk-3GPLBTP5.mjs";var o=class t{http=s(a);apiUrl="http://localhost:8080/api/products";getReviewsByProductId(e){return this.http.get(`${this.apiUrl}/${e}/reviews`)}addReview(e,r){return this.http.post(`${this.apiUrl}/${e}/reviews`,r)}getMyReviews(){return this.http.get("http://localhost:8080/api/users/me/reviews")}static \u0275fac=function(r){return new(r||t)};static \u0275prov=i({token:t,factory:t.\u0275fac,providedIn:"root"})};export{o as a};

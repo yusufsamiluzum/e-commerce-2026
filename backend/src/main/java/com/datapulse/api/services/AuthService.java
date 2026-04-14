@@ -88,6 +88,8 @@ public class AuthService {
         return AuthResponse.builder()
             .token(jwtToken)
             .role(user.getRoleType())
+            .fullName(user.getFullName())
+            .email(user.getEmail())
             .build();
     }
 }

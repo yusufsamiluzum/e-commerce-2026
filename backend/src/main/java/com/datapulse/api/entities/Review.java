@@ -48,6 +48,11 @@ public class Review {
     @Builder.Default
     private Integer totalVotes = 0;
 
+    @Column(columnDefinition = "TEXT")
+    private String ownerReply;
+
+    private LocalDateTime replyDate;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/admin/admin-routing-module.ts", "src/app/features/admin/admin-module.ts"],
+  "sourcesContent": ["import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class AdminRoutingModule { }\n", "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nimport { AdminRoutingModule } from './admin-routing-module';\n\n\n@NgModule({\n  declarations: [],\n  imports: [\n    CommonModule,\n    AdminRoutingModule\n  ]\n})\nexport class AdminModule { }\n"],
+  "mappings": ";;;;;;;;;;;;AAGA,IAAM,SAAiB,CAAA;AAMjB,IAAO,qBAAP,MAAO,oBAAkB;;qCAAlB,qBAAkB;EAAA;wEAAlB,oBAAkB,CAAA;4EAHnB,aAAa,SAAS,MAAM,GAC5B,YAAY,EAAA,CAAA;;;sEAEX,oBAAkB,CAAA;UAJ9B;WAAS;MACR,SAAS,CAAC,aAAa,SAAS,MAAM,CAAC;MACvC,SAAS,CAAC,YAAY;KACvB;;;;;ACKK,IAAO,cAAP,MAAO,aAAW;;qCAAX,cAAW;EAAA;wEAAX,aAAW,CAAA;;IAJpB;IACA;EAAkB,EAAA,CAAA;;;sEAGT,aAAW,CAAA;UAPvB;WAAS;MACR,cAAc,CAAA;MACd,SAAS;QACP;QACA;;KAEH;;;",
+  "names": []
+}

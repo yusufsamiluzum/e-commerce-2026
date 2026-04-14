@@ -22,6 +22,13 @@ export class Navbar {
     return '/individual/profile/details';
   }
 
+  getHomeLink(): string {
+    const role = this.auth.currentUserRole();
+    if (role === 'CORPORATE') return '/corporate/dashboard';
+    if (role === 'ADMIN') return '/admin/dashboard';
+    return '/';
+  }
+
   logout() {
     this.auth.logout();
     this.router.navigate(['/']);

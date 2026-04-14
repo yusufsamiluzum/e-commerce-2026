@@ -44,3 +44,17 @@ export const roleGuard: CanActivateFn = (route) => {
 
   return true;
 };
+
+// Blocks CORPORATE users from accessing customer-facing pages (Home, Catalog, Cart, etc.)
+export const notCorporateGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.currentUserRole() === 'CORPORATE') {
+    console.warn('[RBAC] Corporate users cannot access customer pages. Redirecting to dashboard.');
+    router.navigate(['/corporate/dashboard']);
+    return false;
+  }
+
+  return true;
+};

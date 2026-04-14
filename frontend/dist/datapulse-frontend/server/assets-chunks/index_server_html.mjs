@@ -1,15 +1,39 @@
 export default `<!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="utf-8">
-  <title>DatapulseFrontend</title>
+  <title>DataPulse</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="stylesheet" href="styles-DON5D43F.css"></head>
+  <style>
+    /* Angular yüklenene kadar beyaz flash'ı önle */
+    html, body { background: #0a0a0f; margin: 0; padding: 0; }
+
+    /* app-root boşken göster, Angular boot olunca kaybolur */
+    app-root:empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    app-root:empty::after {
+      content: '';
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(59, 130, 246, 0.15);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+<link rel="stylesheet" href="styles.css"></head>
 <body><script type="text/javascript" id="ng-event-dispatch-contract">(()=>{function p(t,n,r,o,e,i,f,m){return{eventType:t,event:n,targetElement:r,eic:o,timeStamp:e,eia:i,eirp:f,eiack:m}}function u(t){let n=[],r=e=>{n.push(e)};return{c:t,q:n,et:[],etc:[],d:r,h:e=>{r(p(e.type,e,e.target,t,Date.now()))}}}function s(t,n,r){for(let o=0;o<n.length;o++){let e=n[o];(r?t.etc:t.et).push(e),t.c.addEventListener(e,t.h,r)}}function c(t,n,r,o,e=window){let i=u(t);e._ejsas||(e._ejsas={}),e._ejsas[n]=i,s(i,r),s(i,o,!0)}window.__jsaction_bootstrap=c;})();
 </script>
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-LL2DEWU4.js"><link rel="modulepreload" href="chunk-6WW3SBTG.js"><link rel="modulepreload" href="chunk-XNPPTWON.js"><link rel="modulepreload" href="chunk-WF47GSGO.js"><script src="main-ZJRHWILU.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-H6XBDJ4F.js"><link rel="modulepreload" href="chunk-LK4C7XHL.js"><link rel="modulepreload" href="chunk-VP2T37FR.js"><link rel="modulepreload" href="chunk-XXXBABRB.js"><link rel="modulepreload" href="chunk-7LZR64HY.js"><script src="main.js" type="module"></script></body>
 </html>
 `;

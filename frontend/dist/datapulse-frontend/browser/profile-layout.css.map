@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/individual/profile/profile-layout/profile-layout.scss", "src/app/features/individual/profile/profile-layout/profile-layout.scss"],
+  "sourcesContent": [".hide-scrollbar {\n  -ms-overflow-style: none;  /* IE and Edge */\n  scrollbar-width: none;  /* Firefox */\n}\n\n.hide-scrollbar::-webkit-scrollbar {\n  display: none;\n}\n", ".hide-scrollbar {\n  -ms-overflow-style: none; /* IE and Edge */\n  scrollbar-width: none; /* Firefox */\n}\n\n.hide-scrollbar::-webkit-scrollbar {\n  display: none;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL2hvbWUveXVzdWYvZS1jb21tZXJjZS0yMDI2L2Zyb250ZW5kL3NyYy9hcHAvZmVhdHVyZXMvaW5kaXZpZHVhbC9wcm9maWxlL3Byb2ZpbGUtbGF5b3V0L3Byb2ZpbGUtbGF5b3V0LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRTtFQUNBOzs7QUFHRjtFQUNFIiwic291cmNlc0NvbnRlbnQiOlsiLmhpZGUtc2Nyb2xsYmFyIHtcbiAgLW1zLW92ZXJmbG93LXN0eWxlOiBub25lOyAgLyogSUUgYW5kIEVkZ2UgKi9cbiAgc2Nyb2xsYmFyLXdpZHRoOiBub25lOyAgLyogRmlyZWZveCAqL1xufVxuXG4uaGlkZS1zY3JvbGxiYXI6Oi13ZWJraXQtc2Nyb2xsYmFyIHtcbiAgZGlzcGxheTogbm9uZTtcbn1cbiJdfQ== */"],
+  "mappings": ";AAAA,CAAA;AACE,sBAAA;AACA,mBAAA;ACCF;ADEA,CALA,cAKA;AACE,WAAA;ACCF;",
+  "names": []
+}

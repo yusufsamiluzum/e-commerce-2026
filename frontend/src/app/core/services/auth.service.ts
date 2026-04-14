@@ -9,6 +9,8 @@ export type UserRole = 'GUEST' | 'INDIVIDUAL' | 'CORPORATE' | 'ADMIN';
 export interface AuthResponse {
   role: UserRole;
   hasStore?: boolean;
+  fullName?: string;
+  email?: string;
 }
 
 @Injectable({
@@ -23,6 +25,8 @@ export class AuthService {
   // GUEST -> not logged in. INDIVIDUAL, CORPORATE, ADMIN -> logged in.
   currentUserRole = signal<UserRole>('GUEST');
   hasStore = signal<boolean>(false);
+  currentUserName = signal<string>('');
+  currentUserEmail = signal<string>('');
 
   constructor() {
     this.loadStateOnStartup();
@@ -41,24 +45,30 @@ export class AuthService {
       if (cachedHasStore === 'true') {
         this.hasStore.set(true);
       }
+
+      const cachedName = localStorage.getItem('current_user_name');
+      if (cachedName) this.currentUserName.set(cachedName);
+
+      const cachedEmail = localStorage.getItem('current_user_email');
+      if (cachedEmail) this.currentUserEmail.set(cachedEmail);
     }
   }
 
   loginIndividual(credentials: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/api/auth/login/individual`, credentials).pipe(
-      tap(res => this.loginSuccess(res.role, res.hasStore))
+      tap(res => this.loginSuccess(res.role, res.hasStore, res.fullName, res.email))
     );
   }
 
   loginCorporate(credentials: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/api/auth/login/corporate`, credentials).pipe(
-      tap(res => this.loginSuccess(res.role, res.hasStore))
+      tap(res => this.loginSuccess(res.role, res.hasStore, res.fullName, res.email))
     );
   }
 
   loginAdmin(credentials: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/api/auth/login/admin`, credentials).pipe(
-      tap(res => this.loginSuccess(res.role, res.hasStore))
+      tap(res => this.loginSuccess(res.role, res.hasStore, res.fullName, res.email))
     );
   }
 
@@ -71,15 +81,19 @@ export class AuthService {
   }
 
   // Update state upon successful login
-  loginSuccess(role: UserRole, hasStore: boolean = false) {
+  loginSuccess(role: UserRole, hasStore: boolean = false, fullName?: string, email?: string) {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('current_role', role);
       if (role === 'CORPORATE') {
         localStorage.setItem('has_store', String(hasStore));
       }
+      if (fullName) localStorage.setItem('current_user_name', fullName);
+      if (email) localStorage.setItem('current_user_email', email);
     }
     this.currentUserRole.set(role);
     this.hasStore.set(hasStore);
+    if (fullName) this.currentUserName.set(fullName);
+    if (email) this.currentUserEmail.set(email);
   }
 
   // To truly logout, you need to make an HTTP request to an endpoint 
@@ -89,9 +103,13 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('current_role');
       localStorage.removeItem('has_store');
+      localStorage.removeItem('current_user_name');
+      localStorage.removeItem('current_user_email');
     }
     this.currentUserRole.set('GUEST');
     this.hasStore.set(false);
+    this.currentUserName.set('');
+    this.currentUserEmail.set('');
   }
 
   // RBAC Helper: Used to quickly answer if the current user has access
@@ -99,3 +117,4 @@ export class AuthService {
     return this.currentUserRole() === role;
   }
 }
+

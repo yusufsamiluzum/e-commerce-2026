@@ -1,0 +1,199 @@
+<div class="min-h-screen bg-gray-950">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-white">Yorum Yönetimi</h1>
+      <p class="text-gray-400 text-sm mt-1">Ürünlerinize gelen müşteri yorumlarını inceleyin ve yanıtlayın</p>
+    </div>
+
+    @if (isLoading()) {
+      <div class="space-y-4">
+        @for (i of [1,2,3]; track i) {
+          <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 animate-pulse">
+            <div class="flex items-center gap-4">
+              <div class="h-10 w-10 bg-gray-700 rounded-full"></div>
+              <div class="flex-1">
+                <div class="h-4 bg-gray-700 rounded w-40 mb-2"></div>
+                <div class="h-3 bg-gray-700 rounded w-64"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+
+      <!-- Summary Row -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Toplam Yorum</p>
+          <p class="text-2xl font-bold text-white">{{ reviews().length }}</p>
+        </div>
+        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
+          <p class="text-xs font-semibold text-yellow-400 uppercase tracking-wider mb-1">Ortalama Puan</p>
+          <p class="text-2xl font-bold text-yellow-400">{{ avgRating | number:'1.1-1' }} <span class="text-base">⭐</span></p>
+        </div>
+        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5">
+          <p class="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-1">Yanıtlanan</p>
+          <p class="text-2xl font-bold text-blue-400">{{ repliedCount }}<span class="text-sm text-gray-500 ml-1">/ {{ reviews().length }}</span></p>
+        </div>
+        <!-- Rating Distribution mini -->
+        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 col-span-2">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Puan Dağılımı</p>
+          <div class="flex items-end gap-2 h-10">
+            @for (rd of ratingDistribution; track rd.rating) {
+              <div class="flex-1 flex flex-col items-center gap-1">
+                <div class="w-full bg-gray-800 rounded-sm overflow-hidden" style="min-height: 4px">
+                  <div class="bg-yellow-500 rounded-sm transition-all duration-300"
+                    [style.height.px]="reviews().length ? (rd.count / reviews().length) * 40 : 0"
+                    [title]="rd.rating + ' yıldız: ' + rd.count + ' yorum'">
+                  </div>
+                </div>
+                <span class="text-[10px] text-gray-500">{{ rd.rating }}★</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <div class="flex-1">
+          <input [(ngModel)]="searchTerm" type="text" placeholder="Ürün, müşteri veya yorum metni ile ara..."
+            (ngModelChange)="searchTerm.set($event)"
+            class="w-full bg-gray-900/80 border border-gray-800 rounded-xl py-2.5 px-4 text-white text-sm focus:border-blue-500 outline-none transition-all placeholder-gray-500">
+        </div>
+        <div class="flex gap-2">
+          <button (click)="filterRating.set(null)"
+            [class]="filterRating() === null ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'"
+            class="px-4 py-2.5 rounded-xl text-sm font-medium transition-colors">Tümü</button>
+          @for (r of [5,4,3,2,1]; track r) {
+            <button (click)="filterRating.set(r)"
+              [class]="filterRating() === r ? 'bg-yellow-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'"
+              class="px-3 py-2.5 rounded-xl text-sm font-medium transition-colors">{{ r }}★</button>
+          }
+        </div>
+      </div>
+
+      @if (filteredReviews.length === 0) {
+        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-12 text-center">
+          <h3 class="text-xl font-semibold text-white mb-2">Yorum Bulunamadı</h3>
+          <p class="text-gray-400 text-sm">Filtreye uygun yorum yok.</p>
+        </div>
+      } @else {
+        <!-- Reviews List -->
+        <div class="space-y-3">
+          @for (review of filteredReviews; track review.id) {
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 hover:border-gray-700 transition-all">
+              <div class="flex items-start gap-4">
+                <!-- Avatar -->
+                <div class="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
+                  <span class="text-sm font-bold text-gray-400">{{ review.customerName.charAt(0) }}</span>
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <!-- Top row -->
+                  <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm font-semibold text-white">{{ review.customerName }}</span>
+                      <span class="text-yellow-400 text-sm tracking-wider">{{ getStars(review.starRating) }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      @if (review.sentiment) {
+                        <span [class]="sentimentColors[review.sentiment]" class="text-[10px] font-medium px-2 py-0.5 rounded-lg uppercase">
+                          {{ sentimentLabels[review.sentiment] || review.sentiment }}
+                        </span>
+                      }
+                      <span class="text-[11px] text-gray-500">{{ review.createdAt | date:'dd MMM yyyy' }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Product Info -->
+                  <p class="text-xs text-gray-500 mb-2">
+                    <span class="text-gray-400">{{ review.productName }}</span>
+                    <span class="mx-1">·</span>
+                    <span class="font-mono">{{ review.productSku }}</span>
+                  </p>
+
+                  <!-- Review Text -->
+                  @if (review.reviewText) {
+                    <p class="text-sm text-gray-300 leading-relaxed">{{ review.reviewText }}</p>
+                  }
+
+                  <!-- Votes -->
+                  @if (review.totalVotes > 0) {
+                    <div class="mt-2 text-[11px] text-gray-500">
+                      👍 {{ review.helpfulVotes }}/{{ review.totalVotes }} kişi faydalı buldu
+                    </div>
+                  }
+
+                  <!-- ─── Owner Reply Section ─── -->
+                  @if (review.ownerReply && replyingTo() !== review.id) {
+                    <!-- Existing Reply -->
+                    <div class="mt-3 bg-blue-900/15 border border-blue-800/30 rounded-xl p-4">
+                      <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                          </svg>
+                          <span class="text-xs font-semibold text-blue-400">Mağaza Yanıtı</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                          <span class="text-[10px] text-gray-500">{{ review.replyDate | date:'dd MMM yyyy' }}</span>
+                          <button (click)="startEditReply(review)" class="text-[10px] text-gray-500 hover:text-blue-400 transition-colors">Düzenle</button>
+                          <button (click)="deleteReply(review.id)" class="text-[10px] text-gray-500 hover:text-red-400 transition-colors">Sil</button>
+                        </div>
+                      </div>
+                      <p class="text-sm text-gray-300 leading-relaxed">{{ review.ownerReply }}</p>
+                    </div>
+                  }
+
+                  <!-- Reply Form -->
+                  @if (replyingTo() === review.id) {
+                    <div class="mt-3 bg-gray-800/50 border border-gray-700 rounded-xl p-4">
+                      <div class="flex items-center gap-2 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                        </svg>
+                        <span class="text-xs font-semibold text-blue-400">{{ review.ownerReply ? 'Yanıtı Düzenle' : 'Yanıt Yaz' }}</span>
+                      </div>
+                      <textarea [ngModel]="replyText()" (ngModelChange)="replyText.set($event)"
+                        rows="3" placeholder="Müşteriye yanıtınızı yazın..."
+                        class="w-full bg-gray-900 border border-gray-700 rounded-lg py-2.5 px-3 text-sm text-white placeholder-gray-500 focus:border-blue-500 outline-none transition-all resize-none"></textarea>
+                      <div class="flex items-center justify-end gap-2 mt-2">
+                        <button (click)="cancelReply()"
+                          class="text-xs text-gray-400 hover:text-white px-3 py-1.5 rounded-lg transition-colors">
+                          İptal
+                        </button>
+                        <button (click)="submitReply(review.id)"
+                          [disabled]="!replyText().trim() || isSendingReply()"
+                          class="bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:text-gray-500 text-white text-xs font-semibold px-4 py-1.5 rounded-lg transition-colors">
+                          {{ isSendingReply() ? 'Gönderiliyor...' : 'Yanıtla' }}
+                        </button>
+                      </div>
+                    </div>
+                  }
+
+                  <!-- Reply Button (when no reply exists and not replying) -->
+                  @if (!review.ownerReply && replyingTo() !== review.id) {
+                    <button (click)="openReplyForm(review.id)"
+                      class="mt-3 text-xs text-gray-500 hover:text-blue-400 flex items-center gap-1.5 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                      </svg>
+                      Yanıtla
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="mt-4 text-xs text-gray-500 text-center">
+          {{ filteredReviews.length }} yorum gösteriliyor
+        </div>
+      }
+    }
+  </div>
+</div>

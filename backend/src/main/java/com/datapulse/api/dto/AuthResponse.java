@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
     private String token;
     private RoleType role;
+    private String fullName;
+    private String email;
     
     // Corporate kullanicilarin magaza acip acmadigini belirtir
     // Eger role == CORPORATE ve hasStore == false ise frontend Store_Setup tarafina gonderecek
