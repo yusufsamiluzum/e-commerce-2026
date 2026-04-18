@@ -71,4 +71,8 @@ export class StoreManagement {
       default: return status;
     }
   }
+
+  exportCsv() {
+    this.adminService.exportCsv('stores');
+  }
 }

@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.datapulse.api.dto.AdminOrderDto;
+import com.datapulse.api.dto.AdminRefundDto;
+import com.datapulse.api.dto.AdminReviewDto;
 import com.datapulse.api.dto.AdminStoreDto;
 import com.datapulse.api.dto.AdminUserDto;
 import com.datapulse.api.dto.AuditLogDto;
@@ -17,8 +20,12 @@ import com.datapulse.api.dto.PlatformStatsDto;
 import com.datapulse.api.dto.SystemConfigDto;
 import com.datapulse.api.entities.AuditLog;
 import com.datapulse.api.entities.Category;
+import com.datapulse.api.entities.Order;
 import com.datapulse.api.entities.OrderStatus;
+import com.datapulse.api.entities.Refund;
+import com.datapulse.api.entities.Review;
 import com.datapulse.api.entities.RoleType;
+import com.datapulse.api.entities.Shipment;
 import com.datapulse.api.entities.Store;
 import com.datapulse.api.entities.StoreStatus;
 import com.datapulse.api.entities.SystemConfig;
@@ -29,6 +36,9 @@ import com.datapulse.api.repositories.AuditLogRepository;
 import com.datapulse.api.repositories.CategoryRepository;
 import com.datapulse.api.repositories.OrderRepository;
 import com.datapulse.api.repositories.ProductRepository;
+import com.datapulse.api.repositories.RefundRepository;
+import com.datapulse.api.repositories.ReviewRepository;
+import com.datapulse.api.repositories.ShipmentRepository;
 import com.datapulse.api.repositories.StoreRepository;
 import com.datapulse.api.repositories.SystemConfigRepository;
 import com.datapulse.api.repositories.UserRepository;
@@ -46,6 +56,9 @@ public class AdminService {
     private final CategoryRepository categoryRepository;
     private final SystemConfigRepository systemConfigRepository;
     private final AuditLogRepository auditLogRepository;
+    private final ShipmentRepository shipmentRepository;
+    private final RefundRepository refundRepository;
+    private final ReviewRepository reviewRepository;
 
     // ─── Platform Dashboard ──────────────────────────────────────
 
@@ -134,7 +147,54 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
+    // ─── Sipariş Yönetimi (Admin Gözetimi) ──────────────────────
+    // Sipariş akışı müşteri ↔ satıcı arasında olup admin yalnızca
+    // izleme ve gerektiğinde müdahale yetkisine sahiptir.
+
+    @Transactional(readOnly = true)
+    public Page<AdminOrderDto> getAllOrders(Pageable pageable) {
+        return orderRepository.findAllByOrderByOrderDateDesc(pageable)
+                .map(this::mapOrderToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminOrderDto> getOrdersByStatus(OrderStatus status, Pageable pageable) {
+        return orderRepository.findByStatusOrderByOrderDateDesc(status, pageable)
+                .map(this::mapOrderToDto);
+    }
+
+    /**
+     * Admin müdahalesi: Sipariş durumunu değiştirir.
+     * Kullanım senaryoları: Anlaşmazlık çözümü, hatalı durum düzeltme.
+     */
+    @Transactional
+    public AdminOrderDto updateOrderStatus(Long orderId, OrderStatus newStatus, Long adminId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Sipariş bulunamadı: " + orderId));
+
+        OrderStatus oldStatus = order.getStatus();
+        order.setStatus(newStatus);
+        Order saved = orderRepository.save(order);
+
+        writeAuditLog(adminId, "ADMIN_UPDATE_ORDER_STATUS",
+                "ORDER", orderId,
+                "Status: " + oldStatus + " → " + newStatus);
+
+        return mapOrderToDto(saved);
+    }
+
+    /**
+     * Dashboard gelir trend verisi — son N gün platform geneli günlük gelir + sipariş sayısı.
+     */
+    @Transactional(readOnly = true)
+    public List<Object[]> getRevenueTrend(int days) {
+        java.time.LocalDateTime end = java.time.LocalDateTime.now();
+        java.time.LocalDateTime start = end.minusDays(days);
+        return orderRepository.dailyRevenuePlatformWide(start, end);
+    }
+
     // ─── Kategori Yönetimi ───────────────────────────────────────
+
 
     @Transactional(readOnly = true)
     public List<CategoryDto> getAllCategories() {
@@ -208,6 +268,104 @@ public class AdminService {
         writeAuditLog(adminId, "UPDATE_CONFIG", "SYSTEM_CONFIG", configId, null);
 
         return mapConfigToDto(saved);
+    }
+
+    // ─── İade Yönetimi (Anlaşmazlık Çözümü) ─────────────────────
+    // Akış: Müşteri talep → Satıcı yanıtlar → Anlaşmazlıkta admin karar verici.
+
+    @Transactional(readOnly = true)
+    public Page<AdminRefundDto> getAllRefunds(Pageable pageable) {
+        return refundRepository.findAllByOrderByProcessedAtDesc(pageable)
+                .map(this::mapRefundToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminRefundDto> getRefundsByStatus(String status, Pageable pageable) {
+        return refundRepository.findByStatusOrderByProcessedAtDesc(status, pageable)
+                .map(this::mapRefundToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public long getPendingRefundCount() {
+        return refundRepository.countByStatus("PENDING");
+    }
+
+    /**
+     * Admin kararı: İade talebini onayla veya reddet.
+     * Anlaşmazlık durumunda admin son karar mercidir.
+     */
+    @Transactional
+    public AdminRefundDto updateRefundStatus(Long refundId, String newStatus, Long adminId) {
+        Refund refund = refundRepository.findById(refundId)
+                .orElseThrow(() -> new ResourceNotFoundException("İade talebi bulunamadı: " + refundId));
+
+        String oldStatus = refund.getStatus();
+        refund.setStatus(newStatus);
+        Refund saved = refundRepository.save(refund);
+
+        writeAuditLog(adminId, "ADMIN_REFUND_DECISION",
+                "REFUND", refundId,
+                "Status: " + oldStatus + " → " + newStatus);
+
+        return mapRefundToDto(saved);
+    }
+
+    // ─── Yorum Moderasyonu ─────────────────────────────────────────
+
+    @Transactional(readOnly = true)
+    public Page<AdminReviewDto> getAllReviews(Pageable pageable) {
+        return reviewRepository.findAllByOrderByCreatedAtDesc(pageable)
+                .map(this::mapReviewToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminReviewDto> getReviewsBySentiment(String sentiment, Pageable pageable) {
+        return reviewRepository.findBySentimentOrderByCreatedAtDesc(sentiment, pageable)
+                .map(this::mapReviewToDto);
+    }
+
+    @Transactional
+    public void deleteReview(Long reviewId, Long adminId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Yorum bulunamadı: " + reviewId));
+
+        writeAuditLog(adminId, "DELETE_REVIEW", "REVIEW", reviewId,
+                "Product: " + review.getProduct().getName() + " | User: " + review.getUser().getFullName());
+
+        reviewRepository.delete(review);
+    }
+
+    // ─── CSV Export ──────────────────────────────────────────────
+
+    @Transactional(readOnly = true)
+    public String exportUsersCsv() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID,Full Name,Email,Role,Status,Gender,Created At\n");
+        userRepository.findAll().forEach(u -> sb.append(String.format("%d,\"%s\",\"%s\",%s,%s,%s,%s\n",
+                u.getId(), u.getFullName(), u.getEmail(), u.getRoleType(), u.getStatus(),
+                u.getGender() != null ? u.getGender() : "", u.getCreatedAt())));
+        return sb.toString();
+    }
+
+    @Transactional(readOnly = true)
+    public String exportOrdersCsv() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID,User,Email,Store,Status,Total Price,Order Date,Item Count\n");
+        orderRepository.findAll().forEach(o -> sb.append(String.format("%d,\"%s\",\"%s\",\"%s\",%s,%.2f,%s,%d\n",
+                o.getId(), o.getUser().getFullName(), o.getUser().getEmail(),
+                o.getStore().getName(), o.getStatus(), o.getTotalPrice(),
+                o.getOrderDate(), o.getItems() != null ? o.getItems().size() : 0)));
+        return sb.toString();
+    }
+
+    @Transactional(readOnly = true)
+    public String exportStoresCsv() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID,Store Name,Owner,Owner Email,Status,Currency,Created At\n");
+        storeRepository.findAll().forEach(s -> sb.append(String.format("%d,\"%s\",\"%s\",\"%s\",%s,%s,%s\n",
+                s.getId(), s.getName(), s.getOwner().getFullName(), s.getOwner().getEmail(),
+                s.getStatus(), s.getBaseCurrency(), s.getCreatedAt())));
+        return sb.toString();
     }
 
     // ─── Audit Log Görüntüleme ────────────────────────────────────
@@ -317,6 +475,81 @@ public class AdminService {
                 .entityId(log.getEntityId())
                 .ipAddress(log.getIpAddress())
                 .timestamp(log.getTimestamp())
+                .build();
+    }
+
+    private AdminOrderDto mapOrderToDto(Order order) {
+        // Kargo bilgisini al (varsa)
+        String shipmentStatus = null;
+        String trackingNumber = null;
+        String carrier = null;
+        var shipment = shipmentRepository.findByOrderId(order.getId());
+        if (shipment.isPresent()) {
+            Shipment s = shipment.get();
+            shipmentStatus = s.getStatus();
+            trackingNumber = s.getTrackingNumber();
+            carrier = s.getCarrier();
+        }
+
+        return AdminOrderDto.builder()
+                .id(order.getId())
+                .userName(order.getUser().getFullName())
+                .userEmail(order.getUser().getEmail())
+                .storeName(order.getStore().getName())
+                .storeId(order.getStore().getId())
+                .status(order.getStatus().name())
+                .totalPrice(order.getTotalPrice())
+                .orderDate(order.getOrderDate())
+                .itemCount(order.getItems() != null ? order.getItems().size() : 0)
+                .shipmentStatus(shipmentStatus)
+                .trackingNumber(trackingNumber)
+                .carrier(carrier)
+                .build();
+    }
+
+    private AdminRefundDto mapRefundToDto(Refund refund) {
+        Order order = refund.getOrder();
+        String productName = "—";
+
+        // Önce refund'a bağlı orderItem'dan ürünü al
+        if (refund.getOrderItem() != null && refund.getOrderItem().getProduct() != null) {
+            productName = refund.getOrderItem().getProduct().getName();
+        }
+        // orderItem null ise, siparişteki ürünleri göster (fallback)
+        else if (order.getItems() != null && !order.getItems().isEmpty()) {
+            productName = order.getItems().stream()
+                    .filter(item -> item.getProduct() != null)
+                    .map(item -> item.getProduct().getName())
+                    .collect(java.util.stream.Collectors.joining(", "));
+        }
+
+        return AdminRefundDto.builder()
+                .id(refund.getId())
+                .orderId(order.getId())
+                .userName(order.getUser().getFullName())
+                .userEmail(order.getUser().getEmail())
+                .storeName(order.getStore().getName())
+                .productName(productName)
+                .refundAmount(refund.getRefundAmount())
+                .reason(refund.getReason())
+                .status(refund.getStatus())
+                .processedAt(refund.getProcessedAt())
+                .build();
+    }
+
+    private AdminReviewDto mapReviewToDto(Review review) {
+        return AdminReviewDto.builder()
+                .id(review.getId())
+                .userName(review.getUser().getFullName())
+                .userEmail(review.getUser().getEmail())
+                .productName(review.getProduct().getName())
+                .storeName(review.getProduct().getStore().getName())
+                .starRating(review.getStarRating())
+                .sentiment(review.getSentiment())
+                .reviewText(review.getReviewText())
+                .helpfulVotes(review.getHelpfulVotes())
+                .totalVotes(review.getTotalVotes())
+                .createdAt(review.getCreatedAt())
                 .build();
     }
 }

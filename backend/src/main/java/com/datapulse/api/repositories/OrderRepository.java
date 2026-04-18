@@ -2,6 +2,8 @@ package com.datapulse.api.repositories;
 
 import com.datapulse.api.entities.Order;
 import com.datapulse.api.entities.OrderStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,4 +59,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     BigDecimal sumRevenueByStoreId(@Param("storeId") Long storeId);
 
     long countByStoreIdAndStatusNot(Long storeId, OrderStatus status);
+
+    // ─── Admin: Sayfalı sipariş listeleri ─────────────────────────
+
+    Page<Order> findAllByOrderByOrderDateDesc(Pageable pageable);
+
+    Page<Order> findByStatusOrderByOrderDateDesc(OrderStatus status, Pageable pageable);
+
+    // Platform geneli günlük gelir trendi (zaman serisi grafik için)
+    @Query("SELECT CAST(o.orderDate AS DATE), COALESCE(SUM(o.totalPrice), 0), COUNT(o) " +
+           "FROM Order o WHERE o.status <> 'CANCELLED' AND o.orderDate BETWEEN :start AND :end " +
+           "GROUP BY CAST(o.orderDate AS DATE) ORDER BY CAST(o.orderDate AS DATE)")
+    List<Object[]> dailyRevenuePlatformWide(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

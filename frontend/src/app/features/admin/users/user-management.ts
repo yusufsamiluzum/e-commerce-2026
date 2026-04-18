@@ -101,4 +101,8 @@ export class UserManagement {
       default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
     }
   }
+
+  exportCsv() {
+    this.adminService.exportCsv('users');
+  }
 }

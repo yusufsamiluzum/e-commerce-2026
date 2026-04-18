@@ -74,6 +74,58 @@ export interface AuditLogItem {
   timestamp: string;
 }
 
+// ─── Sipariş Yönetimi ───────────────────────────────────────
+export interface AdminOrder {
+  id: number;
+  userName: string;
+  userEmail: string;
+  storeName: string;
+  storeId: number;
+  status: string;
+  totalPrice: number;
+  orderDate: string;
+  itemCount: number;
+  shipmentStatus: string | null;
+  trackingNumber: string | null;
+  carrier: string | null;
+}
+
+// ─── İade Yönetimi ──────────────────────────────────────────
+export interface AdminRefund {
+  id: number;
+  orderId: number;
+  userName: string;
+  userEmail: string;
+  storeName: string;
+  productName: string;
+  refundAmount: number;
+  reason: string;
+  status: string;
+  processedAt: string;
+}
+
+// ─── Gelir Trend ────────────────────────────────────────────
+export interface RevenueTrendItem {
+  date: string;
+  revenue: number;
+  orderCount: number;
+}
+
+// ─── Yorum Moderasyonu ──────────────────────────────────────
+export interface AdminReview {
+  id: number;
+  userName: string;
+  userEmail: string;
+  productName: string;
+  storeName: string;
+  starRating: number;
+  sentiment: string;
+  reviewText: string;
+  helpfulVotes: number;
+  totalVotes: number;
+  createdAt: string;
+}
+
 // ─── Spring Page Response ───────────────────────────────────
 export interface PageResponse<T> {
   content: T[];
@@ -96,6 +148,11 @@ export class AdminService {
 
   getDashboard(): Observable<PlatformStats> {
     return this.http.get<PlatformStats>(`${this.baseUrl}/dashboard`);
+  }
+
+  getRevenueTrend(days = 30): Observable<any[]> {
+    const params = new HttpParams().set('days', days);
+    return this.http.get<any[]>(`${this.baseUrl}/dashboard/revenue-trend`, { params });
   }
 
   // ─── Kullanıcı Yönetimi ─────────────────────────────────────
@@ -126,6 +183,34 @@ export class AdminService {
 
   getStoreComparison(): Observable<AdminStore[]> {
     return this.http.get<AdminStore[]>(`${this.baseUrl}/stores/comparison`);
+  }
+
+  // ─── Sipariş Yönetimi ───────────────────────────────────────
+
+  getAllOrders(page = 0, size = 20, status?: string): Observable<PageResponse<AdminOrder>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.http.get<PageResponse<AdminOrder>>(`${this.baseUrl}/orders`, { params });
+  }
+
+  updateOrderStatus(orderId: number, status: string): Observable<AdminOrder> {
+    return this.http.patch<AdminOrder>(`${this.baseUrl}/orders/${orderId}/status`, { status });
+  }
+
+  // ─── İade Yönetimi ───────────────────────────────────────────
+
+  getAllRefunds(page = 0, size = 20, status?: string): Observable<PageResponse<AdminRefund>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.http.get<PageResponse<AdminRefund>>(`${this.baseUrl}/refunds`, { params });
+  }
+
+  updateRefundStatus(refundId: number, status: string): Observable<AdminRefund> {
+    return this.http.patch<AdminRefund>(`${this.baseUrl}/refunds/${refundId}/status`, { status });
   }
 
   // ─── Kategori Yönetimi ──────────────────────────────────────
@@ -164,5 +249,32 @@ export class AdminService {
       params = params.set('entityType', entityType);
     }
     return this.http.get<PageResponse<AuditLogItem>>(`${this.baseUrl}/audit-logs`, { params });
+  }
+
+  // ─── Yorum Moderasyonu ──────────────────────────────────────
+
+  getAllReviews(page = 0, size = 20, sentiment?: string): Observable<PageResponse<AdminReview>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (sentiment) {
+      params = params.set('sentiment', sentiment);
+    }
+    return this.http.get<PageResponse<AdminReview>>(`${this.baseUrl}/reviews`, { params });
+  }
+
+  deleteReview(reviewId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/reviews/${reviewId}`);
+  }
+
+  // ─── CSV Export ─────────────────────────────────────────────
+
+  exportCsv(type: 'users' | 'orders' | 'stores'): void {
+    this.http.get(`${this.baseUrl}/export/${type}`, { responseType: 'blob' }).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${type}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
   }
 }

@@ -16,8 +16,20 @@ const routes: Routes = [
     loadComponent: () => import('./stores/store-management').then(m => m.StoreManagement)
   },
   {
+    path: 'orders',
+    loadComponent: () => import('./orders/order-management').then(m => m.OrderManagement)
+  },
+  {
+    path: 'refunds',
+    loadComponent: () => import('./refunds/refund-management').then(m => m.RefundManagement)
+  },
+  {
     path: 'analytics',
     loadComponent: () => import('./analytics/platform-analytics').then(m => m.PlatformAnalytics)
+  },
+  {
+    path: 'reviews',
+    loadComponent: () => import('./reviews/review-moderation').then(m => m.ReviewModeration)
   },
   {
     path: 'categories',

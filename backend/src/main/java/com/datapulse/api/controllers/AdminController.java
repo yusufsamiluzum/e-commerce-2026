@@ -100,6 +100,64 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getStoreComparison());
     }
 
+    // ─── Sipariş Yönetimi (Admin Gözetimi) ──────────────────────
+
+    @GetMapping("/orders")
+    public ResponseEntity<Page<com.datapulse.api.dto.AdminOrderDto>> getAllOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String status) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (status != null && !status.isEmpty()) {
+            com.datapulse.api.entities.OrderStatus orderStatus =
+                    com.datapulse.api.entities.OrderStatus.valueOf(status.toUpperCase());
+            return ResponseEntity.ok(adminService.getOrdersByStatus(orderStatus, pageable));
+        }
+        return ResponseEntity.ok(adminService.getAllOrders(pageable));
+    }
+
+    @PatchMapping("/orders/{id}/status")
+    public ResponseEntity<com.datapulse.api.dto.AdminOrderDto> updateOrderStatus(
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        Long adminId = ((User) authentication.getPrincipal()).getId();
+        com.datapulse.api.entities.OrderStatus newStatus =
+                com.datapulse.api.entities.OrderStatus.valueOf(body.get("status").toUpperCase());
+        return ResponseEntity.ok(adminService.updateOrderStatus(id, newStatus, adminId));
+    }
+
+    // ─── Dashboard Gelir Trend ──────────────────────────────────
+
+    @GetMapping("/dashboard/revenue-trend")
+    public ResponseEntity<List<Object[]>> getRevenueTrend(
+            @RequestParam(defaultValue = "30") int days) {
+        return ResponseEntity.ok(adminService.getRevenueTrend(days));
+    }
+
+    // ─── İade Yönetimi (Anlaşmazlık Çözümü) ─────────────────────
+
+    @GetMapping("/refunds")
+    public ResponseEntity<Page<com.datapulse.api.dto.AdminRefundDto>> getAllRefunds(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String status) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (status != null && !status.isEmpty()) {
+            return ResponseEntity.ok(adminService.getRefundsByStatus(status.toUpperCase(), pageable));
+        }
+        return ResponseEntity.ok(adminService.getAllRefunds(pageable));
+    }
+
+    @PatchMapping("/refunds/{id}/status")
+    public ResponseEntity<com.datapulse.api.dto.AdminRefundDto> updateRefundStatus(
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        Long adminId = ((User) authentication.getPrincipal()).getId();
+        return ResponseEntity.ok(adminService.updateRefundStatus(id, body.get("status").toUpperCase(), adminId));
+    }
+
     // ─── Kategori Yönetimi ───────────────────────────────────────
 
     @GetMapping("/categories")
@@ -163,5 +221,51 @@ public class AdminController {
             return ResponseEntity.ok(adminService.getAuditLogsByEntityType(entityType, pageable));
         }
         return ResponseEntity.ok(adminService.getAuditLogs(pageable));
+    }
+
+    // ─── Yorum Moderasyonu ───────────────────────────────────────
+
+    @GetMapping("/reviews")
+    public ResponseEntity<Page<com.datapulse.api.dto.AdminReviewDto>> getAllReviews(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String sentiment) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (sentiment != null && !sentiment.isEmpty()) {
+            return ResponseEntity.ok(adminService.getReviewsBySentiment(sentiment.toUpperCase(), pageable));
+        }
+        return ResponseEntity.ok(adminService.getAllReviews(pageable));
+    }
+
+    @DeleteMapping("/reviews/{id}")
+    public ResponseEntity<Void> deleteReview(
+            Authentication authentication,
+            @PathVariable Long id) {
+        Long adminId = ((User) authentication.getPrincipal()).getId();
+        adminService.deleteReview(id, adminId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ─── CSV Export ──────────────────────────────────────────────
+
+    @GetMapping(value = "/export/users", produces = "text/csv")
+    public ResponseEntity<String> exportUsers() {
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=users.csv")
+                .body(adminService.exportUsersCsv());
+    }
+
+    @GetMapping(value = "/export/orders", produces = "text/csv")
+    public ResponseEntity<String> exportOrders() {
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=orders.csv")
+                .body(adminService.exportOrdersCsv());
+    }
+
+    @GetMapping(value = "/export/stores", produces = "text/csv")
+    public ResponseEntity<String> exportStores() {
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=stores.csv")
+                .body(adminService.exportStoresCsv());
     }
 }
