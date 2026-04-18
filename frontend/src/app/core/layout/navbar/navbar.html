@@ -148,9 +148,13 @@
         }
 
         @if (auth.currentUserRole() === 'ADMIN') {
-          <a routerLink="/admin/dashboard" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Overview</a>
-          <a routerLink="/admin/users" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Manage Users</a>
-          <a routerLink="/admin/stores" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Stores</a>
+          <a routerLink="/admin/dashboard" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Overview</a>
+          <a routerLink="/admin/users" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Users</a>
+          <a routerLink="/admin/stores" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Stores</a>
+          <a routerLink="/admin/analytics" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Analytics</a>
+          <a routerLink="/admin/categories" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Categories</a>
+          <a routerLink="/admin/audit-logs" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Audit Logs</a>
+          <a routerLink="/admin/config" routerLinkActive="!text-blue-400 !border-blue-500" class="hover:text-blue-400 transition-colors h-full flex items-center border-b-2 border-transparent hover:border-blue-500">Settings</a>
         }
       </nav>
     </div>

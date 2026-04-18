@@ -47,4 +47,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
            "FROM Order o WHERE o.store.id = :storeId AND o.status <> 'CANCELLED' AND o.orderDate BETWEEN :start AND :end " +
            "GROUP BY CAST(o.orderDate AS DATE) ORDER BY CAST(o.orderDate AS DATE)")
     List<Object[]> dailyRevenueByStoreIdAndDateRange(@Param("storeId") Long storeId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    // ─── Admin: Platform geneli sorgular ──────────────────────────
+
+    @Query("SELECT COALESCE(SUM(o.totalPrice), 0) FROM Order o WHERE o.status <> 'CANCELLED'")
+    BigDecimal sumTotalRevenuePlatformWide();
+
+    @Query("SELECT COALESCE(SUM(o.totalPrice), 0) FROM Order o WHERE o.store.id = :storeId AND o.status <> 'CANCELLED'")
+    BigDecimal sumRevenueByStoreId(@Param("storeId") Long storeId);
+
+    long countByStoreIdAndStatusNot(Long storeId, OrderStatus status);
 }

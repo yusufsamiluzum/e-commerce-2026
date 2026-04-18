@@ -22,6 +22,7 @@ import com.datapulse.api.entities.Review;
 import com.datapulse.api.entities.RoleType;
 import com.datapulse.api.entities.Shipment;
 import com.datapulse.api.entities.Store;
+import com.datapulse.api.entities.StoreStatus;
 import com.datapulse.api.entities.SystemConfig;
 import com.datapulse.api.entities.User;
 import com.datapulse.api.entities.UserStatus;
@@ -147,9 +148,9 @@ public class DatabaseSeeder implements CommandLineRunner {
         categoryRepository.saveAll(Arrays.asList(catElec, catCloth, catHome, catSport, catBooks));
 
         // 4. Stores
-        Store s1 = new Store(); s1.setName("Tech Haven"); s1.setDescription("Premium elektronik ürünlerin adresi"); s1.setOwner(seller1); s1.setStatus("ACTIVE"); s1.setBaseCurrency("USD");
-        Store s2 = new Store(); s2.setName("Fashion Finds"); s2.setDescription("Trend moda markaları"); s2.setOwner(seller2); s2.setStatus("ACTIVE"); s2.setBaseCurrency("USD");
-        Store s3 = new Store(); s3.setName("Cozy Home"); s3.setDescription("Eviniz için her şey"); s3.setOwner(seller3); s3.setStatus("ACTIVE"); s3.setBaseCurrency("USD");
+        Store s1 = new Store(); s1.setName("Tech Haven"); s1.setDescription("Premium elektronik ürünlerin adresi"); s1.setOwner(seller1); s1.setStatus(StoreStatus.ACTIVE); s1.setBaseCurrency("USD");
+        Store s2 = new Store(); s2.setName("Fashion Finds"); s2.setDescription("Trend moda markaları"); s2.setOwner(seller2); s2.setStatus(StoreStatus.ACTIVE); s2.setBaseCurrency("USD");
+        Store s3 = new Store(); s3.setName("Cozy Home"); s3.setDescription("Eviniz için her şey"); s3.setOwner(seller3); s3.setStatus(StoreStatus.ACTIVE); s3.setBaseCurrency("USD");
         storeRepository.saveAll(Arrays.asList(s1, s2, s3));
 
         // 5. CorporateProfile

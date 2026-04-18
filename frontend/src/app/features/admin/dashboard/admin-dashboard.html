@@ -1,0 +1,218 @@
+<div class="min-h-screen bg-gray-950 text-white">
+  <div class="container mx-auto px-4 py-8">
+
+    <!-- Başlık -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold tracking-tight">Platform Overview</h1>
+      <p class="text-gray-400 mt-1">Sistem genelindeki istatistikler ve KPI'lar</p>
+    </div>
+
+    <!-- Skeleton Loader -->
+    @if (stats() === null) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 animate-pulse">
+            <div class="h-3 bg-gray-800 rounded w-24 mb-3"></div>
+            <div class="h-8 bg-gray-800 rounded w-16 mb-2"></div>
+            <div class="h-2 bg-gray-800 rounded w-20"></div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Veriler -->
+    @if (stats() !== null) {
+      <!-- Ana KPI'lar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+        <!-- Toplam Gelir -->
+        <div class="bg-gradient-to-br from-emerald-950/50 to-gray-900 border border-emerald-800/30 rounded-xl p-5 hover:border-emerald-600/50 transition-colors">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Toplam Gelir</span>
+            <div class="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+              <svg class="h-4 w-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-white">${{ stats()!.totalRevenue | number:'1.2-2' }}</p>
+          <p class="text-xs text-gray-500 mt-1">İptal edilenler hariç</p>
+        </div>
+
+        <!-- Toplam Sipariş -->
+        <div class="bg-gradient-to-br from-blue-950/50 to-gray-900 border border-blue-800/30 rounded-xl p-5 hover:border-blue-600/50 transition-colors">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Toplam Sipariş</span>
+            <div class="h-8 w-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+              <svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+              </svg>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-white">{{ stats()!.totalOrders | number }}</p>
+          <p class="text-xs text-gray-500 mt-1">Tüm mağazalar</p>
+        </div>
+
+        <!-- Toplam Kullanıcı -->
+        <div class="bg-gradient-to-br from-violet-950/50 to-gray-900 border border-violet-800/30 rounded-xl p-5 hover:border-violet-600/50 transition-colors">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold text-violet-400 uppercase tracking-wider">Toplam Kullanıcı</span>
+            <div class="h-8 w-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
+              <svg class="h-4 w-4 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-white">{{ stats()!.totalUsers | number }}</p>
+          <p class="text-xs text-gray-500 mt-1">{{ stats()!.totalIndividualUsers }} bireysel · {{ stats()!.totalCorporateUsers }} kurumsal</p>
+        </div>
+
+        <!-- Toplam Ürün -->
+        <div class="bg-gradient-to-br from-amber-950/50 to-gray-900 border border-amber-800/30 rounded-xl p-5 hover:border-amber-600/50 transition-colors">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Toplam Ürün</span>
+            <div class="h-8 w-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-white">{{ stats()!.totalProducts | number }}</p>
+          <p class="text-xs text-gray-500 mt-1">{{ stats()!.totalCategories }} kategori</p>
+        </div>
+      </div>
+
+      <!-- İkincil KPI'lar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+        <!-- Aktif Mağazalar -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="h-2.5 w-2.5 rounded-full bg-green-500"></div>
+            <span class="text-sm font-medium text-gray-300">Aktif Mağazalar</span>
+          </div>
+          <p class="text-xl font-bold text-white">{{ stats()!.activeStores }}</p>
+          <p class="text-xs text-gray-500 mt-1">/ {{ stats()!.totalStores }} toplam</p>
+        </div>
+
+        <!-- Onay Bekleyen Mağazalar -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 animate-pulse"></div>
+            <span class="text-sm font-medium text-gray-300">Onay Bekleyen</span>
+          </div>
+          <p class="text-xl font-bold text-white">{{ stats()!.pendingStores }}</p>
+          <p class="text-xs text-gray-500 mt-1">İşlem gerekiyor</p>
+        </div>
+
+        <!-- Askıya Alınan Mağazalar -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="h-2.5 w-2.5 rounded-full bg-red-500"></div>
+            <span class="text-sm font-medium text-gray-300">Askıya Alınan Mağazalar</span>
+          </div>
+          <p class="text-xl font-bold text-white">{{ stats()!.suspendedStores }}</p>
+        </div>
+
+        <!-- Askıya Alınan Kullanıcılar -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="h-2.5 w-2.5 rounded-full bg-orange-500"></div>
+            <span class="text-sm font-medium text-gray-300">Askıya Alınan Kullanıcılar</span>
+          </div>
+          <p class="text-xl font-bold text-white">{{ stats()!.suspendedUsers }}</p>
+        </div>
+      </div>
+
+      <!-- Hızlı Erişim Kartları -->
+      <h2 class="text-lg font-semibold text-gray-200 mb-4">Hızlı Yönetim</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <a routerLink="/admin/users" class="group bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-blue-600/50 hover:bg-gray-900/80 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+              <svg class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white group-hover:text-blue-400 transition-colors">Kullanıcı Yönetimi</p>
+              <p class="text-xs text-gray-500">Hesapları yönet, askıya al, sil</p>
+            </div>
+          </div>
+        </a>
+
+        <a routerLink="/admin/stores" class="group bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-emerald-600/50 hover:bg-gray-900/80 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+              <svg class="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white group-hover:text-emerald-400 transition-colors">Mağaza Yönetimi</p>
+              <p class="text-xs text-gray-500">Onayla, askıya al, kapat</p>
+            </div>
+          </div>
+        </a>
+
+        <a routerLink="/admin/categories" class="group bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-violet-600/50 hover:bg-gray-900/80 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 rounded-xl bg-violet-500/10 flex items-center justify-center group-hover:bg-violet-500/20 transition-colors">
+              <svg class="h-6 w-6 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white group-hover:text-violet-400 transition-colors">Kategori Yönetimi</p>
+              <p class="text-xs text-gray-500">Taksonomi düzeni</p>
+            </div>
+          </div>
+        </a>
+
+        <a routerLink="/admin/analytics" class="group bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-amber-600/50 hover:bg-gray-900/80 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center group-hover:bg-amber-500/20 transition-colors">
+              <svg class="h-6 w-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white group-hover:text-amber-400 transition-colors">Platform Analitiği</p>
+              <p class="text-xs text-gray-500">Cross-store karşılaştırma</p>
+            </div>
+          </div>
+        </a>
+
+        <a routerLink="/admin/audit-logs" class="group bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-cyan-600/50 hover:bg-gray-900/80 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 rounded-xl bg-cyan-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
+              <svg class="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white group-hover:text-cyan-400 transition-colors">Audit Logs</p>
+              <p class="text-xs text-gray-500">Aktivite izleme</p>
+            </div>
+          </div>
+        </a>
+
+        <a routerLink="/admin/config" class="group bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-pink-600/50 hover:bg-gray-900/80 transition-all">
+          <div class="flex items-center gap-4">
+            <div class="h-12 w-12 rounded-xl bg-pink-500/10 flex items-center justify-center group-hover:bg-pink-500/20 transition-colors">
+              <svg class="h-6 w-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-white group-hover:text-pink-400 transition-colors">Sistem Ayarları</p>
+              <p class="text-xs text-gray-500">Global konfigürasyon</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    }
+  </div>
+</div>

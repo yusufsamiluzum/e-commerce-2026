@@ -1,0 +1,158 @@
+<div class="min-h-screen bg-gray-950 text-white">
+  <div class="container mx-auto px-4 py-8">
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold tracking-tight">Kullanıcı Yönetimi</h1>
+      <p class="text-gray-400 mt-1">Platformdaki tüm kullanıcıları yönetin</p>
+    </div>
+
+    <!-- Filtreler -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-6">
+      <!-- Arama -->
+      <div class="relative flex-1">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" placeholder="İsim veya e-posta ile ara..."
+               (input)="onSearch($event)"
+               class="w-full bg-gray-900 border border-gray-800 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all">
+      </div>
+
+      <!-- Rol Filtresi -->
+      <div class="flex gap-1.5 bg-gray-900 border border-gray-800 rounded-lg p-1">
+        @for (role of ['ALL', 'ADMIN', 'CORPORATE', 'INDIVIDUAL']; track role) {
+          <button (click)="onRoleFilter(role)"
+                  [class]="roleFilter() === role
+                    ? 'bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition-all'
+                    : 'text-gray-400 px-3 py-1.5 rounded-md text-xs font-medium hover:text-white hover:bg-gray-800 transition-all'">
+            {{ role === 'ALL' ? 'Tümü' : role }}
+          </button>
+        }
+      </div>
+
+      <!-- Durum Filtresi -->
+      <div class="flex gap-1.5 bg-gray-900 border border-gray-800 rounded-lg p-1">
+        @for (status of ['ALL', 'ACTIVE', 'SUSPENDED']; track status) {
+          <button (click)="onStatusFilter(status)"
+                  [class]="statusFilter() === status
+                    ? 'bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition-all'
+                    : 'text-gray-400 px-3 py-1.5 rounded-md text-xs font-medium hover:text-white hover:bg-gray-800 transition-all'">
+            {{ status === 'ALL' ? 'Tümü' : (status === 'ACTIVE' ? 'Aktif' : 'Askıda') }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Skeleton -->
+    @if (usersPage() === null) {
+      <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+        @for (i of [1,2,3,4,5,6,7,8]; track i) {
+          <div class="px-6 py-4 border-b border-gray-800 animate-pulse flex items-center gap-4">
+            <div class="h-9 w-9 bg-gray-800 rounded-full"></div>
+            <div class="flex-1 space-y-2">
+              <div class="h-3 bg-gray-800 rounded w-32"></div>
+              <div class="h-2 bg-gray-800 rounded w-48"></div>
+            </div>
+            <div class="h-5 w-16 bg-gray-800 rounded-full"></div>
+            <div class="h-5 w-14 bg-gray-800 rounded-full"></div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Tablo -->
+    @if (filteredUsers() !== null) {
+      <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-800 text-xs text-gray-500 uppercase tracking-wider">
+                <th class="text-left px-6 py-3 font-medium">Kullanıcı</th>
+                <th class="text-left px-6 py-3 font-medium">Rol</th>
+                <th class="text-left px-6 py-3 font-medium">Durum</th>
+                <th class="text-left px-6 py-3 font-medium">Kayıt Tarihi</th>
+                <th class="text-right px-6 py-3 font-medium">İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (user of filteredUsers(); track user.id) {
+                <tr class="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="h-9 w-9 rounded-full flex items-center justify-center text-sm font-bold"
+                           [class]="user.roleType === 'ADMIN' ? 'bg-red-500/10 text-red-400' : user.roleType === 'CORPORATE' ? 'bg-violet-500/10 text-violet-400' : 'bg-blue-500/10 text-blue-400'">
+                        {{ user.fullName.charAt(0) }}
+                      </div>
+                      <div>
+                        <p class="font-medium text-white">{{ user.fullName }}</p>
+                        <p class="text-xs text-gray-500">{{ user.email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border"
+                          [class]="getRoleBadgeClass(user.roleType)">
+                      {{ user.roleType }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium border"
+                          [class]="getStatusBadgeClass(user.status)">
+                      <span class="h-1.5 w-1.5 rounded-full"
+                            [class]="user.status === 'ACTIVE' ? 'bg-green-400' : user.status === 'SUSPENDED' ? 'bg-orange-400' : 'bg-red-400'"></span>
+                      {{ user.status }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-gray-400 text-xs">
+                    {{ user.createdAt | date:'dd MMM yyyy' }}
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    @if (user.roleType !== 'ADMIN') {
+                      <button (click)="toggleUserStatus(user)"
+                              [disabled]="actionInProgress() === user.id"
+                              [class]="user.status === 'ACTIVE'
+                                ? 'text-xs px-3 py-1.5 rounded-lg font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-all disabled:opacity-50'
+                                : 'text-xs px-3 py-1.5 rounded-lg font-medium bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all disabled:opacity-50'">
+                        @if (actionInProgress() === user.id) {
+                          <svg class="animate-spin h-3 w-3 inline mr-1" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                        }
+                        {{ user.status === 'ACTIVE' ? 'Askıya Al' : 'Aktif Et' }}
+                      </button>
+                    } @else {
+                      <span class="text-xs text-gray-600">—</span>
+                    }
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                    Aramanızla eşleşen kullanıcı bulunamadı.
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sayfalama -->
+        @if (usersPage() !== null && usersPage()!.totalPages > 1) {
+          <div class="px-6 py-4 border-t border-gray-800 flex items-center justify-between">
+            <p class="text-xs text-gray-500">
+              Toplam {{ usersPage()!.totalElements }} kullanıcı
+            </p>
+            <div class="flex gap-1">
+              @for (p of [].constructor(usersPage()!.totalPages); track $index) {
+                <button (click)="goToPage($index)"
+                        [class]="currentPage() === $index
+                          ? 'h-8 w-8 rounded-md bg-blue-600 text-white text-xs font-medium'
+                          : 'h-8 w-8 rounded-md bg-gray-800 text-gray-400 text-xs font-medium hover:bg-gray-700 transition-colors'">
+                  {{ $index + 1 }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

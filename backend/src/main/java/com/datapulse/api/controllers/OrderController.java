@@ -1,101 +1,62 @@
 package com.datapulse.api.controllers;
 
-import com.datapulse.api.dto.OrderRequest;
 import com.datapulse.api.dto.OrderDto;
-import com.datapulse.api.entities.Order;
+import com.datapulse.api.dto.OrderRequest;
 import com.datapulse.api.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.datapulse.api.entities.User;
-import com.datapulse.api.repositories.UserRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// [Düzeltme #3] @CrossOrigin kaldırıldı — CORS yönetimi global SecurityConfig üzerinden yapılıyor.
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+// [Düzeltme #4] Tüm endpoint'ler için rol bazlı yetkilendirme eklendi.
+// Kurallarınıza göre geçerli roller: INDIVIDUAL, CORPORATE, ADMIN
+@PreAuthorize("hasAnyRole('INDIVIDUAL', 'CORPORATE')")
 public class OrderController {
 
+    // [Düzeltme #4] UserRepository kaldırıldı — kullanıcı çözümleme service
+    // katmanına taşındı.
     private final OrderService orderService;
-    private final UserRepository userRepository;
 
+    // [Düzeltme #1] Dönüş tipi artık OrderDto — entity dışarıya sızmıyor.
+    // [Düzeltme #2] Try-catch kaldırıldı — hatalar GlobalExceptionHandler
+    // tarafından yakalanacak.
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderRequest request) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
-                return ResponseEntity.status(401).body("User not authenticated");
-            }
-            String email = authentication.getName();
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
-            
-            request.setUserId(user.getId());
-            Order order = orderService.createOrder(request);
-            return ResponseEntity.ok().body(java.util.Map.of(
-                "message", "Order created successfully",
-                "orderId", order.getId()
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
-        }
+    public ResponseEntity<OrderDto> createOrder(
+            @RequestBody OrderRequest request,
+            Authentication authentication) {
+
+        OrderDto createdOrder = orderService.createOrder(request, authentication.getName());
+        return ResponseEntity.ok(createdOrder);
     }
 
     @GetMapping
-    public ResponseEntity<?> getMyOrders() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
-                return ResponseEntity.status(401).body("User not authenticated");
-            }
-            String email = authentication.getName();
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
-            
-            List<OrderDto> orders = orderService.getUserOrders(user.getId());
-            return ResponseEntity.ok(orders);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
-        }
+    public ResponseEntity<List<OrderDto>> getMyOrders(Authentication authentication) {
+        List<OrderDto> orders = orderService.getUserOrders(authentication.getName());
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOrderDetails(@PathVariable Long id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
-                return ResponseEntity.status(401).body("User not authenticated");
-            }
-            String email = authentication.getName();
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
+    public ResponseEntity<OrderDto> getOrderDetails(
+            @PathVariable Long id,
+            Authentication authentication) {
 
-            OrderDto orderDetails = orderService.getOrderDetails(id, user.getId());
-            return ResponseEntity.ok(orderDetails);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
-        }
+        OrderDto orderDetails = orderService.getOrderDetails(id, authentication.getName());
+        return ResponseEntity.ok(orderDetails);
     }
 
     @PatchMapping("/{id}/cancel")
-    public ResponseEntity<?> cancelOrder(@PathVariable Long id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
-                return ResponseEntity.status(401).body("User not authenticated");
-            }
-            String email = authentication.getName();
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Logged in user not found"));
+    public ResponseEntity<OrderDto> cancelOrder(
+            @PathVariable Long id,
+            Authentication authentication) {
 
-            OrderDto cancelled = orderService.cancelOrder(id, user.getId());
-            return ResponseEntity.ok(cancelled);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(java.util.Map.of("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(403).body(java.util.Map.of("error", e.getMessage()));
-        }
+        OrderDto cancelled = orderService.cancelOrder(id, authentication.getName());
+        return ResponseEntity.ok(cancelled);
     }
 }
-

@@ -24,17 +24,20 @@ public class OrderService {
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
 
+    // createOrder artık email parametresi alıyor ve OrderDto döndürüyor
     @Transactional
-    public Order createOrder(OrderRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public OrderDto createOrder(OrderRequest request, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Oturum açmış kullanıcı bulunamadı"));
+
+        request.setUserId(user.getId());
 
         if (request.getItems() == null || request.getItems().isEmpty()) {
-            throw new IllegalArgumentException("Order must contain at least one item.");
+            throw new IllegalArgumentException("Sipariş en az bir ürün içermelidir.");
         }
 
         Product firstProduct = productRepository.findById(request.getItems().get(0).getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ürün bulunamadı"));
         Store store = firstProduct.getStore();
 
         Order order = new Order();
@@ -43,60 +46,67 @@ public class OrderService {
         order.setPaymentMethodId(1L); // Assuming 1L is Stripe
         order.setStatus(OrderStatus.PENDING);
         order.setItems(new ArrayList<>());
-        
+
         BigDecimal total = BigDecimal.ZERO;
 
         for (OrderRequest.OrderItemRequest itemReq : request.getItems()) {
             Product product = productRepository.findById(itemReq.getProductId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-            
+                    .orElseThrow(() -> new ResourceNotFoundException("Ürün bulunamadı"));
+
             OrderItem item = new OrderItem();
             item.setOrder(order);
             item.setProduct(product);
             item.setQuantity(itemReq.getQuantity());
-            
+
             BigDecimal unitPrice = product.getUnitPrice();
             BigDecimal itemTotal = unitPrice.multiply(new BigDecimal(itemReq.getQuantity()));
-            
+
             item.setUnitPrice(unitPrice);
             item.setTotalPrice(itemTotal);
-            
+
             total = total.add(itemTotal);
             order.getItems().add(item);
         }
 
         order.setTotalPrice(total);
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+        return mapToDto(savedOrder);
     }
 
-    public List<OrderDto> getUserOrders(Long userId) {
-        List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+    public List<OrderDto> getUserOrders(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı"));
+        List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(user.getId());
         return orders.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public OrderDto getOrderDetails(Long orderId, Long userId) {
+    public OrderDto getOrderDetails(Long orderId, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı"));
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
-        
-        if (!order.getUser().getId().equals(userId)) {
-            throw new RuntimeException("Unauthorized access to order");
+                .orElseThrow(() -> new ResourceNotFoundException("Sipariş bulunamadı: " + orderId));
+
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Bu siparişe erişim yetkiniz yok");
         }
-        
+
         return mapToDto(order);
     }
 
     @Transactional
-    public OrderDto cancelOrder(Long orderId, Long userId) {
+    public OrderDto cancelOrder(Long orderId, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı"));
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("Sipariş bulunamadı: " + orderId));
 
-        if (!order.getUser().getId().equals(userId)) {
-            throw new RuntimeException("Unauthorized: this order does not belong to you");
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Bu sipariş size ait değil");
         }
 
         if (order.getStatus() != OrderStatus.PENDING) {
             throw new IllegalStateException(
-                "Only PENDING orders can be cancelled. Current status: " + order.getStatus()
+                "Yalnızca PENDING durumundaki siparişler iptal edilebilir. Mevcut durum: " + order.getStatus()
             );
         }
 

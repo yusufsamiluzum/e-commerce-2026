@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/core/services/refund.service.ts"],
-  "sourcesContent": ["import { HttpClient } from '@angular/common/http';\nimport { Injectable, inject } from '@angular/core';\nimport { Observable } from 'rxjs';\n\nexport interface RefundDto {\n  id: number;\n  orderId: number;\n  orderItemId: number;\n  refundAmount: number;\n  reason: string;\n  status: string;\n  processedAt: string;\n}\n\nexport interface RefundRequest {\n  orderId: number;\n  orderItemId: number | null;\n  reason: string;\n}\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class RefundService {\n  private http = inject(HttpClient);\n  private apiUrl = 'http://localhost:8080/api/refunds';\n\n  getMyRefunds(): Observable<RefundDto[]> {\n    return this.http.get<RefundDto[]>(this.apiUrl);\n  }\n\n  createRefund(request: RefundRequest): Observable<RefundDto> {\n    return this.http.post<RefundDto>(this.apiUrl, request);\n  }\n}\n"],
-  "mappings": ";;;;;;;;;AAuBM,IAAO,gBAAP,MAAO,eAAa;EAChB,OAAO,OAAO,UAAU;EACxB,SAAS;EAEjB,eAAY;AACV,WAAO,KAAK,KAAK,IAAiB,KAAK,MAAM;EAC/C;EAEA,aAAa,SAAsB;AACjC,WAAO,KAAK,KAAK,KAAgB,KAAK,QAAQ,OAAO;EACvD;;qCAVW,gBAAa;EAAA;4EAAb,gBAAa,SAAb,eAAa,WAAA,YAFZ,OAAM,CAAA;;;sEAEP,eAAa,CAAA;UAHzB;WAAW;MACV,YAAY;KACb;;;",
-  "names": []
-}

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.datapulse.api.dto.StoreDto;
 import com.datapulse.api.dto.StoreRequest;
 import com.datapulse.api.entities.Store;
+import com.datapulse.api.entities.StoreStatus;
 import com.datapulse.api.entities.User;
 import com.datapulse.api.exceptions.ResourceNotFoundException;
 import com.datapulse.api.repositories.StoreRepository;
@@ -39,7 +40,7 @@ public class StoreService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .baseCurrency(request.getBaseCurrency())
-                .status("ACTIVE")
+                .status(StoreStatus.ACTIVE)
                 .build();
 
         Store savedStore = storeRepository.save(store);
@@ -98,7 +99,7 @@ public class StoreService {
                 .id(store.getId())
                 .name(store.getName())
                 .description(store.getDescription())
-                .status(store.getStatus())
+                .status(store.getStatus().name())
                 .baseCurrency(store.getBaseCurrency())
                 .createdAt(store.getCreatedAt())
                 .build();

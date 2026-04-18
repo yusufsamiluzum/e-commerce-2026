@@ -17,7 +17,7 @@ export class Navbar {
 
   getProfileLink(): string {
     const role = this.auth.currentUserRole();
-    if (role === 'ADMIN') return '/admin/profile/details';
+    if (role === 'ADMIN') return '/admin/dashboard';
     if (role === 'CORPORATE') return '/corporate/profile/details';
     return '/individual/profile/details';
   }

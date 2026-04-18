@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { notCorporateGuard } from './core/guards/auth.guard';
+import { authGuard, notCorporateGuard, roleGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/catalog', pathMatch: 'full' },
@@ -8,7 +8,8 @@ export const routes: Routes = [
   { path: 'checkout', loadChildren: () => import('./features/checkout/checkout-module').then(m => m.CheckoutModule), canActivate: [notCorporateGuard] },
   { path: 'individual', loadChildren: () => import('./features/individual/individual-module').then(m => m.IndividualModule), canActivate: [notCorporateGuard] },
   { path: 'auth', loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule) },
-  { path: 'admin', loadChildren: () => import('./features/admin/admin-module').then(m => m.AdminModule) },
+  { path: 'admin', loadChildren: () => import('./features/admin/admin-module').then(m => m.AdminModule), canActivate: [authGuard, roleGuard], data: { roles: ['ADMIN'] } },
   { path: 'corporate', loadChildren: () => import('./features/corporate/corporate-module').then(m => m.CorporateModule) },
   { path: '**', redirectTo: '/catalog' }
 ];
+
