@@ -176,6 +176,19 @@ export interface StoreReview {
   createdAt: string;
 }
 
+// ─── İade Yönetimi ──────────────────────────────────────
+export interface StoreRefund {
+  id: number;
+  orderId: number;
+  customerName: string;
+  customerEmail: string;
+  productName: string;
+  refundAmount: number;
+  reason: string;
+  status: string;
+  processedAt: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -288,5 +301,16 @@ export class CorporateService {
 
   deleteReply(reviewId: number): Observable<StoreReview> {
     return this.http.delete<StoreReview>(`${this.baseUrl}/reviews/${reviewId}/reply`);
+  }
+
+  // ─── İade Yönetimi ─────────────────────────────────────
+
+  getStoreRefunds(status?: string): Observable<StoreRefund[]> {
+    const params = status ? `?status=${status}` : '';
+    return this.http.get<StoreRefund[]>(`${this.baseUrl}/refunds${params}`);
+  }
+
+  respondToRefund(refundId: number, status: string): Observable<StoreRefund> {
+    return this.http.patch<StoreRefund>(`${this.baseUrl}/refunds/${refundId}/status`, { status });
   }
 }

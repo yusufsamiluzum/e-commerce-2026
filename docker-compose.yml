@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 1. Database
   db:
@@ -14,7 +12,7 @@ services:
       - db_data:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword123"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword123" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,6 +43,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/datapulse_db?createDatabaseIfNotExist=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=password123
+      - CHATBOT_SERVICE_URL=http://chatbot-service:8000
     depends_on:
       db:
         condition: service_healthy
@@ -62,5 +61,32 @@ services:
     depends_on:
       - backend
 
+  # 4. Python AI Chatbot Service (opsiyonel — --profile chatbot ile başlatılır)
+  chatbot-service:
+    profiles: ["chatbot"]
+    build:
+      context: ./chatbot-service
+      dockerfile: Dockerfile
+    container_name: e-commerce-chatbot
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: ./chatbot-service/.env
+        required: false
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=datapulse_db
+      - DB_USER=root
+      - DB_PASSWORD=password123
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   db_data:
+
+

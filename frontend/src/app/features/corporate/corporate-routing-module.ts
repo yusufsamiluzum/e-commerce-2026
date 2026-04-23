@@ -77,6 +77,13 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { roles: ['CORPORATE'], requireStore: true }
   },
+  // İade Yönetimi
+  {
+    path: 'refunds',
+    loadComponent: () => import('./refunds/store-refunds').then(m => m.StoreRefunds),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['CORPORATE'], requireStore: true }
+  },
   // Varsayılan yönlendirme
   {
     path: '',

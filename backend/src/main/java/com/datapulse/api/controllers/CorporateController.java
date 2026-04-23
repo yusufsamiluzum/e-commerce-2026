@@ -39,6 +39,7 @@ import com.datapulse.api.services.OrderManagementService;
 import com.datapulse.api.services.ReviewManagementService;
 import com.datapulse.api.services.SalesAnalyticsService;
 import com.datapulse.api.services.StoreService;
+import com.datapulse.api.services.RefundService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,7 @@ public class CorporateController {
     private final CustomerSegmentationService customerSegmentationService;
     private final ReviewManagementService reviewManagementService;
     private final CategoryRepository categoryRepository;
+    private final RefundService refundService;
 
     // ─── Mağaza Yönetimi ───────────────────────────────────────────
 
@@ -242,5 +244,25 @@ public class CorporateController {
             @PathVariable Long reviewId) {
         String email = authentication.getName();
         return ResponseEntity.ok(reviewManagementService.deleteReply(email, reviewId));
+    }
+
+    // ─── İade Yönetimi ────────────────────────────────────────────
+
+    @GetMapping("/refunds")
+    public ResponseEntity<List<com.datapulse.api.dto.StoreRefundDto>> getStoreRefunds(
+            Authentication authentication,
+            @RequestParam(required = false) String status) {
+        String email = authentication.getName();
+        return ResponseEntity.ok(refundService.getStoreRefunds(email, status));
+    }
+
+    @PatchMapping("/refunds/{id}/status")
+    public ResponseEntity<com.datapulse.api.dto.StoreRefundDto> respondToRefund(
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String email = authentication.getName();
+        String newStatus = body.get("status").toUpperCase();
+        return ResponseEntity.ok(refundService.respondToRefund(email, id, newStatus));
     }
 }

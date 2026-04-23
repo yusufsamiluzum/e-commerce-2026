@@ -1,100 +1,106 @@
 {
-  "hash": "ce9d0a80",
-  "configHash": "c92a988c",
-  "lockfileHash": "e178b695",
-  "browserHash": "30eeabb6",
+  "hash": "05b84e71",
+  "configHash": "10175026",
+  "lockfileHash": "6d5fd22b",
+  "browserHash": "67890413",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "2b8699a2",
+      "fileHash": "7c31c38f",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "ddcf9b96",
+      "fileHash": "a89fef91",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "974bc5f5",
+      "fileHash": "09c6118d",
       "needsInterop": false
     },
     "@angular/core/rxjs-interop": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/rxjs-interop.mjs",
       "file": "@angular_core_rxjs-interop.js",
-      "fileHash": "ffa86d72",
+      "fileHash": "44dbf7c8",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "e2381b56",
+      "fileHash": "6a611aa1",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "e614b610",
+      "fileHash": "d36e387d",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "0ace844f",
+      "fileHash": "96383556",
       "needsInterop": false
     },
     "@stripe/stripe-js": {
       "src": "../../../../../../node_modules/@stripe/stripe-js/lib/index.mjs",
       "file": "@stripe_stripe-js.js",
-      "fileHash": "c120974e",
+      "fileHash": "7d51de69",
       "needsInterop": false
+    },
+    "plotly.js-dist-min": {
+      "src": "../../../../../../node_modules/plotly.js-dist-min/plotly.min.js",
+      "file": "plotly__js-dist-min.js",
+      "fileHash": "edc7dd25",
+      "needsInterop": true
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "b72dbcb9",
+      "fileHash": "a532b301",
       "needsInterop": false
     },
     "rxjs/operators": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
       "file": "rxjs_operators.js",
-      "fileHash": "11175ee4",
+      "fileHash": "2dd18cca",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-KIJVQ73C": {
-      "file": "chunk-KIJVQ73C.js"
+    "chunk-PFDNJ2NT": {
+      "file": "chunk-PFDNJ2NT.js"
     },
-    "chunk-NK64NQUS": {
-      "file": "chunk-NK64NQUS.js"
+    "chunk-53TRUW7R": {
+      "file": "chunk-53TRUW7R.js"
     },
-    "chunk-JSJLKEXE": {
-      "file": "chunk-JSJLKEXE.js"
+    "chunk-DKCIOSRM": {
+      "file": "chunk-DKCIOSRM.js"
     },
-    "chunk-3R6XWTQU": {
-      "file": "chunk-3R6XWTQU.js"
+    "chunk-B3QCZSZN": {
+      "file": "chunk-B3QCZSZN.js"
     },
-    "chunk-TYIGQY72": {
-      "file": "chunk-TYIGQY72.js"
+    "chunk-Y3SDQLJV": {
+      "file": "chunk-Y3SDQLJV.js"
     },
-    "chunk-LGD63U5Q": {
-      "file": "chunk-LGD63U5Q.js"
-    },
-    "chunk-HWYXSU2G": {
-      "file": "chunk-HWYXSU2G.js"
+    "chunk-QARIZ64O": {
+      "file": "chunk-QARIZ64O.js"
     },
     "chunk-JRFR6BLO": {
       "file": "chunk-JRFR6BLO.js"
     },
+    "chunk-HWYXSU2G": {
+      "file": "chunk-HWYXSU2G.js"
+    },
     "chunk-MARUHEWW": {
       "file": "chunk-MARUHEWW.js"
     },
-    "chunk-GOMI4DH3": {
-      "file": "chunk-GOMI4DH3.js"
+    "chunk-H2SRQSE4": {
+      "file": "chunk-H2SRQSE4.js"
     }
   }
 }
