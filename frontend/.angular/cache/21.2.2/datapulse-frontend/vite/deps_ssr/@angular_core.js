@@ -423,7 +423,7 @@ import {
   ɵɵvalidateAttribute,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-TJ3M3JG5.js";
+} from "./chunk-RIQ2BQQV.js";
 import {
   CONTAINER_HEADER_OFFSET,
   ChangeDetectionScheduler,
@@ -506,8 +506,8 @@ import {
   ɵɵresetView,
   ɵɵrestoreView
 } from "./chunk-RVMDLQFX.js";
-import "./chunk-C27DBZK2.js";
 import "./chunk-2UVUUPPC.js";
+import "./chunk-C27DBZK2.js";
 import "./chunk-K54IFBYX.js";
 import "./chunk-6DU2HRTW.js";
 export {

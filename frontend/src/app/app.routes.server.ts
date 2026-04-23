@@ -26,6 +26,10 @@ export const serverRoutes: ServerRoute[] = [
     path: 'auth/**',
     renderMode: RenderMode.Client
   },
+  {
+    path: 'ai-assistant/**',
+    renderMode: RenderMode.Client
+  },
   // Katalog: backend'e HTTP çağrısı yapar → SSR Node'dan erişilemez
   {
     path: 'catalog',

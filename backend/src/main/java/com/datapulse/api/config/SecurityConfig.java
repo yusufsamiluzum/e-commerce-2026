@@ -57,6 +57,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/corporate/**").hasAnyRole("CORPORATE", "ADMIN")
                 .requestMatchers("/api/user/**").authenticated()
+
+                // AI Chatbot — giriş yapmış herkes erişebilir (rol kontrolü @PreAuthorize ile)
+                .requestMatchers("/api/chat/**").authenticated()
                 
                 // Geri kalan her şey giriş gerektirsin
                 .anyRequest().authenticated() 

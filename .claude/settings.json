@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker-compose ps *)",
+      "Bash(docker-compose logs *)",
+      "Bash(docker ps *)",
+      "Bash(docker logs *)",
+      "Bash(docker inspect *)",
+      "Bash(mvn compile)",
+      "Bash(mvn test *)",
+      "Bash(mvn dependency:tree *)",
+      "Bash(ng version)",
+      "Bash(npm run build)",
+      "Bash(npm test)",
+      "Bash(claude mcp list)"
+    ]
+  }
+}

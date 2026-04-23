@@ -1,0 +1,131 @@
+<div class="min-h-screen bg-gray-950 text-white">
+  <div class="container mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">İade Talepleri</h1>
+        <p class="text-gray-400 mt-1">Mağazanıza gelen iade taleplerini yönetin</p>
+      </div>
+      @if (pendingCount() > 0) {
+        <div class="flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-500"></span>
+          </span>
+          <span class="text-sm text-yellow-400 font-medium">{{ pendingCount() }} bekleyen talep</span>
+        </div>
+      }
+    </div>
+
+    <!-- Status Filter -->
+    <div class="flex gap-2 mb-6 flex-wrap">
+      @for (status of statusOptions; track status) {
+        <button (click)="onStatusFilterChange(status)"
+                [class]="statusFilter() === status
+                  ? 'bg-blue-600 text-white border-blue-500'
+                  : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-gray-600'"
+                class="px-4 py-2 text-sm font-medium rounded-lg border transition-all">
+          {{ statusLabels[status] }}
+        </button>
+      }
+    </div>
+
+    <!-- Loading -->
+    @if (isLoading()) {
+      <div class="space-y-4">
+        @for (i of [1,2,3]; track i) {
+          <div class="h-36 bg-gray-800 rounded-xl animate-pulse"></div>
+        }
+      </div>
+    } @else if (refunds().length === 0) {
+      <div class="text-center py-16">
+        <div class="text-5xl mb-4">📦</div>
+        <p class="text-gray-400 text-lg font-medium">İade talebi bulunamadı</p>
+        <p class="text-gray-500 text-sm mt-1">Mağazanıza henüz iade talebi gelmemiş</p>
+      </div>
+    } @else {
+      <!-- Refund Cards -->
+      <div class="space-y-4">
+        @for (refund of refunds(); track refund.id) {
+          <div class="bg-gray-900 border border-gray-700/60 rounded-xl p-5 hover:border-gray-600 transition-all">
+            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+              <!-- Left: Info -->
+              <div class="flex-1 space-y-4">
+                <!-- Header -->
+                <div class="flex items-center gap-3 flex-wrap">
+                  <span class="text-white font-mono font-semibold text-sm bg-blue-500/15 px-2.5 py-1 rounded-md">İade #{{ refund.id }}</span>
+                  <span class="text-gray-500">→</span>
+                  <span class="text-white text-sm">Sipariş <span class="text-blue-400 font-mono font-semibold">#{{ refund.orderId }}</span></span>
+                  <span class="px-2.5 py-1 rounded-full text-xs font-semibold"
+                        [ngClass]="statusColors[refund.status] || 'bg-gray-600 text-gray-200'">
+                    {{ statusLabels[refund.status] || refund.status }}
+                  </span>
+                </div>
+
+                <!-- Detail Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div class="bg-gray-800/60 rounded-lg p-3">
+                    <div class="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wide">Müşteri</div>
+                    <div class="text-sm text-white font-semibold">{{ refund.customerName }}</div>
+                    <div class="text-xs text-gray-400 mt-0.5">{{ refund.customerEmail }}</div>
+                  </div>
+                  <div class="bg-gray-800/60 rounded-lg p-3">
+                    <div class="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wide">Ürün</div>
+                    <div class="text-sm text-white font-medium">{{ refund.productName }}</div>
+                  </div>
+                  <div class="bg-gray-800/60 rounded-lg p-3">
+                    <div class="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wide">İade Tutarı</div>
+                    <div class="text-lg text-orange-400 font-bold">${{ refund.refundAmount | number:'1.2-2' }}</div>
+                  </div>
+                  <div class="bg-gray-800/60 rounded-lg p-3">
+                    <div class="text-xs text-gray-400 mb-1 font-medium uppercase tracking-wide">Tarih</div>
+                    <div class="text-sm text-white">{{ refund.processedAt | date:'dd MMM yyyy' }}</div>
+                    <div class="text-xs text-gray-400 mt-0.5">{{ refund.processedAt | date:'HH:mm' }}</div>
+                  </div>
+                </div>
+
+                <!-- Reason -->
+                @if (refund.reason) {
+                  <div class="bg-gray-800 rounded-lg p-3.5 border border-gray-700/50">
+                    <div class="text-xs text-gray-400 mb-1.5 font-medium uppercase tracking-wide">İade Sebebi</div>
+                    <p class="text-sm text-gray-200 leading-relaxed">{{ refund.reason }}</p>
+                  </div>
+                }
+              </div>
+
+              <!-- Right: Actions -->
+              <div class="flex flex-row lg:flex-col gap-2 shrink-0">
+                @if (refund.status === 'PENDING') {
+                  @if (isUpdating() === refund.id) {
+                    <div class="flex items-center justify-center px-4 py-2">
+                      <svg class="animate-spin w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    </div>
+                  } @else {
+                    <button (click)="approveRefund(refund.id)"
+                            class="flex items-center gap-1.5 px-4 py-2.5 bg-green-600/20 text-green-400 border border-green-500/30 rounded-lg text-sm font-semibold hover:bg-green-600/30 transition-all">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                      Onayla
+                    </button>
+                    <button (click)="rejectRefund(refund.id)"
+                            class="flex items-center gap-1.5 px-4 py-2.5 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-semibold hover:bg-red-600/30 transition-all">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                      Reddet
+                    </button>
+                  }
+                } @else {
+                  <div class="px-4 py-2 text-xs text-gray-400 bg-gray-800 rounded-lg text-center font-medium border border-gray-700/50">
+                    ✓ Karar verildi
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -8,8 +8,9 @@
     <router-outlet></router-outlet>
   </main>
 
-  @if (!isAuthRoute()) {
+  @if (!isAuthRoute() && !isAiRoute()) {
     <app-footer></app-footer>
+    <app-chatbot-widget></app-chatbot-widget>
   }
 
 </div>

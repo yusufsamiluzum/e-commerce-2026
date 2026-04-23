@@ -10,6 +10,7 @@ export const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule) },
   { path: 'admin', loadChildren: () => import('./features/admin/admin-module').then(m => m.AdminModule), canActivate: [authGuard, roleGuard], data: { roles: ['ADMIN'] } },
   { path: 'corporate', loadChildren: () => import('./features/corporate/corporate-module').then(m => m.CorporateModule) },
+  { path: 'ai-assistant', loadComponent: () => import('./features/ai-assistant/chatbot-page').then(m => m.ChatbotPage), canActivate: [authGuard] },
   { path: '**', redirectTo: '/catalog' }
 ];
 
