@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ export interface FilterOptions {
   minPrice: number | null;
   maxPrice: number | null;
   sort: string;
+  minRating: number | null;
 }
 
 @Component({
@@ -17,13 +18,20 @@ export interface FilterOptions {
   imports: [CommonModule, FormsModule],
   templateUrl: './filter.html',
 })
-export class FilterComponent implements OnInit, OnDestroy {
+export class FilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() searchQuery: string = '';
   @Input() minPrice: number | null = null;
   @Input() maxPrice: number | null = null;
   @Input() sortBy: string = '';
+  @Input() minRating: number | null = null;
 
   @Output() filterChanged = new EventEmitter<FilterOptions>();
+
+  readonly priceMax = 2000;
+  readonly priceStep = 25;
+
+  minPriceSlider = 0;
+  maxPriceSlider = 2000;
 
   private searchSubject = new Subject<string>();
   private searchSubscription!: Subscription;
@@ -32,20 +40,43 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.searchSubscription = this.searchSubject.pipe(
       debounceTime(400),
       distinctUntilChanged()
-    ).subscribe(searchValue => {
-      this.searchQuery = searchValue;
+    ).subscribe(value => {
+      this.searchQuery = value;
       this.applyFilters();
     });
   }
 
-  ngOnDestroy() {
-    if (this.searchSubscription) {
-      this.searchSubscription.unsubscribe();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['minPrice']) {
+      this.minPriceSlider = this.minPrice ?? 0;
     }
+    if (changes['maxPrice']) {
+      this.maxPriceSlider = this.maxPrice ?? this.priceMax;
+    }
+  }
+
+  ngOnDestroy() {
+    this.searchSubscription?.unsubscribe();
   }
 
   onSearchChange(value: string) {
     this.searchSubject.next(value);
+  }
+
+  onPriceChange(): void {
+    if (this.minPriceSlider > this.maxPriceSlider) {
+      const tmp = this.minPriceSlider;
+      this.minPriceSlider = this.maxPriceSlider;
+      this.maxPriceSlider = tmp;
+    }
+    this.minPrice = this.minPriceSlider > 0 ? this.minPriceSlider : null;
+    this.maxPrice = this.maxPriceSlider < this.priceMax ? this.maxPriceSlider : null;
+    this.applyFilters();
+  }
+
+  setMinRating(rating: number | null): void {
+    this.minRating = rating;
+    this.applyFilters();
   }
 
   applyFilters(): void {
@@ -54,6 +85,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       minPrice: this.minPrice,
       maxPrice: this.maxPrice,
       sort: this.sortBy,
+      minRating: this.minRating,
     });
   }
 
@@ -62,6 +94,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.minPrice = null;
     this.maxPrice = null;
     this.sortBy = '';
+    this.minRating = null;
+    this.minPriceSlider = 0;
+    this.maxPriceSlider = this.priceMax;
     this.applyFilters();
   }
 }

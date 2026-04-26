@@ -2,12 +2,14 @@ import { Injectable, computed, signal, inject, PLATFORM_ID } from '@angular/core
 import { isPlatformBrowser } from '@angular/common';
 import { CartItem } from '../../shared/models/cart.model';
 import { Product } from '../../shared/models/product.model';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private platformId = inject(PLATFORM_ID);
+  private toast = inject(ToastService);
   private storageKey = 'datapulse_cart';
 
   // Main state
@@ -56,6 +58,12 @@ export class CartService {
       
       this.saveToStorage(updatedItems);
       return updatedItems;
+    });
+
+    this.toast.success(`${product.name} sepete eklendi`, {
+      imageUrl: product.imageUrl,
+      actionLabel: 'Sepete Git',
+      actionRoute: '/cart',
     });
   }
 

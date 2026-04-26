@@ -61,7 +61,7 @@ export class ProductDetailComponent implements OnInit {
       ? this.selectedImageUrl() === img.imageUrl
       : img.isPrimary;
     return isSelected
-      ? 'border-blue-500 opacity-100 scale-105'
+      ? 'border-teal-500 opacity-100 scale-105'
       : 'border-transparent opacity-60 hover:opacity-90 hover:scale-102';
   }
 

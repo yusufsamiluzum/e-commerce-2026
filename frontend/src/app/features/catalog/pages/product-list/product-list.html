@@ -1,46 +1,128 @@
-<div class="container mx-auto px-4 py-8 mb-[50px] max-w-7xl">
-  
+<!-- Hero search banner -->
+<div class="bg-gradient-to-br from-teal-600 via-teal-500 to-cyan-500 border-b border-teal-700/30">
+  <div class="container mx-auto px-4 py-10 max-w-[1600px]">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">
+        Aradığın her şey, tek yerde.
+      </h2>
+      <p class="text-teal-50 text-sm mb-5">Binlerce ürün, güvenli alışveriş, hızlı kargo.</p>
+      <form (submit)="$event.preventDefault(); onHeroSearch()" class="relative">
+        <input
+          type="text"
+          [(ngModel)]="heroSearch"
+          name="heroSearch"
+          placeholder="Ürün, marka veya kategori ara..."
+          class="w-full pl-12 pr-32 py-4 rounded-2xl text-gray-900 placeholder:text-gray-400
+                 bg-white shadow-xl focus:outline-none focus:ring-4 focus:ring-white/30 text-sm"
+        />
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <button
+          type="submit"
+          class="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 rounded-xl
+                 bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 active:scale-95 transition-all"
+        >
+          Ara
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container mx-auto px-4 py-8 mb-[50px] max-w-[1600px]">
+
   <div class="flex flex-col lg:flex-row gap-8">
-    
+
     <!-- Sidebar -->
     <aside class="w-full lg:w-64 flex-shrink-0 flex flex-col space-y-6">
-      
-      <!-- Category Component -->
-      <app-category 
+
+      <app-category
         [categories]="(categories$ | async) || []"
         [selectedCategoryId]="filters.categoryId"
         (categorySelected)="onCategorySelect($event)">
       </app-category>
 
-      <!-- Filter Component -->
       <app-filter
         [searchQuery]="filters.search"
         [minPrice]="filters.minPrice"
         [maxPrice]="filters.maxPrice"
         [sortBy]="filters.sort"
+        [minRating]="filters.minRating"
         (filterChanged)="onFiltersChange($event)">
       </app-filter>
-      
+
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1">
-      <div class="flex justify-between items-end mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Tüm Ürünler</h1>
+    <main class="flex-1 min-w-0">
+
+      <!-- Top bar: sonuç sayısı -->
+      <div class="mb-4">
+        @if (products() !== null) {
+          <p class="text-sm text-gray-500">
+            <span class="font-semibold text-gray-700">{{ productCount() }}</span> ürün listelendi
+          </p>
+        }
       </div>
 
-      @if (products$ | async; as products) {
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          @for (product of products; track product.id) {
+      <!-- Aktif filtre chip'leri -->
+      @if (activeChips().length > 0) {
+        <div class="flex flex-wrap items-center gap-2 mb-5">
+          <span class="text-xs text-gray-500 font-medium">Aktif filtreler:</span>
+          @for (chip of activeChips(); track chip.label) {
+            <button
+              (click)="chip.clearFn(); loadProducts()"
+              class="inline-flex items-center gap-1.5 px-3 py-1 bg-teal-50 text-teal-700 text-xs font-semibold
+                     rounded-full border border-teal-200 hover:bg-teal-100 transition-colors"
+            >
+              {{ chip.label }}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          }
+          <button
+            (click)="onFiltersChange({ search: '', minPrice: null, maxPrice: null, sort: '', minRating: null }); onCategorySelect(null)"
+            class="text-xs text-gray-400 hover:text-red-500 underline underline-offset-2 transition-colors ml-1"
+          >
+            Tümünü temizle
+          </button>
+        </div>
+      }
+
+      <!-- Ürün grid -->
+      @if (products(); as productList) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+          @for (product of productList; track product.id) {
             <app-product-card [product]="product"></app-product-card>
           } @empty {
-            <div class="col-span-full py-20 text-center bg-white rounded-xl shadow-sm border border-gray-100">
-              <p class="text-lg text-gray-500">Arama kriterlerinize uygun ürün bulunamadı.</p>
+            <div class="col-span-full py-24 flex flex-col items-center justify-center
+                        bg-white rounded-xl shadow-sm border border-gray-100 text-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-base font-semibold text-gray-700">Ürün bulunamadı</p>
+                <p class="text-sm text-gray-400 mt-1">Arama kriterlerinize uygun ürün bulunamadı.</p>
+              </div>
+              <button
+                (click)="onFiltersChange({ search: '', minPrice: null, maxPrice: null, sort: '', minRating: null }); onCategorySelect(null)"
+                class="px-4 py-2 text-sm font-semibold text-teal-700 bg-teal-50 rounded-xl
+                       hover:bg-teal-100 transition-colors border border-teal-200"
+              >
+                Filtreleri Temizle
+              </button>
             </div>
           }
         </div>
       } @else {
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
           @for (i of [1, 2, 3, 4, 5, 6]; track i) {
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 h-[340px] animate-pulse">
               <div class="h-48 bg-gray-200 w-full rounded-t-xl"></div>
@@ -54,6 +136,7 @@
           }
         </div>
       }
+
     </main>
 
   </div>

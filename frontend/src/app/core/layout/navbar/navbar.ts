@@ -8,11 +8,11 @@ import { CartService } from '../../services/cart.service';
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './navbar.html'
+  templateUrl: './navbar.html',
 })
 export class Navbar {
-  auth = inject(AuthService); // Inject the signal state
-  cartService = inject(CartService); // Inject the cart service
+  auth = inject(AuthService);
+  cartService = inject(CartService);
   private router = inject(Router);
 
   getProfileLink(): string {
@@ -26,11 +26,11 @@ export class Navbar {
     const role = this.auth.currentUserRole();
     if (role === 'CORPORATE') return '/corporate/dashboard';
     if (role === 'ADMIN') return '/admin/dashboard';
-    return '/';
+    return '/catalog';
   }
 
   logout() {
     this.auth.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/catalog']);
   }
 }

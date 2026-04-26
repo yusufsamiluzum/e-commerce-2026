@@ -1,70 +1,166 @@
-<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col space-y-6">
-  
-  <!-- Search -->
-  <div>
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3 ml-1">Ara</h3>
-    <div class="relative">
-      <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </span>
-      <input 
-        type="text" 
-        [ngModel]="searchQuery" 
-        (ngModelChange)="onSearchChange($event)"
-        (keyup.enter)="applyFilters()"
-        placeholder="Ürün adı..." 
-        class="pl-9 pr-3 py-2 border border-gray-200 rounded-lg w-full text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-      />
-    </div>
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+
+  <!-- Panel Header -->
+  <div class="flex items-center gap-2 px-5 py-4 border-b border-gray-100">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
+    </svg>
+    <h3 class="text-sm font-bold text-gray-800">Filtrele</h3>
   </div>
 
-  <!-- Price Range -->
-  <div>
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3 ml-1">Fiyat Aralığı</h3>
-    <div class="flex items-center space-x-3">
-      <input 
-        type="number" 
-        [(ngModel)]="minPrice" 
-        (change)="applyFilters()"
-        placeholder="Min₺" 
-        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-      />
-      <span class="text-gray-400 text-sm">-</span>
-      <input 
-        type="number" 
-        [(ngModel)]="maxPrice" 
-        (change)="applyFilters()"
-        placeholder="Max₺" 
-        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-      />
-    </div>
-  </div>
+  <div class="p-5 flex flex-col space-y-6">
 
-  <!-- Sort By -->
-  <div>
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3 ml-1">Sırala</h3>
-    <select 
-      [(ngModel)]="sortBy" 
-      (change)="applyFilters()"
-      class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer"
-    >
-      <option value="">Önerilen</option>
-      <option value="newest">En Yeniler</option>
-      <option value="price_asc">Fiyat: Artan</option>
-      <option value="price_desc">Fiyat: Azalan</option>
-      <option value="rating_desc">En Yüksek Puanlılar</option>
-    </select>
-  </div>
-  
-  <!-- Clear Filters -->
-  <div class="pt-2">
-    <button 
+    <!-- Search -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2.5">Ürün Ara</label>
+      <div class="relative">
+        <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </span>
+        <input
+          type="text"
+          [ngModel]="searchQuery"
+          (ngModelChange)="onSearchChange($event)"
+          (keyup.enter)="applyFilters()"
+          placeholder="Ürün adı..."
+          class="pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl w-full text-sm bg-gray-50
+                 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500
+                 transition-all placeholder-gray-400"
+        />
+      </div>
+    </div>
+
+    <!-- Price Range Slider -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Fiyat Aralığı</label>
+
+      <!-- Price display -->
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs px-2.5 py-1 bg-teal-50 text-teal-700 font-bold rounded-lg border border-teal-200">
+          ${{ minPriceSlider }}
+        </span>
+        <div class="flex-1 mx-3 h-px bg-gray-200"></div>
+        <span class="text-xs px-2.5 py-1 bg-teal-50 text-teal-700 font-bold rounded-lg border border-teal-200">
+          {{ maxPriceSlider >= priceMax ? 'Max' : '$' + maxPriceSlider }}
+        </span>
+      </div>
+
+      <!-- Min slider -->
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-gray-400 mb-1">
+          <span>Min Fiyat</span>
+          <span class="text-teal-600 font-semibold">${{ minPriceSlider }}</span>
+        </div>
+        <input
+          type="range"
+          [min]="0"
+          [max]="priceMax"
+          [step]="priceStep"
+          [(ngModel)]="minPriceSlider"
+          (change)="onPriceChange()"
+          class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer
+                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4
+                 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full
+                 [&::-webkit-slider-thumb]:bg-teal-600 [&::-webkit-slider-thumb]:cursor-pointer
+                 [&::-webkit-slider-thumb]:shadow-md
+                 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4
+                 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-teal-600
+                 [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:cursor-pointer"
+        />
+      </div>
+
+      <!-- Max slider -->
+      <div>
+        <div class="flex justify-between text-xs text-gray-400 mb-1">
+          <span>Max Fiyat</span>
+          <span class="text-teal-600 font-semibold">{{ maxPriceSlider >= priceMax ? 'Sınırsız' : '$' + maxPriceSlider }}</span>
+        </div>
+        <input
+          type="range"
+          [min]="0"
+          [max]="priceMax"
+          [step]="priceStep"
+          [(ngModel)]="maxPriceSlider"
+          (change)="onPriceChange()"
+          class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer
+                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4
+                 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full
+                 [&::-webkit-slider-thumb]:bg-teal-600 [&::-webkit-slider-thumb]:cursor-pointer
+                 [&::-webkit-slider-thumb]:shadow-md
+                 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4
+                 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-teal-600
+                 [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:cursor-pointer"
+        />
+      </div>
+    </div>
+
+    <!-- Star Rating Filter -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Minimum Puan</label>
+      <div class="flex flex-wrap gap-2">
+        <button
+          (click)="setMinRating(null)"
+          type="button"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200"
+          [class.bg-teal-600]="minRating === null"
+          [class.text-white]="minRating === null"
+          [class.border-teal-600]="minRating === null"
+          [class.bg-white]="minRating !== null"
+          [class.text-gray-600]="minRating !== null"
+          [class.border-gray-200]="minRating !== null"
+          [class.hover:border-teal-400]="minRating !== null"
+        >
+          Tümü
+        </button>
+        @for (r of [4, 3, 2]; track r) {
+          <button
+            (click)="setMinRating(r)"
+            type="button"
+            class="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200"
+            [class.bg-teal-600]="minRating === r"
+            [class.text-white]="minRating === r"
+            [class.border-teal-600]="minRating === r"
+            [class.bg-white]="minRating !== r"
+            [class.text-gray-600]="minRating !== r"
+            [class.border-gray-200]="minRating !== r"
+            [class.hover:border-teal-400]="minRating !== r"
+          >
+            <span class="text-yellow-400">★</span>
+            {{ r }}+
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Sort By -->
+    <div>
+      <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2.5">Sırala</label>
+      <select
+        [(ngModel)]="sortBy"
+        (change)="applyFilters()"
+        class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-700 bg-gray-50
+               focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500
+               transition-all cursor-pointer"
+      >
+        <option value="">Önerilen</option>
+        <option value="newest">En Yeniler</option>
+        <option value="price_asc">Fiyat: Artan</option>
+        <option value="price_desc">Fiyat: Azalan</option>
+        <option value="rating_desc">En Yüksek Puanlılar</option>
+      </select>
+    </div>
+
+    <!-- Clear Filters -->
+    <button
       (click)="clearFilters()"
-      class="w-full px-4 py-2 border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200"
+      class="w-full px-4 py-2.5 border border-gray-200 text-gray-500 bg-white hover:bg-gray-50
+             hover:border-gray-300 hover:text-gray-700 rounded-xl text-sm font-medium
+             transition-all focus:outline-none"
     >
-      Temizle
+      Filtreleri Temizle
     </button>
+
   </div>
 </div>
