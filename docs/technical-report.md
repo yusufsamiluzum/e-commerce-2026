@@ -17,8 +17,7 @@
 <br>
 
 | | |
-|---|---|
-| **Name/Surname** | Yusuf Samil ÜZÜM |
+| **Name/Surname** | Yusuf Şamil ÜZÜM |
 | **Student Number** | 20230808615 |
 | **Submission Date** | April 26, 2026 |
 
