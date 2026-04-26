@@ -1,7 +1,5 @@
 <div align="center">
 
-# DataPulse
-
 ### Multi-Tenant E-Commerce Analytics Platform with AI-Powered Insights
 
 ---
@@ -20,9 +18,9 @@
 
 | | |
 |---|---|
+| **Name/Surname** | Yusuf Samil ÜZÜM |
+| **Student Number** | 20230808615 |
 | **Submission Date** | April 26, 2026 |
-| **Document Version** | 1.0 |
-| **Pages** | 10–15 |
 
 <br><br>
 
