@@ -16,6 +16,7 @@
 
 <br>
 
+| | |
 |---|---|
 | **Name/Surname** | Yusuf Şamil ÜZÜM |
 | **Student Number** | 20230808615 |
