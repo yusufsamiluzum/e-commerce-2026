@@ -27,8 +27,8 @@
 - [x] **Adım 12:** Sepet + Checkout ✅
 - [x] **Adım 13:** INDIVIDUAL Profil (8 sekme) ✅
 - [x] **Adım 14:** CORPORATE diğer sayfalar (catalog, inventory, orders, refunds, analytics, customers, reviews)
-- [ ] **Adım 15:** ADMIN diğer sayfalar (users, stores, orders, refunds, reviews, categories, audit-logs, analytics, config)
-- [ ] **Adım 16:** Auth sayfaları (login, register, admin-login)
+- [x] **Adım 15:** ADMIN diğer sayfalar (users, stores, orders, refunds, reviews, categories, audit-logs, analytics, config) ✅
+- [x] **Adım 16:** Auth sayfaları (login, register, admin-login)
 
 ## Kurallar
 

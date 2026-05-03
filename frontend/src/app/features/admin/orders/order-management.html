@@ -2,16 +2,22 @@
   <!-- Header -->
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div>
-      <h1 class="text-2xl font-bold text-white">Sipariş Yönetimi</h1>
-      <p class="text-gray-400 text-sm mt-1">Platform genelindeki tüm siparişleri izleyin ve gerektiğinde müdahale edin</p>
+      <h1 class="text-2xl font-medium text-stone-900">Sipariş Yönetimi</h1>
+      <p class="text-sm text-stone-500 mt-0.5">Platform genelindeki tüm siparişleri izleyin ve gerektiğinde müdahale edin</p>
     </div>
     <div class="flex items-center gap-3">
-      <button (click)="exportCsv()" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-emerald-500/20">
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <button (click)="exportCsv()"
+              class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
         CSV
       </button>
-      <div class="flex items-center gap-2 text-sm text-gray-400">
-        <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+      <div class="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
         Audit log
       </div>
     </div>
@@ -21,12 +27,12 @@
   <div class="flex flex-col sm:flex-row gap-3">
     <!-- Search -->
     <div class="relative flex-1">
-      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
       </svg>
       <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
              placeholder="Kullanıcı, mağaza veya sipariş # ara..."
-             class="w-full pl-10 pr-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+             class="w-full pl-10 pr-4 py-2.5 bg-white border border-stone-200 rounded-lg text-stone-900 text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-400/20 focus:border-orange-400">
     </div>
 
     <!-- Status Filter -->
@@ -34,8 +40,8 @@
       @for (status of statusOptions; track status) {
         <button (click)="onStatusFilterChange(status)"
                 [class]="statusFilter() === status
-                  ? 'bg-blue-600 text-white border-blue-500'
-                  : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-gray-600'"
+                  ? 'bg-orange-500 text-white border-orange-500'
+                  : 'bg-white text-stone-500 border-stone-200 hover:border-stone-300'"
                 class="px-3 py-2 text-xs font-medium rounded-lg border transition-all">
           {{ statusLabels[status] }}
         </button>
@@ -44,10 +50,10 @@
   </div>
 
   <!-- Total Count -->
-  <div class="text-sm text-gray-500">
-    Toplam <span class="text-white font-medium">{{ totalElements() }}</span> sipariş
+  <div class="text-sm text-stone-400">
+    Toplam <span class="text-stone-900 font-medium">{{ totalElements() }}</span> sipariş
     @if (searchTerm()) {
-      · <span class="text-blue-400">{{ filteredOrders().length }}</span> sonuç
+      · <span class="text-orange-500">{{ filteredOrders().length }}</span> sonuç
     }
   </div>
 
@@ -55,116 +61,116 @@
   @if (isLoading()) {
     <div class="space-y-3">
       @for (i of [1,2,3,4,5]; track i) {
-        <div class="h-16 bg-gray-800 rounded-lg animate-pulse"></div>
+        <div class="h-16 bg-stone-100 rounded-lg animate-pulse"></div>
       }
     </div>
   } @else {
     <!-- Orders Table -->
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left">
-        <thead class="text-xs text-gray-400 uppercase bg-gray-800/50 border-b border-gray-800">
-          <tr>
-            <th class="px-4 py-3">Sipariş #</th>
-            <th class="px-4 py-3">Müşteri</th>
-            <th class="px-4 py-3">Mağaza</th>
-            <th class="px-4 py-3">Tutar</th>
-            <th class="px-4 py-3">Ürün</th>
-            <th class="px-4 py-3">Tarih</th>
-            <th class="px-4 py-3">Durum</th>
-            <th class="px-4 py-3">Kargo</th>
-            <th class="px-4 py-3 text-right">Müdahale</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-800">
-          @for (order of filteredOrders(); track order.id) {
-            <tr class="hover:bg-gray-800/50 transition-colors">
-              <!-- Sipariş # -->
-              <td class="px-4 py-3">
-                <span class="text-blue-400 font-mono font-medium">#{{ order.id }}</span>
-              </td>
-              <!-- Müşteri -->
-              <td class="px-4 py-3">
-                <div class="text-white font-medium">{{ order.userName }}</div>
-                <div class="text-gray-500 text-xs">{{ order.userEmail }}</div>
-              </td>
-              <!-- Mağaza -->
-              <td class="px-4 py-3 text-gray-300">{{ order.storeName }}</td>
-              <!-- Tutar -->
-              <td class="px-4 py-3">
-                <span class="text-green-400 font-semibold">${{ order.totalPrice | number:'1.2-2' }}</span>
-              </td>
-              <!-- Ürün Sayısı -->
-              <td class="px-4 py-3 text-gray-400">{{ order.itemCount }} ürün</td>
-              <!-- Tarih -->
-              <td class="px-4 py-3 text-gray-400 text-xs">
-                {{ order.orderDate | date:'dd MMM yyyy, HH:mm' }}
-              </td>
-              <!-- Durum Badge -->
-              <td class="px-4 py-3">
-                <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="statusColors[order.status]">
-                  {{ statusLabels[order.status] }}
-                </span>
-              </td>
-              <!-- Kargo -->
-              <td class="px-4 py-3">
-                @if (order.shipmentStatus) {
-                  <div class="text-xs" [ngClass]="shipmentColors[order.shipmentStatus] || 'text-gray-400'">
-                    {{ order.shipmentStatus }}
-                  </div>
-                  @if (order.trackingNumber) {
-                    <div class="text-gray-600 text-xs font-mono">{{ order.trackingNumber }}</div>
-                  }
-                } @else {
-                  <span class="text-gray-600 text-xs">—</span>
-                }
-              </td>
-              <!-- Admin Müdahale -->
-              <td class="px-4 py-3 text-right">
-                @if (isUpdating() === order.id) {
-                  <div class="inline-flex items-center text-gray-400">
-                    <svg class="animate-spin w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                  </div>
-                } @else {
-                  <select (change)="changeOrderStatus(order.id, $any($event.target).value); $any($event.target).value = ''"
-                          class="bg-gray-800 border border-gray-700 text-gray-300 text-xs rounded-lg px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500 cursor-pointer">
-                    <option value="" disabled selected>Durum Değiştir</option>
-                    @for (s of getAvailableTransitions(order.status); track s) {
-                      <option [value]="s">→ {{ statusLabels[s] }}</option>
-                    }
-                  </select>
-                }
-              </td>
+    <div class="bg-white border border-stone-200 rounded-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="text-xs text-stone-400 uppercase bg-stone-50 border-b border-stone-100">
+            <tr>
+              <th class="px-4 py-3 font-medium">Sipariş #</th>
+              <th class="px-4 py-3 font-medium">Müşteri</th>
+              <th class="px-4 py-3 font-medium">Mağaza</th>
+              <th class="px-4 py-3 font-medium">Tutar</th>
+              <th class="px-4 py-3 font-medium">Ürün</th>
+              <th class="px-4 py-3 font-medium">Tarih</th>
+              <th class="px-4 py-3 font-medium">Durum</th>
+              <th class="px-4 py-3 font-medium">Kargo</th>
+              <th class="px-4 py-3 text-right font-medium">Müdahale</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Empty State -->
-    @if (filteredOrders().length === 0) {
-      <div class="text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
-        <p class="mt-3 text-gray-400">Sipariş bulunamadı</p>
+          </thead>
+          <tbody class="divide-y divide-stone-100">
+            @for (order of filteredOrders(); track order.id) {
+              <tr class="hover:bg-orange-50/20 transition-colors">
+                <!-- Sipariş # -->
+                <td class="px-4 py-3">
+                  <span class="text-orange-600 font-mono font-medium">#{{ order.id }}</span>
+                </td>
+                <!-- Müşteri -->
+                <td class="px-4 py-3">
+                  <div class="text-stone-900 font-medium">{{ order.userName }}</div>
+                  <div class="text-stone-400 text-xs">{{ order.userEmail }}</div>
+                </td>
+                <!-- Mağaza -->
+                <td class="px-4 py-3 text-stone-600">{{ order.storeName }}</td>
+                <!-- Tutar -->
+                <td class="px-4 py-3">
+                  <span class="text-lime-600 font-semibold">${{ order.totalPrice | number:'1.2-2' }}</span>
+                </td>
+                <!-- Ürün Sayısı -->
+                <td class="px-4 py-3 text-stone-400">{{ order.itemCount }} ürün</td>
+                <!-- Tarih -->
+                <td class="px-4 py-3 text-stone-400 text-xs">
+                  {{ order.orderDate | date:'dd MMM yyyy, HH:mm' }}
+                </td>
+                <!-- Durum Badge -->
+                <td class="px-4 py-3">
+                  <span class="px-2 py-1 rounded-full text-xs font-medium" [ngClass]="statusColors[order.status]">
+                    {{ statusLabels[order.status] }}
+                  </span>
+                </td>
+                <!-- Kargo -->
+                <td class="px-4 py-3">
+                  @if (order.shipmentStatus) {
+                    <div class="text-xs" [ngClass]="shipmentColors[order.shipmentStatus] || 'text-stone-400'">
+                      {{ order.shipmentStatus }}
+                    </div>
+                    @if (order.trackingNumber) {
+                      <div class="text-stone-400 text-xs font-mono">{{ order.trackingNumber }}</div>
+                    }
+                  } @else {
+                    <span class="text-stone-300 text-xs">—</span>
+                  }
+                </td>
+                <!-- Admin Müdahale -->
+                <td class="px-4 py-3 text-right">
+                  @if (isUpdating() === order.id) {
+                    <div class="inline-flex items-center text-stone-400">
+                      <svg class="animate-spin w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    </div>
+                  } @else {
+                    <select (change)="changeOrderStatus(order.id, $any($event.target).value); $any($event.target).value = ''"
+                            class="bg-white border border-stone-200 text-stone-600 text-xs rounded-lg px-2 py-1.5 focus:ring-orange-400 focus:border-orange-400 cursor-pointer outline-none">
+                      <option value="" disabled selected>Durum Değiştir</option>
+                      @for (s of getAvailableTransitions(order.status); track s) {
+                        <option [value]="s">→ {{ statusLabels[s] }}</option>
+                      }
+                    </select>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
-    }
+
+      <!-- Empty State -->
+      @if (filteredOrders().length === 0) {
+        <div class="text-center py-12">
+          <div class="text-4xl mb-2">📋</div>
+          <p class="text-stone-400">Sipariş bulunamadı</p>
+        </div>
+      }
+    </div>
 
     <!-- Pagination -->
     @if (totalPages() > 1) {
-      <div class="flex items-center justify-between pt-4 border-t border-gray-800">
+      <div class="flex items-center justify-between">
         <button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 0"
-                class="px-4 py-2 text-sm bg-gray-800 text-gray-300 rounded-lg border border-gray-700 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                class="px-4 py-2 text-sm bg-white text-stone-600 rounded-lg border border-stone-200 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
           ← Önceki
         </button>
-        <span class="text-sm text-gray-400">
-          Sayfa <span class="text-white font-medium">{{ currentPage() + 1 }}</span> / {{ totalPages() }}
+        <span class="text-sm text-stone-400">
+          Sayfa <span class="text-stone-900 font-medium">{{ currentPage() + 1 }}</span> / {{ totalPages() }}
         </span>
         <button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() >= totalPages() - 1"
-                class="px-4 py-2 text-sm bg-gray-800 text-gray-300 rounded-lg border border-gray-700 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                class="px-4 py-2 text-sm bg-white text-stone-600 rounded-lg border border-stone-200 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
           Sonraki →
         </button>
       </div>

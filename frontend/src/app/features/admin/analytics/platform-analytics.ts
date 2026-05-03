@@ -38,8 +38,8 @@ export class PlatformAnalytics {
   }
 
   getRatingColor(rating: number): string {
-    if (rating >= 4) return 'text-green-400';
-    if (rating >= 3) return 'text-yellow-400';
-    return 'text-red-400';
+    if (rating >= 4) return 'text-lime-600';
+    if (rating >= 3) return 'text-amber-600';
+    return 'text-red-500';
   }
 }

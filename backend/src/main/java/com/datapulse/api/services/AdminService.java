@@ -184,7 +184,8 @@ public class AdminService {
     }
 
     /**
-     * Dashboard gelir trend verisi — son N gün platform geneli günlük gelir + sipariş sayısı.
+     * Dashboard gelir trend verisi — son N gün platform geneli günlük gelir +
+     * sipariş sayısı.
      */
     @Transactional(readOnly = true)
     public List<Object[]> getRevenueTrend(int days) {
@@ -194,7 +195,6 @@ public class AdminService {
     }
 
     // ─── Kategori Yönetimi ───────────────────────────────────────
-
 
     @Transactional(readOnly = true)
     public List<CategoryDto> getAllCategories() {

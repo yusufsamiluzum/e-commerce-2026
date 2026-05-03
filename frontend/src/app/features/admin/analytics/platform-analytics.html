@@ -1,140 +1,139 @@
-<div class="min-h-screen bg-gray-950 text-white">
-  <div class="container mx-auto px-4 py-8">
+<div class="p-6 space-y-6">
 
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold tracking-tight">Platform Analitiği</h1>
-      <p class="text-gray-400 mt-1">Cross-Store karşılaştırma raporları ve büyüme metrikleri</p>
+  <div>
+    <h1 class="text-2xl font-medium text-stone-900">Platform Analitiği</h1>
+    <p class="text-sm text-stone-500 mt-0.5">Cross-Store karşılaştırma raporları ve büyüme metrikleri</p>
+  </div>
+
+  <!-- Skeleton -->
+  @if (stores() === null || dashboard() === null) {
+    <div class="space-y-5">
+      @for (i of [1,2,3]; track i) {
+        <div class="bg-white border border-stone-200 rounded-xl p-6 animate-pulse">
+          <div class="h-5 bg-stone-100 rounded w-40 mb-4"></div>
+          <div class="h-32 bg-stone-100 rounded"></div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (stores() !== null && dashboard() !== null) {
+    <!-- Platform KPI Özeti -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div class="bg-white border border-stone-200 rounded-xl p-5">
+        <p class="text-xs font-semibold text-lime-600 uppercase tracking-wider mb-1">Platform Toplam Gelir</p>
+        <p class="text-3xl font-bold text-stone-900">${{ dashboard()!.totalRevenue | number:'1.2-2' }}</p>
+      </div>
+      <div class="bg-white border border-stone-200 rounded-xl p-5">
+        <p class="text-xs font-semibold text-orange-500 uppercase tracking-wider mb-1">Platform Toplam Sipariş</p>
+        <p class="text-3xl font-bold text-stone-900">{{ dashboard()!.totalOrders | number }}</p>
+      </div>
+      <div class="bg-white border border-stone-200 rounded-xl p-5">
+        <p class="text-xs font-semibold text-violet-600 uppercase tracking-wider mb-1">Aktif Mağaza Sayısı</p>
+        <p class="text-3xl font-bold text-stone-900">{{ dashboard()!.activeStores }}</p>
+      </div>
     </div>
 
-    <!-- Skeleton -->
-    @if (stores() === null || dashboard() === null) {
-      <div class="space-y-5">
-        @for (i of [1,2,3]; track i) {
-          <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 animate-pulse">
-            <div class="h-5 bg-gray-800 rounded w-40 mb-4"></div>
-            <div class="h-32 bg-gray-800 rounded"></div>
+    <!-- Cross-Store Gelir Karşılaştırması -->
+    <div class="bg-white border border-stone-200 rounded-xl p-6">
+      <h2 class="text-base font-medium text-stone-900 mb-5">Gelir Karşılaştırması</h2>
+      <div class="space-y-4">
+        @for (store of stores(); track store.id) {
+          <div class="flex items-center gap-4">
+            <div class="w-36 flex-shrink-0">
+              <p class="text-sm font-medium text-stone-900 truncate">{{ store.name }}</p>
+              <p class="text-[10px] text-stone-400">{{ store.ownerName }}</p>
+            </div>
+            <div class="flex-1 relative">
+              <div class="h-8 bg-stone-100 rounded-lg overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-lime-500 to-lime-400 rounded-lg transition-all duration-700 ease-out flex items-center justify-end pr-3"
+                     [style.width.%]="getRevenueBarWidth(store)">
+                  @if (getRevenueBarWidth(store) > 20) {
+                    <span class="text-xs font-bold text-white">${{ store.totalRevenue | number:'1.0-0' }}</span>
+                  }
+                </div>
+              </div>
+              @if (getRevenueBarWidth(store) <= 20) {
+                <span class="absolute right-0 top-1/2 -translate-y-1/2 text-xs text-stone-400 pl-2">${{ store.totalRevenue | number:'1.0-0' }}</span>
+              }
+            </div>
           </div>
         }
       </div>
-    }
+    </div>
 
-    @if (stores() !== null && dashboard() !== null) {
-      <!-- Platform Özeti -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-        <div class="bg-gradient-to-br from-emerald-950/50 to-gray-900 border border-emerald-800/30 rounded-xl p-5">
-          <p class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">Platform Toplam Gelir</p>
-          <p class="text-3xl font-bold text-white">${{ dashboard()!.totalRevenue | number:'1.2-2' }}</p>
-        </div>
-        <div class="bg-gradient-to-br from-blue-950/50 to-gray-900 border border-blue-800/30 rounded-xl p-5">
-          <p class="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-1">Platform Toplam Sipariş</p>
-          <p class="text-3xl font-bold text-white">{{ dashboard()!.totalOrders | number }}</p>
-        </div>
-        <div class="bg-gradient-to-br from-violet-950/50 to-gray-900 border border-violet-800/30 rounded-xl p-5">
-          <p class="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-1">Aktif Mağaza Sayısı</p>
-          <p class="text-3xl font-bold text-white">{{ dashboard()!.activeStores }}</p>
-        </div>
-      </div>
-
-      <!-- Cross-Store Gelir Karşılaştırması -->
-      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
-        <h2 class="text-lg font-semibold text-gray-200 mb-5">Gelir Karşılaştırması</h2>
-        <div class="space-y-4">
-          @for (store of stores(); track store.id) {
-            <div class="flex items-center gap-4">
-              <div class="w-36 flex-shrink-0">
-                <p class="text-sm font-medium text-white truncate">{{ store.name }}</p>
-                <p class="text-[10px] text-gray-500">{{ store.ownerName }}</p>
-              </div>
-              <div class="flex-1 relative">
-                <div class="h-8 bg-gray-800 rounded-lg overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-lg transition-all duration-700 ease-out flex items-center justify-end pr-3"
-                       [style.width.%]="getRevenueBarWidth(store)">
-                    @if (getRevenueBarWidth(store) > 20) {
-                      <span class="text-xs font-bold text-white">${{ store.totalRevenue | number:'1.0-0' }}</span>
-                    }
-                  </div>
-                </div>
-                @if (getRevenueBarWidth(store) <= 20) {
-                  <span class="absolute right-0 top-1/2 -translate-y-1/2 text-xs text-gray-400 pl-2">${{ store.totalRevenue | number:'1.0-0' }}</span>
-                }
-              </div>
+    <!-- Cross-Store Sipariş Karşılaştırması -->
+    <div class="bg-white border border-stone-200 rounded-xl p-6">
+      <h2 class="text-base font-medium text-stone-900 mb-5">Sipariş Karşılaştırması</h2>
+      <div class="space-y-4">
+        @for (store of stores(); track store.id) {
+          <div class="flex items-center gap-4">
+            <div class="w-36 flex-shrink-0">
+              <p class="text-sm font-medium text-stone-900 truncate">{{ store.name }}</p>
             </div>
-          }
-        </div>
-      </div>
-
-      <!-- Cross-Store Sipariş Karşılaştırması -->
-      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
-        <h2 class="text-lg font-semibold text-gray-200 mb-5">Sipariş Karşılaştırması</h2>
-        <div class="space-y-4">
-          @for (store of stores(); track store.id) {
-            <div class="flex items-center gap-4">
-              <div class="w-36 flex-shrink-0">
-                <p class="text-sm font-medium text-white truncate">{{ store.name }}</p>
-              </div>
-              <div class="flex-1 relative">
-                <div class="h-8 bg-gray-800 rounded-lg overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg transition-all duration-700 ease-out flex items-center justify-end pr-3"
-                       [style.width.%]="getOrdersBarWidth(store)">
-                    @if (getOrdersBarWidth(store) > 20) {
-                      <span class="text-xs font-bold text-white">{{ store.totalOrders }}</span>
-                    }
-                  </div>
+            <div class="flex-1 relative">
+              <div class="h-8 bg-stone-100 rounded-lg overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-orange-500 to-orange-400 rounded-lg transition-all duration-700 ease-out flex items-center justify-end pr-3"
+                     [style.width.%]="getOrdersBarWidth(store)">
+                  @if (getOrdersBarWidth(store) > 20) {
+                    <span class="text-xs font-bold text-white">{{ store.totalOrders }}</span>
+                  }
                 </div>
-                @if (getOrdersBarWidth(store) <= 20) {
-                  <span class="absolute right-0 top-1/2 -translate-y-1/2 text-xs text-gray-400 pl-2">{{ store.totalOrders }}</span>
-                }
               </div>
-            </div>
-          }
-        </div>
-      </div>
-
-      <!-- Detaylı Tablo -->
-      <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-800">
-          <h2 class="text-lg font-semibold text-gray-200">Mağaza Performans Tablosu</h2>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead>
-              <tr class="border-b border-gray-800 text-xs text-gray-500 uppercase tracking-wider">
-                <th class="text-left px-6 py-3 font-medium">Mağaza</th>
-                <th class="text-right px-6 py-3 font-medium">Ürün</th>
-                <th class="text-right px-6 py-3 font-medium">Sipariş</th>
-                <th class="text-right px-6 py-3 font-medium">Gelir</th>
-                <th class="text-right px-6 py-3 font-medium">Ort. Puan</th>
-                <th class="text-center px-6 py-3 font-medium">Durum</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (store of stores(); track store.id) {
-                <tr class="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
-                  <td class="px-6 py-4">
-                    <p class="font-medium text-white">{{ store.name }}</p>
-                    <p class="text-xs text-gray-500">{{ store.ownerName }}</p>
-                  </td>
-                  <td class="px-6 py-4 text-right text-gray-300">{{ store.totalProducts }}</td>
-                  <td class="px-6 py-4 text-right text-gray-300">{{ store.totalOrders }}</td>
-                  <td class="px-6 py-4 text-right font-medium text-emerald-400">${{ store.totalRevenue | number:'1.2-2' }}</td>
-                  <td class="px-6 py-4 text-right">
-                    <span [class]="getRatingColor(store.averageRating)" class="font-medium">
-                      {{ store.averageRating | number:'1.1-1' }} ★
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-center">
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                          [class]="store.status === 'ACTIVE' ? 'bg-green-500/10 text-green-400' : 'bg-orange-500/10 text-orange-400'">
-                      <span class="h-1.5 w-1.5 rounded-full" [class]="store.status === 'ACTIVE' ? 'bg-green-400' : 'bg-orange-400'"></span>
-                      {{ store.status }}
-                    </span>
-                  </td>
-                </tr>
+              @if (getOrdersBarWidth(store) <= 20) {
+                <span class="absolute right-0 top-1/2 -translate-y-1/2 text-xs text-stone-400 pl-2">{{ store.totalOrders }}</span>
               }
-            </tbody>
-          </table>
-        </div>
+            </div>
+          </div>
+        }
       </div>
-    }
-  </div>
+    </div>
+
+    <!-- Detaylı Tablo -->
+    <div class="bg-white border border-stone-200 rounded-xl overflow-hidden">
+      <div class="px-6 py-4 border-b border-stone-100 bg-stone-50">
+        <h2 class="text-base font-medium text-stone-900">Mağaza Performans Tablosu</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-stone-100 text-xs text-stone-400 uppercase tracking-wider">
+              <th class="text-left px-6 py-3 font-medium">Mağaza</th>
+              <th class="text-right px-6 py-3 font-medium">Ürün</th>
+              <th class="text-right px-6 py-3 font-medium">Sipariş</th>
+              <th class="text-right px-6 py-3 font-medium">Gelir</th>
+              <th class="text-right px-6 py-3 font-medium">Ort. Puan</th>
+              <th class="text-center px-6 py-3 font-medium">Durum</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (store of stores(); track store.id) {
+              <tr class="border-b border-stone-100 hover:bg-orange-50/20 transition-colors">
+                <td class="px-6 py-4">
+                  <p class="font-medium text-stone-900">{{ store.name }}</p>
+                  <p class="text-xs text-stone-400">{{ store.ownerName }}</p>
+                </td>
+                <td class="px-6 py-4 text-right text-stone-600">{{ store.totalProducts }}</td>
+                <td class="px-6 py-4 text-right text-stone-600">{{ store.totalOrders }}</td>
+                <td class="px-6 py-4 text-right font-medium text-lime-600">${{ store.totalRevenue | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 text-right">
+                  <span [class]="getRatingColor(store.averageRating)" class="font-medium">
+                    {{ store.averageRating | number:'1.1-1' }} ★
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                        [class]="store.status === 'ACTIVE' ? 'bg-lime-50 text-lime-700' : 'bg-amber-50 text-amber-700'">
+                    <span class="h-1.5 w-1.5 rounded-full"
+                          [class]="store.status === 'ACTIVE' ? 'bg-lime-500' : 'bg-amber-500'"></span>
+                    {{ store.status === 'ACTIVE' ? 'Aktif' : store.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
 </div>

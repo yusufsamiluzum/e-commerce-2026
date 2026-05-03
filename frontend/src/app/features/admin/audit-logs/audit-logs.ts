@@ -40,23 +40,23 @@ export class AuditLogs {
   }
 
   getActionColor(action: string): string {
-    if (action.startsWith('CREATE')) return 'text-green-400';
-    if (action.startsWith('UPDATE')) return 'text-blue-400';
-    if (action.startsWith('DELETE')) return 'text-red-400';
-    if (action.startsWith('LOGIN')) return 'text-cyan-400';
-    if (action.startsWith('CANCEL')) return 'text-orange-400';
-    return 'text-gray-400';
+    if (action.startsWith('CREATE')) return 'text-lime-600';
+    if (action.startsWith('UPDATE')) return 'text-orange-600';
+    if (action.startsWith('DELETE')) return 'text-red-500';
+    if (action.startsWith('LOGIN')) return 'text-stone-900';
+    if (action.startsWith('CANCEL')) return 'text-amber-600';
+    return 'text-stone-500';
   }
 
   getEntityBadgeClass(type: string): string {
     switch (type) {
-      case 'USER': return 'bg-blue-500/10 text-blue-400';
-      case 'STORE': return 'bg-emerald-500/10 text-emerald-400';
-      case 'ORDER': return 'bg-violet-500/10 text-violet-400';
-      case 'PRODUCT': return 'bg-amber-500/10 text-amber-400';
-      case 'CATEGORY': return 'bg-pink-500/10 text-pink-400';
-      case 'SYSTEM_CONFIG': return 'bg-cyan-500/10 text-cyan-400';
-      default: return 'bg-gray-500/10 text-gray-400';
+      case 'USER': return 'bg-orange-50 text-orange-600';
+      case 'STORE': return 'bg-lime-50 text-lime-700';
+      case 'ORDER': return 'bg-violet-50 text-violet-600';
+      case 'PRODUCT': return 'bg-amber-50 text-amber-700';
+      case 'CATEGORY': return 'bg-red-50 text-red-600';
+      case 'SYSTEM_CONFIG': return 'bg-stone-100 text-stone-600';
+      default: return 'bg-stone-50 text-stone-400';
     }
   }
 }

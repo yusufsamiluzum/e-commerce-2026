@@ -1,181 +1,193 @@
-<div class="min-h-screen bg-gray-950 text-white">
-  <div class="container mx-auto px-4 py-8">
+<div class="p-6 space-y-6">
 
-    <div class="flex items-center justify-between mb-8">
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight">Mağaza Yönetimi</h1>
-        <p class="text-gray-400 mt-1">Platformdaki mağazaları onayla, askıya al veya kapat</p>
-      </div>
-      <div class="flex items-center gap-3">
-        <button (click)="exportCsv()" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-emerald-500/20">
-          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          CSV
-        </button>
-        <a routerLink="/admin/analytics" class="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1.5">
-          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          Karşılaştırma →
-        </a>
-      </div>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-medium text-stone-900">Mağaza Yönetimi</h1>
+      <p class="text-sm text-stone-500 mt-0.5">Platformdaki mağazaları onayla, askıya al veya kapat</p>
     </div>
+    <div class="flex items-center gap-3">
+      <button (click)="exportCsv()"
+              class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        CSV
+      </button>
+      <a routerLink="/admin/analytics"
+         class="text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors flex items-center gap-1.5">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        Karşılaştırma →
+      </a>
+    </div>
+  </div>
 
-    <!-- Skeleton -->
-    @if (storesPage() === null) {
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        @for (i of [1,2,3,4]; track i) {
-          <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 animate-pulse">
-            <div class="flex justify-between mb-4">
-              <div class="h-5 bg-gray-800 rounded w-32"></div>
-              <div class="h-5 bg-gray-800 rounded-full w-20"></div>
-            </div>
-            <div class="h-3 bg-gray-800 rounded w-48 mb-3"></div>
-            <div class="grid grid-cols-3 gap-4">
-              <div class="h-12 bg-gray-800 rounded"></div>
-              <div class="h-12 bg-gray-800 rounded"></div>
-              <div class="h-12 bg-gray-800 rounded"></div>
-            </div>
+  <!-- Skeleton -->
+  @if (storesPage() === null) {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      @for (i of [1,2,3,4]; track i) {
+        <div class="bg-white border border-stone-200 rounded-xl p-6 animate-pulse">
+          <div class="flex justify-between mb-4">
+            <div class="h-5 bg-stone-100 rounded w-32"></div>
+            <div class="h-5 bg-stone-100 rounded-full w-20"></div>
           </div>
-        }
-      </div>
-    }
-
-    <!-- Mağaza Kartları -->
-    @if (storesPage() !== null) {
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        @for (store of storesPage()!.content; track store.id) {
-          <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition-colors">
-            <!-- Üst: İsim + Durum -->
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <h3 class="font-semibold text-white text-lg">{{ store.name }}</h3>
-                <p class="text-xs text-gray-500 mt-0.5">{{ store.ownerName }} · {{ store.ownerEmail }}</p>
-              </div>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border"
-                    [class]="getStatusBadgeClass(store.status)">
-                {{ getStatusLabel(store.status) }}
-              </span>
-            </div>
-
-            <p class="text-sm text-gray-400 mb-4 line-clamp-2">{{ store.description }}</p>
-
-            <!-- Metrikler -->
-            <div class="grid grid-cols-4 gap-3 mb-4">
-              <div class="text-center">
-                <p class="text-lg font-bold text-white">{{ store.totalProducts }}</p>
-                <p class="text-[10px] text-gray-500 uppercase">Ürün</p>
-              </div>
-              <div class="text-center">
-                <p class="text-lg font-bold text-white">{{ store.totalOrders }}</p>
-                <p class="text-[10px] text-gray-500 uppercase">Sipariş</p>
-              </div>
-              <div class="text-center">
-                <p class="text-lg font-bold text-emerald-400">${{ store.totalRevenue | number:'1.0-0' }}</p>
-                <p class="text-[10px] text-gray-500 uppercase">Gelir</p>
-              </div>
-              <div class="text-center">
-                <p class="text-lg font-bold text-amber-400">{{ store.averageRating | number:'1.1-1' }}</p>
-                <p class="text-[10px] text-gray-500 uppercase">Puan</p>
-              </div>
-            </div>
-
-            <!-- Aksiyonlar -->
-            <div class="flex items-center gap-2 pt-3 border-t border-gray-800">
-              @if (store.status === 'PENDING_APPROVAL') {
-                <button (click)="updateStoreStatus(store, 'ACTIVE')"
-                        [disabled]="actionInProgress() === store.id"
-                        class="flex-1 text-xs py-2 rounded-lg font-medium bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all disabled:opacity-50">
-                  ✓ Onayla
-                </button>
-                <button (click)="updateStoreStatus(store, 'CLOSED')"
-                        [disabled]="actionInProgress() === store.id"
-                        class="flex-1 text-xs py-2 rounded-lg font-medium bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all disabled:opacity-50">
-                  ✕ Reddet
-                </button>
-              }
-              @if (store.status === 'ACTIVE') {
-                <button (click)="updateStoreStatus(store, 'SUSPENDED')"
-                        [disabled]="actionInProgress() === store.id"
-                        class="flex-1 text-xs py-2 rounded-lg font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-all disabled:opacity-50">
-                  Askıya Al
-                </button>
-              }
-              @if (store.status === 'SUSPENDED') {
-                <button (click)="updateStoreStatus(store, 'ACTIVE')"
-                        [disabled]="actionInProgress() === store.id"
-                        class="flex-1 text-xs py-2 rounded-lg font-medium bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500/20 transition-all disabled:opacity-50">
-                  Yeniden Aktif Et
-                </button>
-                <button (click)="updateStoreStatus(store, 'CLOSED')"
-                        [disabled]="actionInProgress() === store.id"
-                        class="flex-1 text-xs py-2 rounded-lg font-medium bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all disabled:opacity-50">
-                  Kapat
-                </button>
-              }
-              <button (click)="showDetail(store)"
-                      class="text-xs py-2 px-3 rounded-lg font-medium bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">
-                Detay
-              </button>
-            </div>
+          <div class="h-3 bg-stone-100 rounded w-48 mb-3"></div>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="h-12 bg-stone-100 rounded"></div>
+            <div class="h-12 bg-stone-100 rounded"></div>
+            <div class="h-12 bg-stone-100 rounded"></div>
           </div>
-        } @empty {
-          <div class="col-span-2 py-16 text-center text-gray-500">
-            Mağaza bulunamadı.
-          </div>
-        }
-      </div>
-
-      <!-- Sayfalama -->
-      @if (storesPage()!.totalPages > 1) {
-        <div class="mt-6 flex justify-center gap-1">
-          @for (p of [].constructor(storesPage()!.totalPages); track $index) {
-            <button (click)="goToPage($index)"
-                    [class]="currentPage() === $index
-                      ? 'h-8 w-8 rounded-md bg-blue-600 text-white text-xs font-medium'
-                      : 'h-8 w-8 rounded-md bg-gray-800 text-gray-400 text-xs font-medium hover:bg-gray-700 transition-colors'">
-              {{ $index + 1 }}
-            </button>
-          }
         </div>
       }
+    </div>
+  }
+
+  <!-- Mağaza Kartları -->
+  @if (storesPage() !== null) {
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      @for (store of storesPage()!.content; track store.id) {
+        <div class="bg-white border border-stone-200 rounded-xl p-6 hover:border-orange-200 hover:shadow-sm transition-all">
+          <!-- Üst: İsim + Durum -->
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-semibold text-stone-900 text-lg">{{ store.name }}</h3>
+              <p class="text-xs text-stone-400 mt-0.5">{{ store.ownerName }} · {{ store.ownerEmail }}</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border"
+                  [class]="getStatusBadgeClass(store.status)">
+              {{ getStatusLabel(store.status) }}
+            </span>
+          </div>
+
+          <p class="text-sm text-stone-400 mb-4 line-clamp-2">{{ store.description }}</p>
+
+          <!-- Metrikler -->
+          <div class="grid grid-cols-4 gap-3 mb-4">
+            <div class="text-center bg-stone-50 rounded-lg p-2">
+              <p class="text-lg font-bold text-stone-900">{{ store.totalProducts }}</p>
+              <p class="text-[10px] text-stone-400 uppercase">Ürün</p>
+            </div>
+            <div class="text-center bg-stone-50 rounded-lg p-2">
+              <p class="text-lg font-bold text-stone-900">{{ store.totalOrders }}</p>
+              <p class="text-[10px] text-stone-400 uppercase">Sipariş</p>
+            </div>
+            <div class="text-center bg-stone-50 rounded-lg p-2">
+              <p class="text-lg font-bold text-lime-600">${{ store.totalRevenue | number:'1.0-0' }}</p>
+              <p class="text-[10px] text-stone-400 uppercase">Gelir</p>
+            </div>
+            <div class="text-center bg-stone-50 rounded-lg p-2">
+              <p class="text-lg font-bold text-amber-500">{{ store.averageRating | number:'1.1-1' }}</p>
+              <p class="text-[10px] text-stone-400 uppercase">Puan</p>
+            </div>
+          </div>
+
+          <!-- Aksiyonlar -->
+          <div class="flex items-center gap-2 pt-3 border-t border-stone-100">
+            @if (store.status === 'PENDING_APPROVAL') {
+              <button (click)="updateStoreStatus(store, 'ACTIVE')"
+                      [disabled]="actionInProgress() === store.id"
+                      class="flex-1 text-xs py-2 rounded-lg font-medium bg-lime-50 text-lime-700 border border-lime-200 hover:bg-lime-100 transition-all disabled:opacity-50">
+                ✓ Onayla
+              </button>
+              <button (click)="updateStoreStatus(store, 'CLOSED')"
+                      [disabled]="actionInProgress() === store.id"
+                      class="flex-1 text-xs py-2 rounded-lg font-medium bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-all disabled:opacity-50">
+                ✕ Reddet
+              </button>
+            }
+            @if (store.status === 'ACTIVE') {
+              <button (click)="updateStoreStatus(store, 'SUSPENDED')"
+                      [disabled]="actionInProgress() === store.id"
+                      class="flex-1 text-xs py-2 rounded-lg font-medium bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 transition-all disabled:opacity-50">
+                Askıya Al
+              </button>
+            }
+            @if (store.status === 'SUSPENDED') {
+              <button (click)="updateStoreStatus(store, 'ACTIVE')"
+                      [disabled]="actionInProgress() === store.id"
+                      class="flex-1 text-xs py-2 rounded-lg font-medium bg-lime-50 text-lime-700 border border-lime-200 hover:bg-lime-100 transition-all disabled:opacity-50">
+                Yeniden Aktif Et
+              </button>
+              <button (click)="updateStoreStatus(store, 'CLOSED')"
+                      [disabled]="actionInProgress() === store.id"
+                      class="flex-1 text-xs py-2 rounded-lg font-medium bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-all disabled:opacity-50">
+                Kapat
+              </button>
+            }
+            <button (click)="showDetail(store)"
+                    class="text-xs py-2 px-3 rounded-lg font-medium bg-stone-100 text-stone-600 hover:bg-stone-200 transition-all">
+              Detay
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <div class="col-span-2 py-16 text-center">
+          <div class="text-4xl mb-2">🏪</div>
+          <p class="text-stone-400">Mağaza bulunamadı.</p>
+        </div>
+      }
+    </div>
+
+    <!-- Sayfalama -->
+    @if (storesPage()!.totalPages > 1) {
+      <div class="flex justify-center gap-1">
+        @for (p of [].constructor(storesPage()!.totalPages); track $index) {
+          <button (click)="goToPage($index)"
+                  [class]="currentPage() === $index
+                    ? 'h-8 w-8 rounded-md bg-orange-500 text-white text-xs font-medium'
+                    : 'h-8 w-8 rounded-md bg-white border border-stone-200 text-stone-500 text-xs font-medium hover:bg-stone-50 transition-colors'">
+            {{ $index + 1 }}
+          </button>
+        }
+      </div>
     }
-  </div>
+  }
 
   <!-- Detay Modal -->
   @if (detailStore() !== null) {
-    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closeDetail()">
-      <div class="bg-gray-900 border border-gray-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl" (click)="$event.stopPropagation()">
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+         (click)="closeDetail()">
+      <div class="bg-white border border-stone-200 rounded-2xl max-w-lg w-full p-6 shadow-xl"
+           (click)="$event.stopPropagation()">
         <div class="flex items-start justify-between mb-5">
           <div>
-            <h2 class="text-xl font-bold text-white">{{ detailStore()!.name }}</h2>
-            <p class="text-sm text-gray-400">{{ detailStore()!.ownerName }} · {{ detailStore()!.ownerEmail }}</p>
+            <h2 class="text-xl font-semibold text-stone-900">{{ detailStore()!.name }}</h2>
+            <p class="text-sm text-stone-400">{{ detailStore()!.ownerName }} · {{ detailStore()!.ownerEmail }}</p>
           </div>
-          <button (click)="closeDetail()" class="text-gray-500 hover:text-white transition-colors">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          <button (click)="closeDetail()" class="text-stone-400 hover:text-stone-700 transition-colors">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
           </button>
         </div>
 
-        <p class="text-sm text-gray-400 mb-5">{{ detailStore()!.description }}</p>
+        <p class="text-sm text-stone-500 mb-5">{{ detailStore()!.description }}</p>
 
         <div class="grid grid-cols-2 gap-4 mb-5">
-          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-white">{{ detailStore()!.totalProducts }}</p>
-            <p class="text-xs text-gray-500">Toplam Ürün</p>
+          <div class="bg-stone-50 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold text-stone-900">{{ detailStore()!.totalProducts }}</p>
+            <p class="text-xs text-stone-400">Toplam Ürün</p>
           </div>
-          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-white">{{ detailStore()!.activeProducts }}</p>
-            <p class="text-xs text-gray-500">Aktif Ürün</p>
+          <div class="bg-stone-50 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold text-stone-900">{{ detailStore()!.activeProducts }}</p>
+            <p class="text-xs text-stone-400">Aktif Ürün</p>
           </div>
-          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-emerald-400">${{ detailStore()!.totalRevenue | number:'1.2-2' }}</p>
-            <p class="text-xs text-gray-500">Toplam Gelir</p>
+          <div class="bg-stone-50 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold text-lime-600">${{ detailStore()!.totalRevenue | number:'1.2-2' }}</p>
+            <p class="text-xs text-stone-400">Toplam Gelir</p>
           </div>
-          <div class="bg-gray-800/50 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-blue-400">{{ detailStore()!.totalOrders }}</p>
-            <p class="text-xs text-gray-500">Toplam Sipariş</p>
+          <div class="bg-stone-50 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold text-orange-500">{{ detailStore()!.totalOrders }}</p>
+            <p class="text-xs text-stone-400">Toplam Sipariş</p>
           </div>
         </div>
 
-        <div class="flex items-center justify-between text-sm text-gray-400 pt-4 border-t border-gray-800">
-          <span>Para Birimi: <strong class="text-white">{{ detailStore()!.baseCurrency }}</strong></span>
+        <div class="flex items-center justify-between text-sm text-stone-400 pt-4 border-t border-stone-100">
+          <span>Para Birimi: <strong class="text-stone-900">{{ detailStore()!.baseCurrency }}</strong></span>
           <span>Kayıt: {{ detailStore()!.createdAt | date:'dd MMM yyyy' }}</span>
         </div>
       </div>

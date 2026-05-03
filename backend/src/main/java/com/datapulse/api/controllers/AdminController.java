@@ -109,8 +109,8 @@ public class AdminController {
             @RequestParam(required = false) String status) {
         Pageable pageable = PageRequest.of(page, size);
         if (status != null && !status.isEmpty()) {
-            com.datapulse.api.entities.OrderStatus orderStatus =
-                    com.datapulse.api.entities.OrderStatus.valueOf(status.toUpperCase());
+            com.datapulse.api.entities.OrderStatus orderStatus = com.datapulse.api.entities.OrderStatus
+                    .valueOf(status.toUpperCase());
             return ResponseEntity.ok(adminService.getOrdersByStatus(orderStatus, pageable));
         }
         return ResponseEntity.ok(adminService.getAllOrders(pageable));
@@ -122,8 +122,8 @@ public class AdminController {
             @PathVariable Long id,
             @RequestBody Map<String, String> body) {
         Long adminId = ((User) authentication.getPrincipal()).getId();
-        com.datapulse.api.entities.OrderStatus newStatus =
-                com.datapulse.api.entities.OrderStatus.valueOf(body.get("status").toUpperCase());
+        com.datapulse.api.entities.OrderStatus newStatus = com.datapulse.api.entities.OrderStatus
+                .valueOf(body.get("status").toUpperCase());
         return ResponseEntity.ok(adminService.updateOrderStatus(id, newStatus, adminId));
     }
 

@@ -35,10 +35,10 @@ export class ReviewModeration {
 
   sentimentColor(sentiment: string | null): string {
     switch (sentiment?.toUpperCase()) {
-      case 'POSITIVE': return 'text-green-400 bg-green-900/30';
-      case 'NEGATIVE': return 'text-red-400 bg-red-900/30';
-      case 'NEUTRAL': return 'text-yellow-400 bg-yellow-900/30';
-      default: return 'text-gray-400 bg-gray-800';
+      case 'POSITIVE': return 'text-lime-700 bg-lime-50';
+      case 'NEGATIVE': return 'text-red-600 bg-red-50';
+      case 'NEUTRAL': return 'text-amber-700 bg-amber-50';
+      default: return 'text-stone-500 bg-stone-100';
     }
   }
 

@@ -39,18 +39,18 @@ export class OrderManagement {
   };
 
   statusColors: Record<string, string> = {
-    'PENDING': 'bg-yellow-500/20 text-yellow-400',
-    'CONFIRMED': 'bg-blue-500/20 text-blue-400',
-    'SHIPPED': 'bg-purple-500/20 text-purple-400',
-    'DELIVERED': 'bg-green-500/20 text-green-400',
-    'CANCELLED': 'bg-red-500/20 text-red-400'
+    'PENDING': 'bg-amber-50 text-amber-700',
+    'CONFIRMED': 'bg-orange-50 text-orange-600',
+    'SHIPPED': 'bg-violet-50 text-violet-600',
+    'DELIVERED': 'bg-lime-50 text-lime-700',
+    'CANCELLED': 'bg-red-50 text-red-600'
   };
 
   shipmentColors: Record<string, string> = {
-    'PREPARING': 'text-yellow-400',
-    'IN_TRANSIT': 'text-blue-400',
-    'DELIVERED': 'text-green-400',
-    'RETURNED': 'text-red-400'
+    'PREPARING': 'text-amber-600',
+    'IN_TRANSIT': 'text-orange-600',
+    'DELIVERED': 'text-lime-600',
+    'RETURNED': 'text-red-500'
   };
 
   filteredOrders = computed(() => {

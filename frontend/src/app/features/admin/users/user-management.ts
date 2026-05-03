@@ -86,19 +86,19 @@ export class UserManagement {
 
   getRoleBadgeClass(role: string): string {
     switch (role) {
-      case 'ADMIN': return 'bg-red-500/10 text-red-400 border-red-500/20';
-      case 'CORPORATE': return 'bg-violet-500/10 text-violet-400 border-violet-500/20';
-      case 'INDIVIDUAL': return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
-      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+      case 'ADMIN': return 'bg-red-50 text-red-600 border-red-200';
+      case 'CORPORATE': return 'bg-violet-50 text-violet-600 border-violet-200';
+      case 'INDIVIDUAL': return 'bg-orange-50 text-orange-600 border-orange-200';
+      default: return 'bg-stone-50 text-stone-500 border-stone-200';
     }
   }
 
   getStatusBadgeClass(status: string): string {
     switch (status) {
-      case 'ACTIVE': return 'bg-green-500/10 text-green-400 border-green-500/20';
-      case 'SUSPENDED': return 'bg-orange-500/10 text-orange-400 border-orange-500/20';
-      case 'DELETED': return 'bg-red-500/10 text-red-400 border-red-500/20';
-      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+      case 'ACTIVE': return 'bg-lime-50 text-lime-700 border-lime-200';
+      case 'SUSPENDED': return 'bg-amber-50 text-amber-700 border-amber-200';
+      case 'DELETED': return 'bg-red-50 text-red-600 border-red-200';
+      default: return 'bg-stone-50 text-stone-500 border-stone-200';
     }
   }
 
