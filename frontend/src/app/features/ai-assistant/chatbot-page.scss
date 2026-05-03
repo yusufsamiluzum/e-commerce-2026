@@ -1,5 +1,4 @@
-/* ── Chatbot Page Styles ── */
-/* Premium dark theme, glassmorphism, micro-animations */
+/* ── Chatbot Page Styles — Ember Theme ── */
 
 :host {
   display: block;
@@ -11,8 +10,8 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0a0f 0%, #111127 50%, #0a0a0f 100%);
-  color: #e0e0e0;
+  background: #fef7ed; /* ember-50 */
+  color: #1c1917; /* stone-900 */
 }
 
 /* ── Header ── */
@@ -21,9 +20,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
+  border-bottom: 1px solid #e7e5e4; /* stone-200 */
   flex-shrink: 0;
 }
 
@@ -37,7 +35,7 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  background: linear-gradient(135deg, #f97316, #ea580c);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,40 +47,16 @@
 .header-title {
   font-size: 18px;
   font-weight: 700;
-  color: #f5f5f5;
+  color: #1c1917;
   margin: 0;
   letter-spacing: -0.3px;
 }
 
 .header-subtitle {
   font-size: 12px;
-  color: #888;
+  color: #78716c; /* stone-500 */
 }
 
-.header-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
-}
 
 /* ── Messages Area ── */
 .messages-area {
@@ -92,14 +66,10 @@
   padding: 24px;
   scroll-behavior: smooth;
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: #d6d3d1; /* stone-300 */
     border-radius: 3px;
   }
 }
@@ -119,13 +89,13 @@
   width: 80px;
   height: 80px;
   border-radius: 24px;
-  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  background: linear-gradient(135deg, #f97316, #ea580c);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   margin-bottom: 20px;
-  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 8px 32px rgba(249, 115, 22, 0.25);
 
   svg { width: 44px; height: 44px; }
 }
@@ -133,13 +103,13 @@
 .welcome-title {
   font-size: 24px;
   font-weight: 700;
-  color: #f5f5f5;
+  color: #1c1917;
   margin: 0 0 8px;
 }
 
 .welcome-desc {
   font-size: 14px;
-  color: #888;
+  color: #78716c;
   margin: 0 0 28px;
   max-width: 400px;
 }
@@ -155,16 +125,16 @@
 .chip {
   padding: 8px 16px;
   border-radius: 20px;
-  border: 1px solid rgba(124, 58, 237, 0.3);
-  background: rgba(124, 58, 237, 0.08);
-  color: #c4b5fd;
+  border: 1px solid #fed7aa; /* orange-200 */
+  background: #fff7ed; /* orange-50 */
+  color: #ea580c; /* ember-600 */
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(124, 58, 237, 0.2);
-    border-color: rgba(124, 58, 237, 0.5);
+    background: #ffedd5; /* orange-100 */
+    border-color: #f97316;
     transform: translateY(-1px);
   }
 }
@@ -176,12 +146,8 @@
   margin-bottom: 16px;
   animation: slideIn 0.3s ease-out;
 
-  &.user-row {
-    justify-content: flex-end;
-  }
-  &.assistant-row {
-    justify-content: flex-start;
-  }
+  &.user-row { justify-content: flex-end; }
+  &.assistant-row { justify-content: flex-start; }
 }
 
 .msg-avatar {
@@ -197,13 +163,13 @@
   svg { width: 18px; height: 18px; }
 
   &.assistant-avatar {
-    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    background: linear-gradient(135deg, #f97316, #ea580c);
     color: white;
   }
 
   &.user-avatar {
-    background: rgba(255, 255, 255, 0.1);
-    color: #aaa;
+    background: #e7e5e4; /* stone-200 */
+    color: #78716c;
   }
 }
 
@@ -217,16 +183,16 @@
   font-size: 14px;
 
   &.user-bubble {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    background: #f97316;
     color: white;
     border-bottom-right-radius: 4px;
   }
 
   &.assistant-bubble {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #ffffff;
+    border: 1px solid #e7e5e4;
     border-bottom-left-radius: 4px;
-    backdrop-filter: blur(8px);
+    color: #1c1917;
   }
 }
 
@@ -238,9 +204,13 @@
 .message-time {
   display: block;
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.35);
+  color: #a8a29e; /* stone-400 */
   margin-top: 6px;
   text-align: right;
+}
+
+.user-bubble .message-time {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ── Typing Indicator ── */
@@ -253,7 +223,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #7c3aed;
+    background: #f97316;
     animation: typingBounce 1.4s ease-in-out infinite;
 
     &:nth-child(2) { animation-delay: 0.2s; }
@@ -271,8 +241,8 @@
   margin-top: 12px;
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(26, 26, 46, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #fafaf9; /* stone-50 */
+  border: 1px solid #e7e5e4;
   min-height: 300px;
 }
 
@@ -281,7 +251,7 @@
   margin-top: 12px;
   overflow-x: auto;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #e7e5e4;
 }
 
 .data-table {
@@ -290,49 +260,49 @@
   font-size: 12px;
 
   th {
-    background: rgba(124, 58, 237, 0.15);
-    color: #c4b5fd;
+    background: #fff7ed; /* orange-50 */
+    color: #c2410c; /* orange-700 */
     padding: 8px 12px;
     text-align: left;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid #fed7aa; /* orange-200 */
     white-space: nowrap;
   }
 
   td {
     padding: 6px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    color: #ccc;
+    border-bottom: 1px solid #f5f5f4; /* stone-100 */
+    color: #44403c; /* stone-700 */
     white-space: nowrap;
   }
 
   tbody tr:hover {
-    background: rgba(124, 58, 237, 0.05);
+    background: #fff7ed;
   }
 }
 
 /* ── Input Area ── */
 .input-area {
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #ffffff;
+  border-top: 1px solid #e7e5e4;
 }
 
 .input-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #fafaf9; /* stone-50 */
+  border: 1px solid #e7e5e4;
   border-radius: 14px;
   padding: 4px 4px 4px 16px;
   transition: all 0.3s ease;
 
   &.focused {
-    border-color: rgba(124, 58, 237, 0.5);
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
   }
 }
 
@@ -341,17 +311,12 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #e0e0e0;
+  color: #1c1917;
   font-size: 14px;
   padding: 10px 0;
 
-  &::placeholder {
-    color: #555;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-  }
+  &::placeholder { color: #a8a29e; }
+  &:disabled { opacity: 0.5; }
 }
 
 .send-btn {
@@ -359,7 +324,7 @@
   height: 40px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  background: #f97316;
   color: white;
   cursor: pointer;
   display: flex;
@@ -371,8 +336,9 @@
   svg { width: 20px; height: 20px; }
 
   &:hover:not(:disabled) {
+    background: #ea580c;
     transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
   }
 
   &:disabled {
@@ -383,7 +349,7 @@
 
 .input-hint {
   font-size: 11px;
-  color: #555;
+  color: #a8a29e;
   text-align: center;
   margin: 8px 0 0;
 }

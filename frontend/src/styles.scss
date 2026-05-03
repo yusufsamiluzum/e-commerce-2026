@@ -1,6 +1,40 @@
 @use 'tailwindcss';
 
 /* ─────────────────────────────────────────────
+   EMBER DESIGN SYSTEM — Tailwind v4 Theme
+   ───────────────────────────────────────────── */
+
+@theme {
+  /* Font */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Ember brand colors */
+  --color-ember-50:  #FEF7ED;
+  --color-ember-100: #FDEDD3;
+  --color-ember-400: #FB923C;
+  --color-ember-500: #F97316;
+  --color-ember-600: #EA580C;
+
+  /* Semantic aliases */
+  --color-brand:          #F97316;  /* ana aksan */
+  --color-brand-hover:    #EA580C;  /* hover state */
+  --color-brand-secondary:#F59E0B;  /* amber — ikincil */
+  --color-brand-positive: #65A30D;  /* lime — başarı/büyüme */
+  --color-brand-danger:   #DC2626;  /* kırmızı — hata/iptal */
+
+  /* Surface */
+  --color-surface-page:   #FEF7ED;  /* sayfa zemini */
+  --color-surface-card:   #FFFFFF;  /* kart zemini */
+
+  /* Text */
+  --color-text-primary:   #1C1917;  /* stone-900 */
+  --color-text-secondary: #78716C;  /* stone-500 */
+
+  /* Border */
+  --color-border:         #E7E5E4;  /* stone-200 */
+}
+
+/* ─────────────────────────────────────────────
    NATIVE VIEW TRANSITIONS API
    Angular 17+ withViewTransitions() ile aktif
    ───────────────────────────────────────────── */
@@ -134,17 +168,17 @@ html {
 /* Özel scrollbar — profil sidebar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+  scrollbar-color: rgba(249, 115, 22, 0.3) transparent;
 }
 
 *::-webkit-scrollbar { width: 4px; height: 4px; }
 *::-webkit-scrollbar-track { background: transparent; }
 *::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(249, 115, 22, 0.3);
   border-radius: 999px;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.5);
+  background: rgba(249, 115, 22, 0.5);
 }
 
 /* ─────────────────────────────────────────────

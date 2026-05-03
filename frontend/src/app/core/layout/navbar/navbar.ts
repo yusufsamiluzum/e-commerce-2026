@@ -29,6 +29,14 @@ export class Navbar {
     return '/';
   }
 
+  isCorporate(): boolean {
+    return this.auth.currentUserRole() === 'CORPORATE';
+  }
+
+  isAdmin(): boolean {
+    return this.auth.currentUserRole() === 'ADMIN';
+  }
+
   logout() {
     this.auth.logout();
     this.router.navigate(['/']);

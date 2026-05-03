@@ -1,255 +1,257 @@
-<div class="min-h-screen bg-gray-950">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="p-6 max-w-7xl mx-auto">
 
-    <!-- Header -->
-    @if (store() === null) {
-      <div class="animate-pulse mb-8">
-        <div class="h-8 bg-gray-800 rounded w-64 mb-2"></div>
-        <div class="h-4 bg-gray-800 rounded w-96"></div>
-      </div>
-    } @else {
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-1">{{ store()!.name }}</h1>
-        <p class="text-gray-400 text-sm">Mağaza kontrol panelinize hoş geldiniz. Tüm metrikler tek bakışta.</p>
-      </div>
-    }
+  <!-- ── Sayfa Başlığı ─────────────────────────────────────────── -->
+  @if (store() === null) {
+    <div class="animate-pulse mb-8">
+      <div class="h-7 bg-stone-200 rounded w-56 mb-2"></div>
+      <div class="h-4 bg-stone-100 rounded w-80"></div>
+    </div>
+  } @else {
+    <div class="mb-8">
+      <h1 class="text-2xl font-medium text-stone-900 mb-1">{{ store()!.name }}</h1>
+      <p class="text-sm text-stone-500">Mağaza kontrol panelinize hoş geldiniz. Tüm metrikler tek bakışta.</p>
+    </div>
+  }
 
-    <!-- KPI Grid -->
-    @if (dashboard() === null) {
-      <!-- Skeleton Loader -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        @for (i of [1,2,3,4,5,6,7,8]; track i) {
-          <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 animate-pulse">
-            <div class="h-4 bg-gray-700 rounded w-24 mb-4"></div>
-            <div class="h-8 bg-gray-700 rounded w-20 mb-2"></div>
-            <div class="h-3 bg-gray-800 rounded w-28"></div>
-          </div>
-        }
-      </div>
-    } @else {
-      <!-- Actual KPI Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-
-        <!-- Total Revenue -->
-        <div class="bg-gradient-to-br from-blue-900/40 to-gray-900/80 border border-blue-800/30 rounded-2xl p-6 hover:border-blue-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-blue-400">Toplam Gelir</span>
-            <div class="h-10 w-10 bg-blue-600/20 rounded-xl flex items-center justify-center group-hover:bg-blue-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">${{ dashboard()!.totalRevenue | number:'1.2-2' }}</p>
-          <p class="text-xs text-gray-500">Tüm zamanlar</p>
+  <!-- ── KPI Kartları ───────────────────────────────────────────── -->
+  @if (dashboard() === null) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      @for (i of [1,2,3,4,5,6,7,8]; track i) {
+        <div class="bg-white rounded-xl border border-stone-200 p-5 animate-pulse">
+          <div class="h-3 bg-stone-100 rounded w-24 mb-4"></div>
+          <div class="h-7 bg-stone-100 rounded w-20 mb-2"></div>
+          <div class="h-3 bg-stone-100 rounded w-28"></div>
         </div>
+      }
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
-        <!-- Total Orders -->
-        <div class="bg-gradient-to-br from-indigo-900/40 to-gray-900/80 border border-indigo-800/30 rounded-2xl p-6 hover:border-indigo-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Toplam Sipariş</span>
-            <div class="h-10 w-10 bg-indigo-600/20 rounded-xl flex items-center justify-center group-hover:bg-indigo-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-            </div>
+      <!-- Toplam Gelir -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Toplam Gelir</p>
+          <div class="w-8 h-8 rounded-lg bg-ember-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
           </div>
-          <p class="text-3xl font-bold text-white mb-1">{{ dashboard()!.totalOrders }}</p>
-          <p class="text-xs text-gray-500">Tüm zamanlar</p>
         </div>
-
-        <!-- Average Order Value -->
-        <div class="bg-gradient-to-br from-violet-900/40 to-gray-900/80 border border-violet-800/30 rounded-2xl p-6 hover:border-violet-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-violet-400">Ort. Sipariş Değeri</span>
-            <div class="h-10 w-10 bg-violet-600/20 rounded-xl flex items-center justify-center group-hover:bg-violet-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">${{ dashboard()!.averageOrderValue | number:'1.2-2' }}</p>
-          <p class="text-xs text-gray-500">Ortalama</p>
-        </div>
-
-        <!-- Active Products -->
-        <div class="bg-gradient-to-br from-emerald-900/40 to-gray-900/80 border border-emerald-800/30 rounded-2xl p-6 hover:border-emerald-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Aktif Ürünler</span>
-            <div class="h-10 w-10 bg-emerald-600/20 rounded-xl flex items-center justify-center group-hover:bg-emerald-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">{{ dashboard()!.activeProducts }}</p>
-          <p class="text-xs text-gray-500">Katalogda</p>
-        </div>
-
-        <!-- Low Stock -->
-        <div class="bg-gradient-to-br from-amber-900/40 to-gray-900/80 border border-amber-800/30 rounded-2xl p-6 hover:border-amber-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Düşük Stok</span>
-            <div class="h-10 w-10 bg-amber-600/20 rounded-xl flex items-center justify-center group-hover:bg-amber-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">
-            @if (dashboard()!.lowStockProducts > 0) {
-              <span class="text-amber-400">{{ dashboard()!.lowStockProducts }}</span>
-            } @else {
-              {{ dashboard()!.lowStockProducts }}
-            }
-          </p>
-          <p class="text-xs text-gray-500">Stok &lt; 10 adet</p>
-        </div>
-
-        <!-- Pending Orders -->
-        <div class="bg-gradient-to-br from-orange-900/40 to-gray-900/80 border border-orange-800/30 rounded-2xl p-6 hover:border-orange-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-orange-400">Bekleyen Siparişler</span>
-            <div class="h-10 w-10 bg-orange-600/20 rounded-xl flex items-center justify-center group-hover:bg-orange-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">
-            @if (dashboard()!.pendingOrders > 0) {
-              <span class="text-orange-400">{{ dashboard()!.pendingOrders }}</span>
-            } @else {
-              {{ dashboard()!.pendingOrders }}
-            }
-          </p>
-          <p class="text-xs text-gray-500">İşlem bekliyor</p>
-        </div>
-
-        <!-- Average Rating -->
-        <div class="bg-gradient-to-br from-yellow-900/40 to-gray-900/80 border border-yellow-800/30 rounded-2xl p-6 hover:border-yellow-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-yellow-400">Ort. Puan</span>
-            <div class="h-10 w-10 bg-yellow-600/20 rounded-xl flex items-center justify-center group-hover:bg-yellow-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">{{ dashboard()!.averageRating | number:'1.1-1' }}</p>
-          <p class="text-xs text-gray-500">{{ dashboard()!.totalReviews }} yorum</p>
-        </div>
-
-        <!-- Total Reviews -->
-        <div class="bg-gradient-to-br from-cyan-900/40 to-gray-900/80 border border-cyan-800/30 rounded-2xl p-6 hover:border-cyan-600/50 transition-all group">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-semibold uppercase tracking-wider text-cyan-400">Toplam Yorum</span>
-            <div class="h-10 w-10 bg-cyan-600/20 rounded-xl flex items-center justify-center group-hover:bg-cyan-600/30 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-            </div>
-          </div>
-          <p class="text-3xl font-bold text-white mb-1">{{ dashboard()!.totalReviews }}</p>
-          <p class="text-xs text-gray-500">Müşteri yorumu</p>
-        </div>
-
+        <p class="text-2xl font-semibold text-stone-900">${{ dashboard()!.totalRevenue | number:'1.2-2' }}</p>
+        <p class="text-xs text-stone-400 mt-1">Tüm zamanlar</p>
       </div>
 
-      <!-- Order Status Breakdown -->
-      <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 mb-8">
-        <h2 class="text-lg font-semibold text-white mb-5">Sipariş Durumu Dağılımı</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          
-          <div class="bg-gray-800/50 rounded-xl p-4 text-center border border-gray-700/50">
-            <div class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-yellow-500 mb-2"></div>
-            <p class="text-2xl font-bold text-white">{{ dashboard()!.pendingOrders }}</p>
-            <p class="text-xs text-gray-400 mt-1">Bekleyen</p>
+      <!-- Toplam Sipariş -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Toplam Sipariş</p>
+          <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
           </div>
-
-          <div class="bg-gray-800/50 rounded-xl p-4 text-center border border-gray-700/50">
-            <div class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-500 mb-2"></div>
-            <p class="text-2xl font-bold text-white">{{ dashboard()!.processingOrders }}</p>
-            <p class="text-xs text-gray-400 mt-1">İşleniyor</p>
-          </div>
-
-          <div class="bg-gray-800/50 rounded-xl p-4 text-center border border-gray-700/50">
-            <div class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-indigo-500 mb-2"></div>
-            <p class="text-2xl font-bold text-white">{{ dashboard()!.shippedOrders }}</p>
-            <p class="text-xs text-gray-400 mt-1">Kargoda</p>
-          </div>
-
-          <div class="bg-gray-800/50 rounded-xl p-4 text-center border border-gray-700/50">
-            <div class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-emerald-500 mb-2"></div>
-            <p class="text-2xl font-bold text-white">{{ dashboard()!.deliveredOrders }}</p>
-            <p class="text-xs text-gray-400 mt-1">Teslim Edildi</p>
-          </div>
-
-          <div class="bg-gray-800/50 rounded-xl p-4 text-center border border-gray-700/50">
-            <div class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-red-500 mb-2"></div>
-            <p class="text-2xl font-bold text-white">{{ dashboard()!.cancelledOrders }}</p>
-            <p class="text-xs text-gray-400 mt-1">İptal</p>
-          </div>
-
         </div>
+        <p class="text-2xl font-semibold text-stone-900">{{ dashboard()!.totalOrders }}</p>
+        <p class="text-xs text-stone-400 mt-1">Tüm zamanlar</p>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-        <h2 class="text-lg font-semibold text-white mb-5">Hızlı Erişim</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          
-          <a routerLink="/corporate/catalog" class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-blue-600/50 hover:bg-gray-800 transition-all group">
-            <div class="h-12 w-12 bg-blue-600/20 rounded-xl flex items-center justify-center group-hover:bg-blue-600/30 transition-colors flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">Ürün Yönetimi</p>
-              <p class="text-xs text-gray-500">Ürünleri ekle, düzenle, sil</p>
-            </div>
-          </a>
-
-          <a routerLink="/corporate/orders" class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-indigo-600/50 hover:bg-gray-800 transition-all group">
-            <div class="h-12 w-12 bg-indigo-600/20 rounded-xl flex items-center justify-center group-hover:bg-indigo-600/30 transition-colors flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-white group-hover:text-indigo-400 transition-colors">Sipariş Yönetimi</p>
-              <p class="text-xs text-gray-500">Siparişleri takip et, güncelle</p>
-            </div>
-          </a>
-
-          <a routerLink="/corporate/inventory" class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-emerald-600/50 hover:bg-gray-800 transition-all group">
-            <div class="h-12 w-12 bg-emerald-600/20 rounded-xl flex items-center justify-center group-hover:bg-emerald-600/30 transition-colors flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">Envanter</p>
-              <p class="text-xs text-gray-500">Stok seviyelerini yönet</p>
-            </div>
-          </a>
-
-          <a routerLink="/corporate/analytics" class="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-violet-600/50 hover:bg-gray-800 transition-all group">
-            <div class="h-12 w-12 bg-violet-600/20 rounded-xl flex items-center justify-center group-hover:bg-violet-600/30 transition-colors flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors">Analytics</p>
-              <p class="text-xs text-gray-500">Satış ve gelir raporları</p>
-            </div>
-          </a>
-
+      <!-- Ort. Sipariş Değeri -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Ort. Sipariş Değeri</p>
+          <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
         </div>
+        <p class="text-2xl font-semibold text-stone-900">${{ dashboard()!.averageOrderValue | number:'1.2-2' }}</p>
+        <p class="text-xs text-stone-400 mt-1">Ortalama</p>
       </div>
-    }
 
-  </div>
+      <!-- Aktif Ürünler -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Aktif Ürünler</p>
+          <div class="w-8 h-8 rounded-lg bg-lime-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-lime-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-semibold text-stone-900">{{ dashboard()!.activeProducts }}</p>
+        <p class="text-xs text-stone-400 mt-1">Katalogda</p>
+      </div>
+
+      <!-- Düşük Stok -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Düşük Stok</p>
+          <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-semibold" [class.text-amber-500]="dashboard()!.lowStockProducts > 0" [class.text-stone-900]="dashboard()!.lowStockProducts === 0">
+          {{ dashboard()!.lowStockProducts }}
+        </p>
+        <p class="text-xs text-stone-400 mt-1">Stok &lt; 10 adet</p>
+      </div>
+
+      <!-- Bekleyen Siparişler -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Bekleyen</p>
+          <div class="w-8 h-8 rounded-lg bg-ember-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-semibold" [class.text-ember-500]="dashboard()!.pendingOrders > 0" [class.text-stone-900]="dashboard()!.pendingOrders === 0">
+          {{ dashboard()!.pendingOrders }}
+        </p>
+        <p class="text-xs text-stone-400 mt-1">İşlem bekliyor</p>
+      </div>
+
+      <!-- Ort. Puan -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Ort. Puan</p>
+          <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-semibold text-stone-900">{{ dashboard()!.averageRating | number:'1.1-1' }}</p>
+        <p class="text-xs text-stone-400 mt-1">{{ dashboard()!.totalReviews }} yorum</p>
+      </div>
+
+      <!-- Toplam Yorum -->
+      <div class="bg-white rounded-xl border border-stone-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-xs font-medium text-stone-500 uppercase tracking-wider">Toplam Yorum</p>
+          <div class="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-semibold text-stone-900">{{ dashboard()!.totalReviews }}</p>
+        <p class="text-xs text-stone-400 mt-1">Müşteri yorumu</p>
+      </div>
+
+    </div>
+
+    <!-- ── Sipariş Durumu Dağılımı ─────────────────────────────── -->
+    <div class="bg-white rounded-xl border border-stone-200 p-5 mb-6">
+      <h2 class="text-base font-medium text-stone-900 mb-4">Sipariş Durumu</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+
+        <div class="rounded-lg border border-stone-100 bg-amber-50 p-4 text-center">
+          <p class="text-xl font-semibold text-amber-700">{{ dashboard()!.pendingOrders }}</p>
+          <div class="flex items-center justify-center gap-1.5 mt-1">
+            <span class="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0"></span>
+            <p class="text-xs text-amber-600 font-medium">Bekleyen</p>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-stone-100 bg-blue-50 p-4 text-center">
+          <p class="text-xl font-semibold text-blue-700">{{ dashboard()!.processingOrders }}</p>
+          <div class="flex items-center justify-center gap-1.5 mt-1">
+            <span class="w-2 h-2 rounded-full bg-blue-400 flex-shrink-0"></span>
+            <p class="text-xs text-blue-600 font-medium">İşleniyor</p>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-stone-100 bg-purple-50 p-4 text-center">
+          <p class="text-xl font-semibold text-purple-700">{{ dashboard()!.shippedOrders }}</p>
+          <div class="flex items-center justify-center gap-1.5 mt-1">
+            <span class="w-2 h-2 rounded-full bg-purple-400 flex-shrink-0"></span>
+            <p class="text-xs text-purple-600 font-medium">Kargoda</p>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-stone-100 bg-lime-50 p-4 text-center">
+          <p class="text-xl font-semibold text-lime-700">{{ dashboard()!.deliveredOrders }}</p>
+          <div class="flex items-center justify-center gap-1.5 mt-1">
+            <span class="w-2 h-2 rounded-full bg-lime-500 flex-shrink-0"></span>
+            <p class="text-xs text-lime-600 font-medium">Teslim Edildi</p>
+          </div>
+        </div>
+
+        <div class="rounded-lg border border-stone-100 bg-red-50 p-4 text-center">
+          <p class="text-xl font-semibold text-red-700">{{ dashboard()!.cancelledOrders }}</p>
+          <div class="flex items-center justify-center gap-1.5 mt-1">
+            <span class="w-2 h-2 rounded-full bg-red-400 flex-shrink-0"></span>
+            <p class="text-xs text-red-600 font-medium">İptal</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Hızlı Erişim ───────────────────────────────────────── -->
+    <div class="bg-white rounded-xl border border-stone-200 p-5">
+      <h2 class="text-base font-medium text-stone-900 mb-4">Hızlı Erişim</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+        <a routerLink="/corporate/catalog"
+          class="flex items-center gap-3 p-4 rounded-lg border border-stone-200 hover:border-ember-200 hover:bg-ember-50 transition-all group">
+          <div class="w-10 h-10 rounded-lg bg-ember-50 group-hover:bg-ember-100 flex items-center justify-center flex-shrink-0 transition-colors">
+            <svg class="w-5 h-5 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-stone-800 group-hover:text-ember-600 transition-colors">Ürün Yönetimi</p>
+            <p class="text-xs text-stone-400 truncate">Ekle, düzenle, sil</p>
+          </div>
+        </a>
+
+        <a routerLink="/corporate/orders"
+          class="flex items-center gap-3 p-4 rounded-lg border border-stone-200 hover:border-blue-200 hover:bg-blue-50 transition-all group">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center flex-shrink-0 transition-colors">
+            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-stone-800 group-hover:text-blue-600 transition-colors">Siparişler</p>
+            <p class="text-xs text-stone-400 truncate">Takip et, güncelle</p>
+          </div>
+        </a>
+
+        <a routerLink="/corporate/inventory"
+          class="flex items-center gap-3 p-4 rounded-lg border border-stone-200 hover:border-lime-200 hover:bg-lime-50 transition-all group">
+          <div class="w-10 h-10 rounded-lg bg-lime-50 group-hover:bg-lime-100 flex items-center justify-center flex-shrink-0 transition-colors">
+            <svg class="w-5 h-5 text-lime-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-stone-800 group-hover:text-lime-700 transition-colors">Envanter</p>
+            <p class="text-xs text-stone-400 truncate">Stok seviyelerini yönet</p>
+          </div>
+        </a>
+
+        <a routerLink="/corporate/analytics"
+          class="flex items-center gap-3 p-4 rounded-lg border border-stone-200 hover:border-purple-200 hover:bg-purple-50 transition-all group">
+          <div class="w-10 h-10 rounded-lg bg-purple-50 group-hover:bg-purple-100 flex items-center justify-center flex-shrink-0 transition-colors">
+            <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-stone-800 group-hover:text-purple-600 transition-colors">Analitik</p>
+            <p class="text-xs text-stone-400 truncate">Satış ve gelir raporları</p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  }
+
 </div>

@@ -3,11 +3,12 @@ import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { Navbar } from './core/layout/navbar/navbar';
 import { Footer } from './core/layout/footer/footer';
 import { ChatbotWidget } from './features/ai-assistant/chatbot-widget';
+import { EmberToastComponent } from './shared/components/ember-toast/ember-toast.component';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Footer, ChatbotWidget],
+  imports: [RouterOutlet, Navbar, Footer, ChatbotWidget, EmberToastComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

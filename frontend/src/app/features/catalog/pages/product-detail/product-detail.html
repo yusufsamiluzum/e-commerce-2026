@@ -1,64 +1,65 @@
-<div class="min-h-screen" style="background: #0a0a0f;">
 <div class="container mx-auto px-4 py-8 max-w-6xl">
 
-  <!-- Geri Butonu -->
+  <!-- Geri -->
   <a routerLink="/catalog"
-     class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-400 mb-8
-            transition-colors group">
-    <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform duration-200"></i>
+     class="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-ember-500 mb-8 transition-colors group">
+    <svg class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+    </svg>
     Kataloğa Dön
   </a>
 
   @if (product() === null) {
     <!-- Skeleton -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 animate-pulse">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 animate-pulse">
       <div class="space-y-4">
-        <div class="rounded-2xl aspect-square w-full" style="background: rgba(255,255,255,0.04);"></div>
+        <div class="rounded-xl aspect-square w-full bg-stone-100"></div>
         <div class="flex gap-3">
           @for (i of [1,2,3,4]; track i) {
-            <div class="w-20 h-20 rounded-xl flex-shrink-0" style="background: rgba(255,255,255,0.04);"></div>
+            <div class="w-20 h-20 rounded-lg flex-shrink-0 bg-stone-100"></div>
           }
         </div>
       </div>
-      <div class="flex flex-col space-y-5 pt-4">
-        <div class="h-4 rounded-lg w-1/3" style="background: rgba(255,255,255,0.06);"></div>
-        <div class="h-10 rounded-lg w-4/5" style="background: rgba(255,255,255,0.06);"></div>
-        <div class="h-6 rounded-lg w-1/4" style="background: rgba(255,255,255,0.06);"></div>
-        <div class="h-12 rounded-lg w-1/3" style="background: rgba(255,255,255,0.04);"></div>
-        <div class="h-32 rounded-lg w-full" style="background: rgba(255,255,255,0.04);"></div>
-        <div class="h-14 rounded-xl w-full mt-auto" style="background: rgba(255,255,255,0.06);"></div>
+      <div class="flex flex-col space-y-4 pt-2">
+        <div class="h-3 rounded w-1/3 bg-stone-100"></div>
+        <div class="h-8 rounded w-4/5 bg-stone-100"></div>
+        <div class="h-4 rounded w-1/4 bg-stone-100"></div>
+        <div class="h-10 rounded w-1/3 bg-stone-100"></div>
+        <div class="h-24 rounded w-full bg-stone-100"></div>
+        <div class="h-12 rounded-lg w-full bg-stone-100 mt-4"></div>
       </div>
     </div>
 
   } @else {
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-      <!-- ── GALERİ BÖLÜMÜ ─────────────────────────────────── -->
-      <div class="space-y-4">
+      <!-- ── GALERİ ──────────────────────────────────────────── -->
+      <div class="space-y-3">
 
         <!-- Ana Görsel -->
-        <div class="relative rounded-2xl overflow-hidden flex items-center justify-center aspect-square
-                    border border-white/5 transition-all duration-300 group"
-             style="background: rgba(255,255,255,0.03);">
+        <div class="relative rounded-xl overflow-hidden border border-stone-200 aspect-square group">
+          <!-- Fallback placeholder -->
+          <div class="absolute inset-0 bg-ember-50 flex flex-col items-center justify-center gap-3">
+            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center opacity-15">
+              <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.017 2C12.017 2 6 8 6 13.5a6.017 6.017 0 0 0 12 0C18 8 12.017 2 12.017 2zm-.017 15a2 2 0 0 1-2-2c0-1.5 1-3 2-4 1 1 2 2.5 2 4a2 2 0 0 1-2 2z"/>
+              </svg>
+            </div>
+            <span class="text-xs text-stone-300 font-medium tracking-wide">Görsel Yok</span>
+          </div>
+          <!-- Gerçek görsel -->
           <img [src]="activeImageUrl(product()!)"
                [alt]="activeAltText(product()!)"
-               class="max-w-full max-h-full object-contain select-none
-                      transition-all duration-500 group-hover:scale-105">
-          <!-- Zoom hint -->
-          <div class="absolute top-3 right-3 w-8 h-8 rounded-lg flex items-center justify-center
-                      opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-               style="background: rgba(0,0,0,0.5);">
-            <i class="fas fa-expand-alt text-white text-xs"></i>
-          </div>
+               class="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 select-none"
+               (error)="$any($event.target).style.display='none'">
         </div>
 
         <!-- Thumbnail Şeridi -->
         @if (product()!.images && product()!.images!.length > 1) {
-          <div class="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
+          <div class="flex gap-2.5 overflow-x-auto pb-1">
             @for (img of product()!.images!; track img.id) {
               <button (click)="selectImage(img.imageUrl)"
-                class="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2
-                       transition-all duration-200 active:scale-95"
+                class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-200"
                 [class]="thumbClass(img)">
                 <img [src]="img.imageUrl" [alt]="img.altText || product()!.name"
                      class="w-full h-full object-cover">
@@ -68,107 +69,104 @@
         }
       </div>
 
-      <!-- ── ÜRÜN BİLGİLERİ ─────────────────────────────────── -->
+      <!-- ── ÜRÜN BİLGİLERİ ──────────────────────────────────── -->
       <div class="flex flex-col gap-5">
 
         <!-- Kategori + SKU -->
-        <p class="text-xs text-gray-500 uppercase tracking-widest font-bold">
-          {{ product()!.category }} &bull; SKU: {{ product()!.sku }}
+        <p class="text-xs font-medium text-stone-400 uppercase tracking-wider">
+          {{ product()!.category }}&ensp;·&ensp;SKU: {{ product()!.sku }}
         </p>
 
         <!-- İsim -->
-        <h1 class="text-3xl lg:text-4xl font-black text-white leading-tight">
+        <h1 class="text-2xl font-medium text-stone-900 leading-snug">
           {{ product()!.name }}
         </h1>
 
-        <!-- Rating -->
-        <div class="flex items-center gap-3 pb-5 border-b border-white/5">
-          <div class="flex items-center gap-1">
+        <!-- Puan -->
+        <div class="flex items-center gap-2 pb-5 border-b border-stone-100">
+          <div class="flex items-center gap-0.5">
             @for (star of [1,2,3,4,5]; track star) {
-              <i class="fas fa-star text-sm"
-                 [class]="star <= (product()!.rating || 0) ? 'text-yellow-400' : 'text-gray-700'"></i>
+              <span class="text-base leading-none"
+                [class.text-amber-400]="star <= (product()!.rating || 0)"
+                [class.text-stone-200]="star > (product()!.rating || 0)">★</span>
             }
           </div>
-          <span class="font-bold text-white text-sm">{{ product()!.rating | number:'1.1-1' }}</span>
-          <span class="text-gray-700">·</span>
-          <span class="text-sm text-blue-400 hover:underline cursor-pointer">
-            {{ product()!.reviewCount }} Değerlendirme
-          </span>
+          <span class="text-sm font-medium text-stone-700">{{ product()!.rating | number:'1.1-1' }}</span>
+          <span class="text-stone-300">·</span>
+          <span class="text-sm text-stone-500">{{ product()!.reviewCount }} değerlendirme</span>
         </div>
 
         <!-- Fiyat -->
         <div class="flex items-end gap-3">
-          <span class="text-4xl font-black text-white">${{ product()!.price | number:'1.2-2' }}</span>
+          <span class="text-3xl font-semibold text-stone-900">${{ product()!.price | number:'1.2-2' }}</span>
           @if (product()!.originalPrice) {
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-xl text-gray-500 line-through">${{ product()!.originalPrice | number:'1.2-2' }}</span>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-black text-white"
-                    style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="text-base text-stone-400 line-through">${{ product()!.originalPrice | number:'1.2-2' }}</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold text-white bg-red-600">
                 -{{ ((1 - product()!.price / product()!.originalPrice!) * 100) | number:'1.0-0' }}%
               </span>
             </div>
           }
         </div>
 
-        <!-- Açıklama -->
-        <p class="text-gray-400 leading-relaxed text-sm">
-          Premium kalite yapı, dayanıklılık ve günlük kullanım için tasarlanmıştır.
-          Bu ürün hayatınıza sorunsuz entegre olur; titiz standart testlere dayanarak
-          eşsiz güvenilirlik ve performans sunar.
-        </p>
-
-        <!-- Miktar + Sepet -->
-        <div class="flex gap-3 mt-auto pt-2">
-          <!-- Miktar -->
-          <div class="flex items-center rounded-xl border border-white/10 overflow-hidden flex-shrink-0"
-               style="background: rgba(255,255,255,0.03);">
+        <!-- Miktar + Sepete Ekle -->
+        <div class="flex gap-3 pt-1">
+          <!-- Miktar seçici -->
+          <div class="flex items-center border border-stone-200 rounded-lg overflow-hidden flex-shrink-0 bg-white">
             <button (click)="decreaseQty()"
-              class="w-11 h-12 flex items-center justify-center text-gray-400
-                     hover:text-white hover:bg-white/5 transition-all active:scale-90">
-              <i class="fas fa-minus text-xs"></i>
+              class="w-10 h-11 flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-50 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"/>
+              </svg>
             </button>
-            <span class="w-10 text-center font-black text-white text-sm">{{ quantity() }}</span>
+            <span class="w-10 text-center text-sm font-semibold text-stone-900 select-none">{{ quantity() }}</span>
             <button (click)="increaseQty()"
-              class="w-11 h-12 flex items-center justify-center text-gray-400
-                     hover:text-white hover:bg-white/5 transition-all active:scale-90">
-              <i class="fas fa-plus text-xs"></i>
+              class="w-10 h-11 flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-50 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
             </button>
           </div>
 
           <!-- Sepete Ekle -->
           <button (click)="addToCart(product()!)"
-            class="flex-1 flex items-center justify-center gap-2.5 py-3 px-6 rounded-xl
-                   text-sm font-black text-white transition-all duration-200
-                   hover:shadow-xl hover:shadow-blue-900/30 hover:-translate-y-0.5 active:scale-95"
-            style="background: linear-gradient(135deg, #3b82f6, #6366f1);">
-            <i class="fas fa-shopping-cart"></i>
+            class="flex-1 flex items-center justify-center gap-2 py-2.5 px-5 rounded-lg bg-ember-500 hover:bg-ember-600 text-white text-sm font-medium transition-colors shadow-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
             Sepete Ekle
           </button>
         </div>
 
         <!-- Güven rozetleri -->
-        <div class="grid grid-cols-3 gap-3 pt-2">
-          @for (badge of [
-            {icon: 'fa-shield-alt', label: 'Güvenli Ödeme'},
-            {icon: 'fa-undo', label: '30 Gün İade'},
-            {icon: 'fa-truck', label: 'Ücretsiz Kargo'}
-          ]; track badge.icon) {
-            <div class="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-white/5 text-center"
-                 style="background: rgba(255,255,255,0.01);">
-              <i class="fas {{ badge.icon }} text-blue-400 text-base"></i>
-              <span class="text-[10px] text-gray-500 font-semibold">{{ badge.label }}</span>
-            </div>
-          }
+        <div class="grid grid-cols-3 gap-2.5 pt-1">
+          <div class="flex flex-col items-center gap-1.5 p-3 rounded-lg border border-stone-200 bg-stone-50 text-center">
+            <svg class="w-5 h-5 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span class="text-[10px] text-stone-500 font-medium leading-tight">Güvenli Ödeme</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 p-3 rounded-lg border border-stone-200 bg-stone-50 text-center">
+            <svg class="w-5 h-5 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z"/>
+            </svg>
+            <span class="text-[10px] text-stone-500 font-medium leading-tight">30 Gün İade</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 p-3 rounded-lg border border-stone-200 bg-stone-50 text-center">
+            <svg class="w-5 h-5 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+            </svg>
+            <span class="text-[10px] text-stone-500 font-medium leading-tight">Ücretsiz Kargo</span>
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
 
     <!-- Yorumlar -->
-    <div class="mt-16">
+    <div class="mt-12">
       <app-product-reviews [productId]="product()!.id"></app-product-reviews>
     </div>
   }
 
-</div>
 </div>

@@ -178,9 +178,9 @@ export class ChatbotPage implements AfterViewChecked {
             config.data || [],
             {
               ...config.layout,
-              paper_bgcolor: '#1a1a2e',
-              plot_bgcolor: '#1a1a2e',
-              font: { color: '#e0e0e0' },
+              paper_bgcolor: '#ffffff',
+              plot_bgcolor: '#fafaf9',
+              font: { color: '#1c1917' },
               margin: { t: 40, r: 20, b: 40, l: 50 }
             },
             { responsive: true, displayModeBar: false }

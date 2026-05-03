@@ -1,70 +1,76 @@
-<div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col space-y-6">
-  
-  <!-- Search -->
+<div class="p-5 space-y-5">
+
+  <!-- Ara -->
   <div>
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3 ml-1">Ara</h3>
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2.5">Ara</h3>
     <div class="relative">
-      <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      <span class="absolute inset-y-0 left-3 flex items-center text-stone-400 pointer-events-none">
+        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
       </span>
-      <input 
-        type="text" 
-        [ngModel]="searchQuery" 
+      <input
+        type="text"
+        [ngModel]="searchQuery"
         (ngModelChange)="onSearchChange($event)"
         (keyup.enter)="applyFilters()"
-        placeholder="Ürün adı..." 
-        class="pl-9 pr-3 py-2 border border-gray-200 rounded-lg w-full text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        placeholder="Ürün adı..."
+        class="pl-8 pr-3 py-1.5 border border-stone-200 rounded-lg w-full text-xs bg-stone-50 text-stone-700 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 transition-colors"
       />
     </div>
   </div>
 
-  <!-- Price Range -->
+  <!-- Fiyat Aralığı -->
   <div>
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3 ml-1">Fiyat Aralığı</h3>
-    <div class="flex items-center space-x-3">
-      <input 
-        type="number" 
-        [(ngModel)]="minPrice" 
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2.5">Fiyat Aralığı</h3>
+    <div class="flex items-center gap-2">
+      <input
+        type="number"
+        [(ngModel)]="minPrice"
         (change)="applyFilters()"
-        placeholder="Min₺" 
-        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        placeholder="Min $"
+        class="w-full px-3 py-1.5 border border-stone-200 rounded-lg text-xs bg-stone-50 text-stone-700 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 transition-colors"
       />
-      <span class="text-gray-400 text-sm">-</span>
-      <input 
-        type="number" 
-        [(ngModel)]="maxPrice" 
+      <span class="text-stone-300 flex-shrink-0">—</span>
+      <input
+        type="number"
+        [(ngModel)]="maxPrice"
         (change)="applyFilters()"
-        placeholder="Max₺" 
-        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        placeholder="Max $"
+        class="w-full px-3 py-1.5 border border-stone-200 rounded-lg text-xs bg-stone-50 text-stone-700 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 transition-colors"
       />
     </div>
   </div>
 
-  <!-- Sort By -->
+  <!-- Sıralama -->
   <div>
-    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3 ml-1">Sırala</h3>
-    <select 
-      [(ngModel)]="sortBy" 
-      (change)="applyFilters()"
-      class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer"
-    >
-      <option value="">Önerilen</option>
-      <option value="newest">En Yeniler</option>
-      <option value="price_asc">Fiyat: Artan</option>
-      <option value="price_desc">Fiyat: Azalan</option>
-      <option value="rating_desc">En Yüksek Puanlılar</option>
-    </select>
+    <h3 class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2.5">Sıralama</h3>
+    <div class="relative">
+      <select
+        [(ngModel)]="sortBy"
+        (change)="applyFilters()"
+        class="w-full pl-3 pr-8 py-1.5 border border-stone-200 rounded-lg text-xs text-stone-700 bg-stone-50 appearance-none focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 transition-colors cursor-pointer"
+      >
+        <option value="">Önerilen</option>
+        <option value="newest">En Yeniler</option>
+        <option value="price_asc">Fiyat: Artan</option>
+        <option value="price_desc">Fiyat: Azalan</option>
+        <option value="rating_desc">En Yüksek Puanlı</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-2.5 flex items-center">
+        <svg class="w-3.5 h-3.5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+    </div>
   </div>
-  
-  <!-- Clear Filters -->
-  <div class="pt-2">
-    <button 
-      (click)="clearFilters()"
-      class="w-full px-4 py-2 border border-gray-200 text-gray-600 bg-white hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200"
-    >
-      Temizle
-    </button>
-  </div>
+
+  <!-- Temizle -->
+  <button
+    (click)="clearFilters()"
+    class="w-full py-1.5 text-xs font-medium text-stone-500 hover:text-ember-500 border border-stone-200 hover:border-ember-200 bg-white hover:bg-ember-50 rounded-lg transition-colors"
+  >
+    Filtreleri Temizle
+  </button>
+
 </div>
