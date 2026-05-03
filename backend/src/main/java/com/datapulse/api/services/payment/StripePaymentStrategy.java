@@ -1,45 +1,55 @@
 package com.datapulse.api.services.payment;
 
-import com.stripe.Stripe;
+import com.datapulse.api.repositories.SystemConfigRepository;
 import com.stripe.model.PaymentIntent;
+import com.stripe.net.RequestOptions;
 import com.stripe.param.PaymentIntentCreateParams;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import jakarta.annotation.PostConstruct;
+
 import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class StripePaymentStrategy implements PaymentStrategy {
 
-    @Value("${stripe.api.key}")
-    private String stripeApiKey;
+    private final SystemConfigRepository systemConfigRepository;
 
-    @PostConstruct
-    public void init() {
-        Stripe.apiKey = stripeApiKey;
+    @Value("${stripe.api.key:sk_test_placeholder}")
+    private String stripeApiKeyFallback;
+
+    private String resolveApiKey() {
+        return systemConfigRepository.findByConfigKey("stripe_api_key")
+                .map(c -> c.getConfigValue())
+                .filter(v -> v != null && !v.isBlank())
+                .orElse(stripeApiKeyFallback);
     }
 
     @Override
     public String createPaymentIntent(BigDecimal amount, String currency) throws Exception {
-        // Stripe expects the amount in the smallest currency unit (e.g. cents for USD)
+        RequestOptions options = RequestOptions.builder().setApiKey(resolveApiKey()).build();
         long amountInCents = amount.multiply(new BigDecimal(100)).longValue();
 
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setAmount(amountInCents)
                 .setCurrency(currency)
-                // In production, add extra metadata like userId or cartId here
                 .build();
 
-        PaymentIntent intent = PaymentIntent.create(params);
+        PaymentIntent intent = PaymentIntent.create(params, options);
         return intent.getClientSecret();
     }
 
     @Override
     public boolean verifyPayment(String paymentIntentId) {
         try {
-            PaymentIntent intent = PaymentIntent.retrieve(paymentIntentId);
+            RequestOptions options = RequestOptions.builder().setApiKey(resolveApiKey()).build();
+            PaymentIntent intent = PaymentIntent.retrieve(paymentIntentId, options);
             return "succeeded".equals(intent.getStatus());
         } catch (Exception e) {
+            log.error("Stripe ödeme doğrulama hatası: {}", e.getMessage());
             return false;
         }
     }

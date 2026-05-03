@@ -112,12 +112,17 @@ public class DatabaseSeeder implements CommandLineRunner {
         systemConfigRepository.deleteAll();
 
         // 1. SystemConfig
-        SystemConfig sc1 = new SystemConfig(); sc1.setConfigKey("site_name"); sc1.setConfigValue("DataPulse E-Com");
-        SystemConfig sc2 = new SystemConfig(); sc2.setConfigKey("currency"); sc2.setConfigValue("USD");
-        SystemConfig sc3 = new SystemConfig(); sc3.setConfigKey("tax_rate"); sc3.setConfigValue("0.08");
-        SystemConfig sc4 = new SystemConfig(); sc4.setConfigKey("chatbot_llm_provider"); sc4.setConfigValue("openai");
-        SystemConfig sc5 = new SystemConfig(); sc5.setConfigKey("chatbot_llm_model"); sc5.setConfigValue("gpt-4o-mini");
-        systemConfigRepository.saveAll(Arrays.asList(sc1, sc2, sc3, sc4, sc5));
+        SystemConfig sc1 = new SystemConfig(); sc1.setConfigKey("site_name"); sc1.setConfigValue("DataPulse E-Com"); sc1.setSecret(false);
+        SystemConfig sc2 = new SystemConfig(); sc2.setConfigKey("currency"); sc2.setConfigValue("USD"); sc2.setSecret(false);
+        SystemConfig sc3 = new SystemConfig(); sc3.setConfigKey("tax_rate"); sc3.setConfigValue("0.08"); sc3.setSecret(false);
+        SystemConfig sc4 = new SystemConfig(); sc4.setConfigKey("chatbot_llm_provider"); sc4.setConfigValue("openai"); sc4.setSecret(false);
+        SystemConfig sc5 = new SystemConfig(); sc5.setConfigKey("chatbot_llm_model"); sc5.setConfigValue("gpt-4o-mini"); sc5.setSecret(false);
+        SystemConfig sc6 = new SystemConfig(); sc6.setConfigKey("openai_api_key"); sc6.setConfigValue(""); sc6.setSecret(true);
+        SystemConfig sc7 = new SystemConfig(); sc7.setConfigKey("anthropic_api_key"); sc7.setConfigValue(""); sc7.setSecret(true);
+        SystemConfig sc8 = new SystemConfig(); sc8.setConfigKey("gemini_api_key"); sc8.setConfigValue(""); sc8.setSecret(true);
+        SystemConfig sc9 = new SystemConfig(); sc9.setConfigKey("groq_api_key"); sc9.setConfigValue(""); sc9.setSecret(true);
+        SystemConfig sc10 = new SystemConfig(); sc10.setConfigKey("stripe_api_key"); sc10.setConfigValue(""); sc10.setSecret(true);
+        systemConfigRepository.saveAll(Arrays.asList(sc1, sc2, sc3, sc4, sc5, sc6, sc7, sc8, sc9, sc10));
 
         // 2. Users — 3 seller + 10 customer + 1 admin
         String pass = passwordEncoder.encode("123Pa$$word!");

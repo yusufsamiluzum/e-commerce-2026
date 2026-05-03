@@ -9,8 +9,7 @@ import { of } from 'rxjs';
   selector: 'app-user-refunds',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './user-refunds.html',
-  styleUrl: './user-refunds.scss'
+  templateUrl: './user-refunds.html'
 })
 export class UserRefunds {
   private refundService = inject(RefundService);

@@ -33,6 +33,10 @@ public class SystemConfig {
     @Column(name = "last_updated_by")
     private Long lastUpdatedBy;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean isSecret = false;
+
     private LocalDateTime updatedAt;
 
     @PrePersist

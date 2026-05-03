@@ -9,8 +9,7 @@ import { of } from 'rxjs';
   selector: 'app-user-profile',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './user-profile.html',
-  styleUrl: './user-profile.scss'
+  templateUrl: './user-profile.html'
 })
 export class UserProfile {
   private userService = inject(UserService);

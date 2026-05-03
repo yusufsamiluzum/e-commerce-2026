@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 // ─── Platform Dashboard ─────────────────────────────────────
 export interface PlatformStats {
@@ -59,6 +60,7 @@ export interface SystemConfigItem {
   id: number;
   configKey: string;
   configValue: string;
+  isSecret: boolean;
   updatedAt: string;
 }
 
@@ -142,7 +144,7 @@ export interface PageResponse<T> {
 })
 export class AdminService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/admin';
+  private baseUrl = `${environment.apiUrl}/api/admin`;
 
   // ─── Platform Dashboard ─────────────────────────────────────
 

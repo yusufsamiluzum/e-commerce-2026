@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -18,6 +19,7 @@ export class StripePaymentComponent implements AfterViewInit {
   private elements!: StripeElements;
   public card!: StripeCardElement;
   errorMessage: string | null = null;
+  isProd = environment.production;
 
   async ngAfterViewInit() {
     this.stripe = await this.stripePromise;

@@ -40,13 +40,17 @@ public class ChatService {
     @Value("${chatbot.service.url:http://localhost:8000}")
     private String chatbotServiceUrl;
 
-    // SystemConfig key'leri
     private static final String CONFIG_LLM_PROVIDER = "chatbot_llm_provider";
     private static final String CONFIG_LLM_MODEL = "chatbot_llm_model";
-
-    // Varsayılan değerler
     private static final String DEFAULT_LLM_PROVIDER = "openai";
     private static final String DEFAULT_LLM_MODEL = "gpt-4o-mini";
+
+    private static final Map<String, String> PROVIDER_API_KEY_CONFIGS = Map.of(
+            "openai", "openai_api_key",
+            "anthropic", "anthropic_api_key",
+            "gemini", "gemini_api_key",
+            "groq", "groq_api_key"
+    );
 
     /**
      * Kullanıcının sorusunu Python chatbot servisine iletir.
@@ -80,6 +84,15 @@ public class ChatService {
                 .map(config -> config.getConfigValue())
                 .orElse(DEFAULT_LLM_MODEL);
 
+        // Aktif provider'ın API key'ini oku
+        String apiKeyConfigKey = PROVIDER_API_KEY_CONFIGS.get(llmProvider.toLowerCase());
+        String apiKey = apiKeyConfigKey != null
+                ? systemConfigRepository.findByConfigKey(apiKeyConfigKey)
+                        .map(config -> config.getConfigValue())
+                        .filter(v -> v != null && !v.isBlank())
+                        .orElse(null)
+                : null;
+
         // Python servisine gönderilecek payload
         Map<String, Object> payload = new HashMap<>();
         payload.put("question", question);
@@ -88,6 +101,9 @@ public class ChatService {
         payload.put("store_id", storeId);
         payload.put("llm_provider", llmProvider);
         payload.put("llm_model", llmModel);
+        if (apiKey != null) {
+            payload.put("api_key", apiKey);
+        }
 
         // HTTP isteği oluştur
         HttpHeaders headers = new HttpHeaders();

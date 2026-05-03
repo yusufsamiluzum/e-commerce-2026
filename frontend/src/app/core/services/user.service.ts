@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface UserProfileDto {
   id: number;
@@ -34,7 +35,7 @@ export interface UserPreferenceDto {
 })
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/users'; 
+  private apiUrl = `${environment.apiUrl}/api/users`;
 
   getProfile(): Observable<UserProfileDto> {
     return this.http.get<UserProfileDto>(`${this.apiUrl}/profile`);

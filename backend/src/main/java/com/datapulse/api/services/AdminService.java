@@ -453,6 +453,7 @@ public class AdminService {
                 .id(config.getId())
                 .configKey(config.getConfigKey())
                 .configValue(config.getConfigValue())
+                .isSecret(config.isSecret())
                 .updatedAt(config.getUpdatedAt())
                 .build();
     }

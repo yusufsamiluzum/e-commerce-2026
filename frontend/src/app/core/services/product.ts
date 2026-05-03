@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../../shared/models/product.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Product } from '../../shared/models/product.model';
 export class ProductService {
   private http = inject(HttpClient);
   // Point this to your Spring Boot API URL
-  private apiUrl = 'http://localhost:8080/api/products';
+  private apiUrl = `${environment.apiUrl}/api/products`;
 
   // Fetch all products, optionally passing search/filter params
   getProducts(filters: any = {}): Observable<Product[]> {
@@ -24,7 +25,7 @@ export class ProductService {
   }
 
   getCategories(): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:8080/api/categories/tree');
+    return this.http.get<any[]>(`${environment.apiUrl}/api/categories/tree`);
   }
 
   // Fetch a single product for the details page

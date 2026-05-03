@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { DemoFillComponent, DemoAccount } from '../../../../shared/components/demo-fill/demo-fill.component';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, DemoFillComponent],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
 })
 export class LoginComponent {
   activeTab: 'individual' | 'corporate' = 'individual';
@@ -28,6 +28,20 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
+
+  readonly pass = '123Pa$$word!';
+
+  individualDemoAccounts: DemoAccount[] = [
+    { label: 'Müşteri 1', values: { email: 'customer1@test.com', password: this.pass } },
+    { label: 'Müşteri 2', values: { email: 'customer2@test.com', password: this.pass } },
+    { label: 'Müşteri 3', values: { email: 'customer3@test.com', password: this.pass } },
+  ];
+
+  corporateDemoAccounts: DemoAccount[] = [
+    { label: 'Satıcı 1', values: { email: 'seller1@test.com', password: this.pass } },
+    { label: 'Satıcı 2', values: { email: 'seller2@test.com', password: this.pass } },
+    { label: 'Satıcı 3', values: { email: 'seller3@test.com', password: this.pass } },
+  ];
 
   switchTab(tab: 'individual' | 'corporate') {
     this.activeTab = tab;

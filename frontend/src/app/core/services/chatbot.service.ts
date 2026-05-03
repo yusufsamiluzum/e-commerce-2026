@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ChatRequest, ChatResponse } from './chatbot.model';
+import { environment } from '../../../environments/environment';
 
 /**
  * Chatbot Service — Backend /api/chat/ask endpoint'ini tüketir.
@@ -12,7 +13,7 @@ import { ChatRequest, ChatResponse } from './chatbot.model';
 })
 export class ChatbotService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/chat';
+  private apiUrl = `${environment.apiUrl}/api/chat`;
 
   /**
    * Kullanıcının sorusunu chatbot'a iletir.

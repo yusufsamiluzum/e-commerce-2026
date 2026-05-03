@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface SpendingAnalysisResponse {
   totalSpent: number;
@@ -15,7 +16,7 @@ export interface SpendingAnalysisResponse {
 })
 export class AnalyticsService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/analytics';
+  private apiUrl = `${environment.apiUrl}/api/analytics`;
 
   getSpendingAnalysis(): Observable<SpendingAnalysisResponse> {
     return this.http.get<SpendingAnalysisResponse>(`${this.apiUrl}/spending`);

@@ -3,6 +3,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { CartService } from './cart.service';
+import { environment } from '../../../environments/environment';
 
 export type UserRole = 'GUEST' | 'INDIVIDUAL' | 'CORPORATE' | 'ADMIN';
 
@@ -18,8 +20,9 @@ export interface AuthResponse {
 })
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
+  private cartService = inject(CartService);
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = environment.apiUrl;
 
   // Signal holds the current user's role, defaulting to GUEST.
   // GUEST -> not logged in. INDIVIDUAL, CORPORATE, ADMIN -> logged in.
@@ -106,6 +109,7 @@ export class AuthService {
       localStorage.removeItem('current_user_name');
       localStorage.removeItem('current_user_email');
     }
+    this.cartService.clearCart();
     this.currentUserRole.set('GUEST');
     this.hasStore.set(false);
     this.currentUserName.set('');

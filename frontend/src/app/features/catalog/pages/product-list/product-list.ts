@@ -11,8 +11,7 @@ import { FilterComponent, FilterOptions } from '../../components/filter/filter';
   selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule, ProductCardComponent, CategoryComponent, FilterComponent],
-  templateUrl: './product-list.html',
-  styleUrls: ['./product-list.scss']
+  templateUrl: './product-list.html'
 })
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);

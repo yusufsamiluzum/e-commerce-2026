@@ -9,8 +9,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Navbar, Footer, ChatbotWidget, EmberToastComponent],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  templateUrl: './app.html'
 })
 export class App {
   protected readonly title = signal('datapulse-frontend');

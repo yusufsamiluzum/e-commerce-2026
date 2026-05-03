@@ -66,6 +66,7 @@
           </svg>
           {{ isLoading ? 'Giriş Yapılıyor...' : 'Giriş Yap' }}
         </button>
+        <app-demo-fill [accounts]="individualDemoAccounts" [form]="individualForm" />
       </form>
 
       <!-- Corporate Form -->
@@ -90,6 +91,7 @@
           </svg>
           {{ isLoading ? 'Giriş Yapılıyor...' : 'Kurumsal Giriş Yap' }}
         </button>
+        <app-demo-fill [accounts]="corporateDemoAccounts" [form]="corporateForm" />
       </form>
 
       <!-- Footer link -->

@@ -16,8 +16,7 @@ export interface OrderStep {
   selector: 'app-user-orders',
   standalone: true,
   imports: [CommonModule, RouterModule, OrderItemComponent],
-  templateUrl: './user-orders.html',
-  styleUrl: './user-orders.scss'
+  templateUrl: './user-orders.html'
 })
 export class UserOrders {
   private orderService = inject(OrderService);

@@ -7,11 +7,13 @@ import { StripePaymentComponent } from '../../components/stripe-payment/stripe-p
 import { PaypalPaymentComponent } from '../../components/paypal-payment/paypal-payment';
 import { CartService } from '../../../../core/services/cart.service';
 import { PaymentService, PaymentIntentResponse } from '../../../../core/services/payment.service';
+import { environment } from '../../../../../environments/environment';
+import { DemoFillComponent, DemoAccount } from '../../../../shared/components/demo-fill/demo-fill.component';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, StripePaymentComponent, PaypalPaymentComponent],
+  imports: [CommonModule, ReactiveFormsModule, StripePaymentComponent, PaypalPaymentComponent, DemoFillComponent],
   templateUrl: './checkout.html'
 })
 export class CheckoutComponent implements OnInit {
@@ -27,7 +29,11 @@ export class CheckoutComponent implements OnInit {
   checkoutForm!: FormGroup;
   isProcessing = false;
   paymentError: string | null = null;
-  selectedPaymentMethod = 'stripe'; // Strategy switch (stripe, paypal, mock)
+  selectedPaymentMethod = 'stripe';
+
+  checkoutDemoAccounts: DemoAccount[] = [
+    { label: 'Örnek Adres', values: { fullName: 'Ahmet Yılmaz', address: 'Atatürk Cad. No:1 Daire:5', city: 'İstanbul', zipCode: '34000' } },
+  ];
 
   ngOnInit() {
     this.checkoutForm = this.fb.group({
@@ -105,7 +111,7 @@ export class CheckoutComponent implements OnInit {
       }
     };
 
-    this.http.post('http://localhost:8080/api/orders', orderPayload).subscribe({
+    this.http.post(`${environment.apiUrl}/api/orders`, orderPayload).subscribe({
       next: (res) => {
         this.isProcessing = false;
         this.cartService.clearCart();

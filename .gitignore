@@ -1,2 +1,28 @@
 frontend/.angular/
 chatbot-service/.env
+node_modules/
+
+# Planlama ve tasarım dökümanları (teslimata dahil değil)
+docs/
+design-references/
+AI_RULES.md
+CLAUDE.md
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+*.tmp
+*.bak
+
+# Python (chatbot-service)
+chatbot-service/__pycache__/
+chatbot-service/*.pyc
+chatbot-service/.env.*

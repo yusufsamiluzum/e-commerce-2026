@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { DemoFillComponent, DemoAccount } from '../../../../shared/components/demo-fill/demo-fill.component';
 
 @Component({
   selector: 'app-admin-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, DemoFillComponent],
   templateUrl: './admin-login.html',
-  styleUrl: './admin-login.scss',
 })
 export class AdminLoginComponent {
   authService = inject(AuthService);
@@ -22,6 +22,10 @@ export class AdminLoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   });
+
+  adminDemoAccounts: DemoAccount[] = [
+    { label: 'Admin', values: { email: 'admin@test.com', password: '123Pa$$word!' } },
+  ];
 
   onSubmit() {
     this.errorMsg = '';

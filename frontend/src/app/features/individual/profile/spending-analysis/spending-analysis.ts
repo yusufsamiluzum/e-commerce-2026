@@ -14,8 +14,7 @@ export interface MappedSpendingAnalysis extends SpendingAnalysisResponse {
   selector: 'app-spending-analysis',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './spending-analysis.html',
-  styleUrl: './spending-analysis.scss'
+  templateUrl: './spending-analysis.html'
 })
 export class SpendingAnalysis {
   private analyticsService = inject(AnalyticsService);

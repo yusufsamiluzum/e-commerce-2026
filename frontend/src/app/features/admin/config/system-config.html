@@ -7,57 +7,102 @@
 
   <!-- Skeleton -->
   @if (configs() === null) {
-  <div class="space-y-3">
+  <div class="space-y-4">
     @for (i of [1,2,3]; track i) {
     <div class="bg-white border border-stone-200 rounded-xl p-5 animate-pulse">
-      <div class="h-4 bg-stone-100 rounded w-24 mb-2"></div>
-      <div class="h-8 bg-stone-100 rounded w-48"></div>
+      <div class="h-3 bg-stone-100 rounded w-16 mb-4"></div>
+      <div class="space-y-3">
+        <div class="h-8 bg-stone-100 rounded w-full"></div>
+        <div class="h-8 bg-stone-100 rounded w-full"></div>
+      </div>
     </div>
     }
   </div>
   }
 
   @if (configs() !== null) {
-  <div class="space-y-3">
-    @for (config of configs(); track config.id) {
-    <div class="bg-white border border-stone-200 rounded-xl p-5 hover:border-orange-200 hover:shadow-sm transition-all">
-      <div class="flex items-start justify-between">
-        <div class="flex items-start gap-4">
-          <span class="text-2xl mt-0.5">{{ getKeyIcon(config.configKey) }}</span>
-          <div>
-            <p class="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-1">{{ config.configKey }}</p>
+  <div class="space-y-5">
+    @for (group of groups(); track group.label) {
+    <div class="bg-white border border-stone-200 rounded-xl overflow-hidden">
+
+      <!-- Grup Başlığı -->
+      <div class="px-5 py-3 bg-stone-50 border-b border-stone-200 flex items-center gap-2">
+        <span class="text-base">{{ group.icon }}</span>
+        <span class="text-xs font-semibold text-stone-500 uppercase tracking-wider">{{ group.label }}</span>
+      </div>
+
+      <!-- Config Satırları -->
+      <div class="divide-y divide-stone-100">
+        @for (config of group.items; track config.id) {
+        <div class="px-5 py-4 flex items-center justify-between gap-4 hover:bg-stone-50/60 transition-colors">
+
+          <!-- Sol: Label + Değer -->
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-medium text-stone-400 mb-1">{{ getLabel(config.configKey) }}</p>
+
             @if (editingId() === config.id) {
+            <!-- Edit modu -->
             <div class="flex items-center gap-2">
-              <input type="text" [value]="editingValue()" (input)="editingValue.set($any($event.target).value)"
+              <input
+                [type]="config.isSecret ? 'password' : 'text'"
+                [value]="editingValue()"
+                (input)="editingValue.set($any($event.target).value)"
                 (keydown.enter)="saveEdit(config.id)"
-                class="bg-white border border-orange-400 rounded-lg px-3 py-2 text-sm text-stone-900 outline-none w-64 focus:ring-2 focus:ring-orange-400/20">
+                (keydown.escape)="cancelEdit()"
+                [placeholder]="config.isSecret ? 'Yeni API key girin...' : ''"
+                class="bg-white border border-orange-400 rounded-lg px-3 py-1.5 text-sm text-stone-900 outline-none w-72 focus:ring-2 focus:ring-orange-400/20"
+                autofocus>
               <button (click)="saveEdit(config.id)" [disabled]="actionInProgress()"
-                class="text-xs px-3 py-2 rounded-lg font-medium bg-lime-50 text-lime-700 border border-lime-200 hover:bg-lime-100 transition-all disabled:opacity-50">
+                class="text-xs px-3 py-1.5 rounded-lg font-medium bg-lime-50 text-lime-700 border border-lime-200 hover:bg-lime-100 transition-all disabled:opacity-50 shrink-0">
                 Kaydet
               </button>
               <button (click)="cancelEdit()"
-                class="text-xs px-3 py-2 rounded-lg font-medium bg-stone-100 text-stone-500 hover:bg-stone-200 transition-all">
+                class="text-xs px-3 py-1.5 rounded-lg font-medium bg-stone-100 text-stone-500 hover:bg-stone-200 transition-all shrink-0">
                 İptal
               </button>
             </div>
             } @else {
-            <p class="text-lg font-semibold text-stone-900">{{ config.configValue }}</p>
-            }
+            <!-- Görüntüleme modu -->
+            <div class="flex items-center gap-2">
+              @if (config.isSecret) {
+              <span class="font-mono text-sm text-stone-700">
+                {{ isRevealed(config.id) ? (config.configValue || '—') : maskedValue(config.configValue) }}
+              </span>
+              @if (config.configValue) {
+              <button (click)="toggleReveal(config.id)"
+                class="text-[11px] px-2 py-0.5 rounded font-medium text-stone-400 hover:text-stone-600 hover:bg-stone-100 transition-all">
+                {{ isRevealed(config.id) ? 'Gizle' : 'Göster' }}
+              </button>
+              }
+              @if (!config.configValue) {
+              <span class="text-xs text-amber-500 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                Ayarlanmamış
+              </span>
+              }
+              } @else {
+              <span class="text-sm font-semibold text-stone-900">{{ config.configValue || '—' }}</span>
+              }
+            </div>
             @if (config.updatedAt) {
-            <p class="text-[10px] text-stone-300 mt-1">Son güncelleme: {{ config.updatedAt | date:'dd MMM yyyy, HH:mm'
-              }}</p>
+            <p class="text-[10px] text-stone-300 mt-0.5">Son güncelleme: {{ config.updatedAt | date:'dd MMM yyyy, HH:mm' }}</p>
+            }
             }
           </div>
+
+          <!-- Sağ: Düzenle butonu -->
+          @if (editingId() !== config.id) {
+          <button (click)="startEdit(config)"
+            class="text-xs px-3 py-1.5 rounded-lg font-medium text-stone-400 hover:text-orange-500 hover:bg-orange-50 transition-all shrink-0">
+            Düzenle
+          </button>
+          }
         </div>
-        @if (editingId() !== config.id) {
-        <button (click)="startEdit(config)"
-          class="text-xs px-3 py-1.5 rounded-lg font-medium text-stone-400 hover:text-orange-500 hover:bg-orange-50 transition-all">
-          Düzenle
-        </button>
         }
       </div>
     </div>
-    } @empty {
+    }
+
+    @if (groups().length === 0) {
     <div class="py-16 text-center">
       <div class="text-3xl mb-2">⚙️</div>
       <p class="text-stone-400">Konfigürasyon değeri bulunamadı.</p>

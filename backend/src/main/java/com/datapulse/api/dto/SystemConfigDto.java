@@ -1,5 +1,6 @@
 package com.datapulse.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,7 @@ public class SystemConfigDto {
     private Long id;
     private String configKey;
     private String configValue;
+    @JsonProperty("isSecret")
+    private boolean isSecret;
     private LocalDateTime updatedAt;
 }
