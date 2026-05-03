@@ -34,19 +34,19 @@ import { AuthService } from '../../core/services/auth.service';
       height: 56px;
       border-radius: 16px;
       border: none;
-      background: linear-gradient(135deg, #7c3aed, #3b82f6);
+      background: linear-gradient(135deg, #f97316, #ea580c);
       color: white;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
+      box-shadow: 0 8px 32px rgba(249, 115, 22, 0.35);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
 
       &:hover {
         transform: scale(1.1) translateY(-2px);
-        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.5);
+        box-shadow: 0 12px 40px rgba(249, 115, 22, 0.45);
       }
 
       &:active {
@@ -65,7 +65,7 @@ import { AuthService } from '../../core/services/auth.service';
       width: 100%;
       height: 100%;
       border-radius: 16px;
-      background: linear-gradient(135deg, #7c3aed, #3b82f6);
+      background: linear-gradient(135deg, #f97316, #ea580c);
       animation: fabPulse 2s ease-in-out infinite;
       z-index: 0;
     }

@@ -1,14 +1,18 @@
 /* ── Chatbot Page Styles — Ember Theme ── */
 
 :host {
-  display: block;
-  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .chatbot-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
   background: #fef7ed; /* ember-50 */
   color: #1c1917; /* stone-900 */

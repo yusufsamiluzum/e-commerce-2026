@@ -23,10 +23,10 @@
 - [x] **Adım 8:** INDIVIDUAL Ürün detay (`/catalog/:id`) ✅
 - [x] **Adım 9:** CORPORATE Dashboard ✅
 - [x] **Adım 10:** AI Asistan ✅
-- [ ] **Adım 11:** ADMIN Dashboard
-- [ ] **Adım 12:** Sepet + Checkout
-- [ ] **Adım 13:** INDIVIDUAL Profil (8 sekme)
-- [ ] **Adım 14:** CORPORATE diğer sayfalar (catalog, inventory, orders, refunds, analytics, customers, reviews)
+- [x] **Adım 11:** ADMIN Dashboard ✅
+- [x] **Adım 12:** Sepet + Checkout ✅
+- [x] **Adım 13:** INDIVIDUAL Profil (8 sekme) ✅
+- [x] **Adım 14:** CORPORATE diğer sayfalar (catalog, inventory, orders, refunds, analytics, customers, reviews)
 - [ ] **Adım 15:** ADMIN diğer sayfalar (users, stores, orders, refunds, reviews, categories, audit-logs, analytics, config)
 - [ ] **Adım 16:** Auth sayfaları (login, register, admin-login)
 

@@ -1,8 +1,17 @@
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+.ember-nav-active {
+  background-color: #FFF7ED !important;
+  color: #F97316 !important;
+  border-color: #FED7AA !important;
+
+  span svg {
+    color: #F97316 !important;
+  }
+
+  span {
+    background-color: #FFF7ED !important;
+  }
 }
 
-.hide-scrollbar::-webkit-scrollbar {
+nav::-webkit-scrollbar {
   display: none;
 }

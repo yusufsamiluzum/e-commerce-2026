@@ -6,30 +6,33 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <article class="rounded-2xl border border-slate-700/70 bg-slate-900/40 p-4 md:p-5 shadow-sm">
-      <div class="flex items-start gap-4">
-        <div class="w-20 h-20 rounded-xl bg-slate-950 border border-slate-700/60 flex-shrink-0 overflow-hidden flex items-center justify-center">
-        @if (imageUrl) {
-          <img [src]="imageUrl" [alt]="name" class="w-full h-full object-cover">
-        } @else {
-          <i class="fas fa-box text-gray-600 text-xl"></i>
-        }
+    <article class="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3.5">
+      <div class="flex items-center gap-3.5">
+        <div class="w-14 h-14 rounded-lg bg-white border border-stone-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
+          @if (imageUrl) {
+            <img [src]="imageUrl" [alt]="name" class="w-full h-full object-contain p-1">
+          } @else {
+            <svg class="w-7 h-7 text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          }
         </div>
 
         <div class="flex-1 min-w-0">
-          <h4 class="text-white text-base font-semibold leading-tight">{{ name || 'Ürün' }}</h4>
-          <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
-            <span class="inline-flex items-center rounded-md bg-slate-800 border border-slate-700 px-2.5 py-1 text-slate-300">
+          <h4 class="text-stone-900 text-sm font-medium leading-snug truncate">{{ name || 'Ürün' }}</h4>
+          <div class="mt-1.5 flex flex-wrap items-center gap-2 text-xs">
+            <span class="inline-flex items-center rounded-md bg-white border border-stone-200 px-2 py-0.5 text-stone-600 font-medium">
               {{ quantity }} Adet
             </span>
-            <span class="text-slate-500">Birim:</span>
-            <span class="text-slate-300 font-medium">\${{ unitPrice | number:'1.2-2' }}</span>
+            <span class="text-stone-400">Birim:
+              <span class="text-stone-600 font-medium">\${{ unitPrice | number:'1.2-2' }}</span>
+            </span>
           </div>
         </div>
 
-        <div class="text-right flex flex-col items-end gap-2">
-          <p class="text-xs uppercase tracking-wide text-slate-400">Toplam</p>
-          <span class="text-white font-extrabold text-lg leading-none">\${{ totalPrice | number:'1.2-2' }}</span>
+        <div class="text-right flex flex-col items-end gap-1 flex-shrink-0">
+          <p class="text-[10px] uppercase tracking-wider text-stone-400 font-medium">Toplam</p>
+          <span class="text-orange-500 font-semibold text-base leading-none">\${{ totalPrice | number:'1.2-2' }}</span>
           <ng-content></ng-content>
         </div>
       </div>

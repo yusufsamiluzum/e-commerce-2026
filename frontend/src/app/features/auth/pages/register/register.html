@@ -1,95 +1,110 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-md border border-gray-100">
-    <div>
-      <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
-      <p class="mt-2 text-center text-sm text-gray-600">
-        Or
-        <a routerLink="/auth/login" class="font-medium text-blue-600 hover:text-blue-500">sign in to your existing account</a>
+<div class="min-h-screen bg-ember-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="w-full max-w-md">
+
+    <!-- Logo -->
+    <a routerLink="/" class="flex items-center justify-center gap-2 mb-6">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-sm">
+        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.017 2C12.017 2 6 8 6 13.5a6.017 6.017 0 0 0 12 0C18 8 12.017 2 12.017 2zm-.017 15a2 2 0 0 1-2-2c0-1.5 1-3 2-4 1 1 2 2.5 2 4a2 2 0 0 1-2 2z"/>
+        </svg>
+      </div>
+      <span class="text-xl font-semibold text-stone-900 tracking-tight">ember</span>
+    </a>
+
+    <div class="bg-white border border-stone-200 rounded-2xl shadow-sm p-8">
+      <h2 class="text-2xl font-bold text-stone-900 text-center mb-1">Hesap Oluşturun</h2>
+      <p class="text-center text-sm text-stone-400 mb-6">
+        Zaten üye misiniz?
+        <a routerLink="/auth/login" class="font-medium text-ember-500 hover:text-ember-600 transition-colors">Giriş Yapın</a>
       </p>
-    </div>
 
-    <!-- Tabs -->
-    <div class="flex rounded-md shadow-sm" role="group">
-      <button type="button" (click)="setTab('INDIVIDUAL')"
-        [class]="activeTab() === 'INDIVIDUAL' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:text-blue-600 hover:bg-gray-50'"
-        class="rounded-l-lg flex-1 border border-gray-200 px-4 py-2 text-sm font-medium focus:z-10 focus:ring-2 focus:ring-blue-500 transition-colors">
-        Individual
-      </button>
-      <button type="button" (click)="setTab('CORPORATE')"
-        [class]="activeTab() === 'CORPORATE' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:text-blue-600 hover:bg-gray-50'"
-        class="rounded-r-lg flex-1 border border-gray-200 border-l-0 px-4 py-2 text-sm font-medium focus:z-10 focus:ring-2 focus:ring-blue-500 transition-colors">
-        Corporate
-      </button>
-    </div>
-
-    @if (errorMessage()) {
-      <div class="bg-red-50 text-red-700 p-3 rounded-lg text-sm mb-4 border border-red-100">
-        {{ errorMessage() }}
-      </div>
-    }
-
-    <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()">
-      
-      <!-- Individual Form -->
-      <div [class.hidden]="activeTab() !== 'INDIVIDUAL'" [formGroup]="individualForm" class="space-y-4">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="firstName" class="block text-sm font-medium text-gray-700">First name</label>
-            <input id="firstName" formControlName="firstName" type="text" autocomplete="given-name" required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-          </div>
-          <div>
-            <label for="lastName" class="block text-sm font-medium text-gray-700">Last name</label>
-            <input id="lastName" formControlName="lastName" type="text" autocomplete="family-name" required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-          </div>
-        </div>
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-          <input id="email" formControlName="email" type="email" autocomplete="email" required
-            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        </div>
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-          <input id="password" formControlName="password" type="password" autocomplete="new-password" required
-            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        </div>
-      </div>
-
-      <!-- Corporate Form -->
-      <div [class.hidden]="activeTab() !== 'CORPORATE'" [formGroup]="corporateForm" class="space-y-4">
-        <div>
-          <label for="companyName" class="block text-sm font-medium text-gray-700">Company Name</label>
-          <input id="companyName" formControlName="companyName" type="text" required
-            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        </div>
-        <div>
-          <label for="taxId" class="block text-sm font-medium text-gray-700">Tax ID</label>
-          <input id="taxId" formControlName="taxId" type="text" required
-            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        </div>
-        <div>
-          <label for="corpEmail" class="block text-sm font-medium text-gray-700">Email address</label>
-          <input id="corpEmail" formControlName="email" type="email" autocomplete="email" required
-            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        </div>
-        <div>
-          <label for="corpPassword" class="block text-sm font-medium text-gray-700">Password</label>
-          <input id="corpPassword" formControlName="password" type="password" autocomplete="new-password" required
-            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        </div>
-      </div>
-
-      <div>
-        <button type="submit" [disabled]="isLoading()"
-          class="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-          @if (isLoading()) {
-            Processing...
-          } @else {
-            Create account
-          }
+      <!-- Tabs -->
+      <div class="flex rounded-xl overflow-hidden border border-stone-200 mb-6">
+        <button type="button" (click)="setTab('INDIVIDUAL')"
+          [class]="activeTab() === 'INDIVIDUAL' ? 'bg-ember-500 text-white' : 'bg-white text-stone-500 hover:bg-stone-50'"
+          class="flex-1 px-4 py-2.5 text-sm font-medium transition-colors">
+          Bireysel
+        </button>
+        <button type="button" (click)="setTab('CORPORATE')"
+          [class]="activeTab() === 'CORPORATE' ? 'bg-stone-900 text-white' : 'bg-white text-stone-500 hover:bg-stone-50 border-l border-stone-200'"
+          class="flex-1 px-4 py-2.5 text-sm font-medium transition-colors">
+          Kurumsal
         </button>
       </div>
-    </form>
+
+      @if (errorMessage()) {
+        <div class="bg-red-50 text-red-700 p-3 rounded-xl text-sm mb-5 border border-red-100 flex items-center gap-2">
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <form (ngSubmit)="onSubmit()">
+
+        <!-- Individual Form -->
+        <div [class.hidden]="activeTab() !== 'INDIVIDUAL'" [formGroup]="individualForm" class="space-y-4">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="firstName" class="block text-sm font-medium text-stone-700 mb-1.5">Ad</label>
+              <input id="firstName" formControlName="firstName" type="text" autocomplete="given-name"
+                class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 text-sm transition-all">
+            </div>
+            <div>
+              <label for="lastName" class="block text-sm font-medium text-stone-700 mb-1.5">Soyad</label>
+              <input id="lastName" formControlName="lastName" type="text" autocomplete="family-name"
+                class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 text-sm transition-all">
+            </div>
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-stone-700 mb-1.5">E-posta Adresi</label>
+            <input id="email" formControlName="email" type="email" autocomplete="email"
+              class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 text-sm transition-all">
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-stone-700 mb-1.5">Şifre</label>
+            <input id="password" formControlName="password" type="password" autocomplete="new-password"
+              class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-ember-500/20 focus:border-ember-500 text-sm transition-all">
+          </div>
+        </div>
+
+        <!-- Corporate Form -->
+        <div [class.hidden]="activeTab() !== 'CORPORATE'" [formGroup]="corporateForm" class="space-y-4">
+          <div>
+            <label for="companyName" class="block text-sm font-medium text-stone-700 mb-1.5">Şirket Adı</label>
+            <input id="companyName" formControlName="companyName" type="text"
+              class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-700 text-sm transition-all">
+          </div>
+          <div>
+            <label for="taxId" class="block text-sm font-medium text-stone-700 mb-1.5">Vergi Kimlik No</label>
+            <input id="taxId" formControlName="taxId" type="text"
+              class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-700 text-sm transition-all">
+          </div>
+          <div>
+            <label for="corpEmail" class="block text-sm font-medium text-stone-700 mb-1.5">E-posta Adresi</label>
+            <input id="corpEmail" formControlName="email" type="email" autocomplete="email"
+              class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-700 text-sm transition-all">
+          </div>
+          <div>
+            <label for="corpPassword" class="block text-sm font-medium text-stone-700 mb-1.5">Şifre</label>
+            <input id="corpPassword" formControlName="password" type="password" autocomplete="new-password"
+              class="w-full px-3 py-2.5 border border-stone-200 rounded-xl bg-stone-50 text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-700 text-sm transition-all">
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="isLoading()"
+          [class]="activeTab() === 'CORPORATE' ? 'bg-stone-900 hover:bg-stone-800' : 'bg-ember-500 hover:bg-ember-600'"
+          class="mt-6 w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          @if (isLoading()) {
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            İşleniyor...
+          } @else {
+            Hesap Oluştur
+          }
+        </button>
+      </form>
+    </div>
   </div>
 </div>

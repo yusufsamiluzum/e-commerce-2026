@@ -11,9 +11,10 @@ import { CartService } from '../../services/cart.service';
   templateUrl: './navbar.html'
 })
 export class Navbar {
-  auth = inject(AuthService); // Inject the signal state
-  cartService = inject(CartService); // Inject the cart service
+  auth = inject(AuthService);
+  cartService = inject(CartService);
   private router = inject(Router);
+
 
   getProfileLink(): string {
     const role = this.auth.currentUserRole();
@@ -37,7 +38,7 @@ export class Navbar {
     return this.auth.currentUserRole() === 'ADMIN';
   }
 
-  logout() {
+logout() {
     this.auth.logout();
     this.router.navigate(['/']);
   }

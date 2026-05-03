@@ -1,21 +1,21 @@
 <!-- Loading State -->
 @if (isLoading()) {
   <div class="space-y-6">
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-8 animate-pulse">
+    <div class="bg-white border border-stone-200 rounded-2xl p-8 animate-pulse">
       <div class="flex items-center gap-6">
-        <div class="h-20 w-20 bg-gray-700 rounded-2xl"></div>
+        <div class="h-20 w-20 bg-stone-100 rounded-2xl"></div>
         <div class="flex-1">
-          <div class="h-6 bg-gray-700 rounded w-48 mb-3"></div>
-          <div class="h-4 bg-gray-700 rounded w-32"></div>
+          <div class="h-6 bg-stone-100 rounded w-48 mb-3"></div>
+          <div class="h-4 bg-stone-100 rounded w-32"></div>
         </div>
       </div>
     </div>
     @for (i of [1,2]; track i) {
-      <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 animate-pulse">
-        <div class="h-5 bg-gray-700 rounded w-36 mb-4"></div>
+      <div class="bg-white border border-stone-200 rounded-2xl p-6 animate-pulse">
+        <div class="h-5 bg-stone-100 rounded w-36 mb-4"></div>
         <div class="space-y-3">
-          <div class="h-4 bg-gray-700 rounded w-full"></div>
-          <div class="h-4 bg-gray-700 rounded w-3/4"></div>
+          <div class="h-4 bg-stone-100 rounded w-full"></div>
+          <div class="h-4 bg-stone-100 rounded w-3/4"></div>
         </div>
       </div>
     }
@@ -23,30 +23,30 @@
 } @else if (store(); as storeData) {
 
   <!-- Store Header Card -->
-  <div class="bg-gradient-to-r from-blue-900/40 via-gray-900 to-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 mb-6">
+  <div class="bg-gradient-to-r from-ember-50 via-orange-50 to-white border border-stone-200 rounded-2xl p-6 sm:p-8 mb-6">
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div class="flex items-center gap-5">
-        <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-10 sm:w-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <div class="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-ember-100 border border-ember-200 flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-10 sm:w-10 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
           </svg>
         </div>
         <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ storeData.name }}</h1>
-          <p class="text-sm text-gray-400 mt-1">{{ storeData.description || 'Mağaza açıklaması' }}</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-stone-900">{{ storeData.name }}</h1>
+          <p class="text-sm text-stone-500 mt-1">{{ storeData.description || 'Mağaza açıklaması' }}</p>
           <div class="flex items-center gap-3 mt-2">
             <span class="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-lg"
-              [class]="storeData.status === 'ACTIVE' ? 'text-emerald-400 bg-emerald-500/10' : 'text-yellow-400 bg-yellow-500/10'">
+              [class]="storeData.status === 'ACTIVE' ? 'text-emerald-600 bg-emerald-50' : 'text-amber-600 bg-amber-50'">
               {{ storeData.status }}
             </span>
-            <span class="text-xs text-gray-500">{{ storeData.baseCurrency }}</span>
-            <span class="text-xs text-gray-500">• Kayıt: {{ storeData.createdAt | date:'mediumDate' }}</span>
+            <span class="text-xs text-stone-400">{{ storeData.baseCurrency }}</span>
+            <span class="text-xs text-stone-400">• Kayıt: {{ storeData.createdAt | date:'mediumDate' }}</span>
           </div>
         </div>
       </div>
       @if (!isEditing()) {
         <button (click)="startEdit()"
-          class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2">
+          class="bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
@@ -58,23 +58,23 @@
 
   <!-- Edit Form -->
   @if (isEditing()) {
-    <div class="bg-gray-900/80 border border-blue-800/40 rounded-2xl p-6 mb-6">
-      <h2 class="text-lg font-semibold text-white mb-4">Mağaza Bilgilerini Düzenle</h2>
+    <div class="bg-white border border-ember-200 rounded-2xl p-6 mb-6">
+      <h2 class="text-lg font-semibold text-stone-900 mb-4">Mağaza Bilgilerini Düzenle</h2>
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-gray-400 mb-1.5">Mağaza Adı</label>
+          <label class="block text-xs font-medium text-stone-500 mb-1.5">Mağaza Adı</label>
           <input type="text" [(ngModel)]="editName"
-            class="w-full bg-gray-800 border border-gray-700 rounded-xl py-2.5 px-4 text-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all">
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-4 text-stone-900 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all">
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-400 mb-1.5">Açıklama</label>
+          <label class="block text-xs font-medium text-stone-500 mb-1.5">Açıklama</label>
           <textarea [(ngModel)]="editDescription" rows="3"
-            class="w-full bg-gray-800 border border-gray-700 rounded-xl py-2.5 px-4 text-white text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"></textarea>
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-4 text-stone-900 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all resize-none"></textarea>
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-400 mb-1.5">Para Birimi</label>
+          <label class="block text-xs font-medium text-stone-500 mb-1.5">Para Birimi</label>
           <select [(ngModel)]="editCurrency"
-            class="w-full bg-gray-800 border border-gray-700 rounded-xl py-2.5 px-4 text-white text-sm focus:border-blue-500 outline-none transition-all">
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-4 text-stone-900 text-sm focus:border-ember-500 outline-none transition-all">
             <option value="USD">USD - US Dollar</option>
             <option value="EUR">EUR - Euro</option>
             <option value="TRY">TRY - Türk Lirası</option>
@@ -83,11 +83,11 @@
         </div>
         <div class="flex items-center gap-3 pt-2">
           <button (click)="saveEdit()" [disabled]="isSaving()"
-            class="bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">
+            class="bg-ember-500 hover:bg-ember-600 disabled:opacity-50 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">
             {{ isSaving() ? 'Kaydediliyor...' : 'Kaydet' }}
           </button>
           <button (click)="cancelEdit()"
-            class="bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium px-5 py-2.5 rounded-xl transition-colors">
+            class="bg-stone-100 hover:bg-stone-200 text-stone-600 text-sm font-medium px-5 py-2.5 rounded-xl transition-colors">
             İptal
           </button>
         </div>
@@ -98,70 +98,70 @@
   <!-- Quick Stats -->
   @if (dashboard(); as dash) {
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-      <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4 text-center">
-        <p class="text-2xl font-bold text-white">{{ dash.activeProducts }}</p>
-        <p class="text-[11px] text-gray-500 mt-0.5">Aktif Ürünler</p>
+      <div class="bg-white border border-stone-200 rounded-xl p-4 text-center">
+        <p class="text-2xl font-bold text-stone-900">{{ dash.activeProducts }}</p>
+        <p class="text-[11px] text-stone-400 mt-0.5">Aktif Ürünler</p>
       </div>
-      <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4 text-center">
-        <p class="text-2xl font-bold text-white">{{ dash.totalOrders }}</p>
-        <p class="text-[11px] text-gray-500 mt-0.5">Toplam Sipariş</p>
+      <div class="bg-white border border-stone-200 rounded-xl p-4 text-center">
+        <p class="text-2xl font-bold text-stone-900">{{ dash.totalOrders }}</p>
+        <p class="text-[11px] text-stone-400 mt-0.5">Toplam Sipariş</p>
       </div>
-      <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4 text-center">
-        <p class="text-2xl font-bold text-emerald-400">${{ dash.totalRevenue | number:'1.0-0' }}</p>
-        <p class="text-[11px] text-gray-500 mt-0.5">Toplam Gelir</p>
+      <div class="bg-white border border-stone-200 rounded-xl p-4 text-center">
+        <p class="text-2xl font-bold text-emerald-600">${{ dash.totalRevenue | number:'1.0-0' }}</p>
+        <p class="text-[11px] text-stone-400 mt-0.5">Toplam Gelir</p>
       </div>
-      <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-4 text-center">
-        <p class="text-2xl font-bold text-yellow-400">{{ dash.averageRating | number:'1.1-1' }}</p>
-        <p class="text-[11px] text-gray-500 mt-0.5">Ortalama Puan</p>
+      <div class="bg-white border border-stone-200 rounded-xl p-4 text-center">
+        <p class="text-2xl font-bold text-amber-500">{{ dash.averageRating | number:'1.1-1' }}</p>
+        <p class="text-[11px] text-stone-400 mt-0.5">Ortalama Puan</p>
       </div>
     </div>
   }
 
   <!-- Owner Information -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-      <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Satıcı Bilgileri</h3>
+    <div class="bg-white border border-stone-200 rounded-2xl p-6">
+      <h3 class="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Satıcı Bilgileri</h3>
       <div class="space-y-4">
-        <div class="flex items-center justify-between py-2 border-b border-gray-800/60">
-          <span class="text-sm text-gray-500">Ad Soyad</span>
-          <span class="text-sm font-semibold text-white">{{ auth.currentUserName() }}</span>
+        <div class="flex items-center justify-between py-2 border-b border-stone-100">
+          <span class="text-sm text-stone-400">Ad Soyad</span>
+          <span class="text-sm font-semibold text-stone-900">{{ auth.currentUserName() }}</span>
         </div>
-        <div class="flex items-center justify-between py-2 border-b border-gray-800/60">
-          <span class="text-sm text-gray-500">E-posta</span>
-          <span class="text-sm font-semibold text-white">{{ auth.currentUserEmail() }}</span>
+        <div class="flex items-center justify-between py-2 border-b border-stone-100">
+          <span class="text-sm text-stone-400">E-posta</span>
+          <span class="text-sm font-semibold text-stone-900">{{ auth.currentUserEmail() }}</span>
         </div>
-        <div class="flex items-center justify-between py-2 border-b border-gray-800/60">
-          <span class="text-sm text-gray-500">Hesap Tipi</span>
-          <span class="text-sm font-semibold text-blue-400">Kurumsal</span>
+        <div class="flex items-center justify-between py-2 border-b border-stone-100">
+          <span class="text-sm text-stone-400">Hesap Tipi</span>
+          <span class="text-sm font-semibold text-ember-500">Kurumsal</span>
         </div>
         <div class="flex items-center justify-between py-2">
-          <span class="text-sm text-gray-500">Durum</span>
-          <span class="text-sm font-semibold text-emerald-400">Aktif</span>
+          <span class="text-sm text-stone-400">Durum</span>
+          <span class="text-sm font-semibold text-emerald-600">Aktif</span>
         </div>
       </div>
     </div>
 
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-      <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Mağaza Detayları</h3>
+    <div class="bg-white border border-stone-200 rounded-2xl p-6">
+      <h3 class="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Mağaza Detayları</h3>
       <div class="space-y-4">
-        <div class="flex items-center justify-between py-2 border-b border-gray-800/60">
-          <span class="text-sm text-gray-500">Mağaza ID</span>
-          <span class="text-sm font-mono font-semibold text-white">#{{ storeData.id }}</span>
+        <div class="flex items-center justify-between py-2 border-b border-stone-100">
+          <span class="text-sm text-stone-400">Mağaza ID</span>
+          <span class="text-sm font-mono font-semibold text-stone-900">#{{ storeData.id }}</span>
         </div>
-        <div class="flex items-center justify-between py-2 border-b border-gray-800/60">
-          <span class="text-sm text-gray-500">Para Birimi</span>
-          <span class="text-sm font-semibold text-white">{{ storeData.baseCurrency }}</span>
+        <div class="flex items-center justify-between py-2 border-b border-stone-100">
+          <span class="text-sm text-stone-400">Para Birimi</span>
+          <span class="text-sm font-semibold text-stone-900">{{ storeData.baseCurrency }}</span>
         </div>
-        <div class="flex items-center justify-between py-2 border-b border-gray-800/60">
-          <span class="text-sm text-gray-500">Durum</span>
+        <div class="flex items-center justify-between py-2 border-b border-stone-100">
+          <span class="text-sm text-stone-400">Durum</span>
           <span class="text-sm font-semibold"
-            [class]="storeData.status === 'ACTIVE' ? 'text-emerald-400' : 'text-yellow-400'">
+            [class]="storeData.status === 'ACTIVE' ? 'text-emerald-600' : 'text-amber-600'">
             {{ storeData.status }}
           </span>
         </div>
         <div class="flex items-center justify-between py-2">
-          <span class="text-sm text-gray-500">Kayıt Tarihi</span>
-          <span class="text-sm font-semibold text-white">{{ storeData.createdAt | date:'dd MMM yyyy' }}</span>
+          <span class="text-sm text-stone-400">Kayıt Tarihi</span>
+          <span class="text-sm font-semibold text-stone-900">{{ storeData.createdAt | date:'dd MMM yyyy' }}</span>
         </div>
       </div>
     </div>
@@ -169,28 +169,28 @@
 
   <!-- Order Status Overview -->
   @if (dashboard(); as dash) {
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 mt-6">
-      <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Sipariş Durumu Özeti</h3>
+    <div class="bg-white border border-stone-200 rounded-2xl p-6 mt-6">
+      <h3 class="text-xs font-semibold text-stone-400 uppercase tracking-wider mb-4">Sipariş Durumu Özeti</h3>
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-center">
-          <p class="text-lg font-bold text-yellow-400">{{ dash.pendingOrders }}</p>
-          <p class="text-[10px] text-gray-500 mt-0.5">Bekleyen</p>
+        <div class="bg-amber-50 border border-amber-100 rounded-xl p-3 text-center">
+          <p class="text-lg font-bold text-amber-600">{{ dash.pendingOrders }}</p>
+          <p class="text-[10px] text-stone-400 mt-0.5">Bekleyen</p>
         </div>
-        <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 text-center">
-          <p class="text-lg font-bold text-blue-400">{{ dash.processingOrders }}</p>
-          <p class="text-[10px] text-gray-500 mt-0.5">İşleniyor</p>
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center">
+          <p class="text-lg font-bold text-blue-600">{{ dash.processingOrders }}</p>
+          <p class="text-[10px] text-stone-400 mt-0.5">İşleniyor</p>
         </div>
-        <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3 text-center">
-          <p class="text-lg font-bold text-indigo-400">{{ dash.shippedOrders }}</p>
-          <p class="text-[10px] text-gray-500 mt-0.5">Kargoda</p>
+        <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-center">
+          <p class="text-lg font-bold text-indigo-600">{{ dash.shippedOrders }}</p>
+          <p class="text-[10px] text-stone-400 mt-0.5">Kargoda</p>
         </div>
-        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-center">
-          <p class="text-lg font-bold text-emerald-400">{{ dash.deliveredOrders }}</p>
-          <p class="text-[10px] text-gray-500 mt-0.5">Teslim Edildi</p>
+        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center">
+          <p class="text-lg font-bold text-emerald-600">{{ dash.deliveredOrders }}</p>
+          <p class="text-[10px] text-stone-400 mt-0.5">Teslim Edildi</p>
         </div>
-        <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-center">
-          <p class="text-lg font-bold text-red-400">{{ dash.cancelledOrders }}</p>
-          <p class="text-[10px] text-gray-500 mt-0.5">İptal</p>
+        <div class="bg-red-50 border border-red-100 rounded-xl p-3 text-center">
+          <p class="text-lg font-bold text-red-500">{{ dash.cancelledOrders }}</p>
+          <p class="text-[10px] text-stone-400 mt-0.5">İptal</p>
         </div>
       </div>
     </div>

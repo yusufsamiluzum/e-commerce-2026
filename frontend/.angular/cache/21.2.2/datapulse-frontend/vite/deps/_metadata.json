@@ -1,73 +1,73 @@
 {
-  "hash": "05b84e71",
+  "hash": "fdcab797",
   "configHash": "10175026",
-  "lockfileHash": "6d5fd22b",
-  "browserHash": "67890413",
+  "lockfileHash": "4836b5e9",
+  "browserHash": "934c9d49",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "7c31c38f",
+      "fileHash": "c5275e49",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "a89fef91",
+      "fileHash": "41ce28a7",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "09c6118d",
+      "fileHash": "a315a59f",
       "needsInterop": false
     },
     "@angular/core/rxjs-interop": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/rxjs-interop.mjs",
       "file": "@angular_core_rxjs-interop.js",
-      "fileHash": "44dbf7c8",
+      "fileHash": "8001d36a",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "6a611aa1",
+      "fileHash": "2eed6acd",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "d36e387d",
+      "fileHash": "ae257852",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "96383556",
+      "fileHash": "43452f86",
       "needsInterop": false
     },
     "@stripe/stripe-js": {
       "src": "../../../../../../node_modules/@stripe/stripe-js/lib/index.mjs",
       "file": "@stripe_stripe-js.js",
-      "fileHash": "7d51de69",
+      "fileHash": "52ad60e9",
       "needsInterop": false
     },
     "plotly.js-dist-min": {
       "src": "../../../../../../node_modules/plotly.js-dist-min/plotly.min.js",
       "file": "plotly__js-dist-min.js",
-      "fileHash": "edc7dd25",
+      "fileHash": "ada5ad11",
       "needsInterop": true
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "a532b301",
+      "fileHash": "fb7a4651",
       "needsInterop": false
     },
     "rxjs/operators": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
       "file": "rxjs_operators.js",
-      "fileHash": "2dd18cca",
+      "fileHash": "443fbe50",
       "needsInterop": false
     }
   },
@@ -90,11 +90,11 @@
     "chunk-QARIZ64O": {
       "file": "chunk-QARIZ64O.js"
     },
-    "chunk-JRFR6BLO": {
-      "file": "chunk-JRFR6BLO.js"
-    },
     "chunk-HWYXSU2G": {
       "file": "chunk-HWYXSU2G.js"
+    },
+    "chunk-JRFR6BLO": {
+      "file": "chunk-JRFR6BLO.js"
     },
     "chunk-MARUHEWW": {
       "file": "chunk-MARUHEWW.js"

@@ -1,40 +1,41 @@
-<div class="p-6 md:p-8 space-y-6">
+<div class="p-6 md:p-8 space-y-5">
 
-  <!-- Page Header -->
-  <div class="pb-5 border-b border-white/5">
-    <h2 class="text-2xl font-black text-white tracking-tight">Tercihlerim</h2>
-    <p class="text-gray-500 text-sm mt-1">Bildirim, görünüm ve dil ayarlarınızı yönetin</p>
+  <!-- Sayfa Başlığı -->
+  <div class="pb-5 border-b border-stone-100">
+    <h2 class="text-xl font-medium text-stone-900">Tercihlerim</h2>
+    <p class="text-sm text-stone-500 mt-0.5">Bildirim, görünüm ve dil ayarlarınızı yönetin</p>
   </div>
 
-  <!-- API Yükleme Hatası -->
+  <!-- Hata -->
   @if (apiError()) {
-    <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium"
-         style="background: rgba(239,68,68,0.08);">
-      <i class="fas fa-exclamation-circle flex-shrink-0"></i> {{ apiError() }}
+    <div class="flex items-center gap-3 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      {{ apiError() }}
     </div>
   }
 
+  <!-- Skeleton -->
   @if (!isLoaded()) {
-    <!-- Skeleton -->
-    <div class="max-w-2xl space-y-5">
+    <div class="max-w-2xl space-y-4">
       @for (i of [1, 2, 3]; track i) {
-        <div class="rounded-2xl border border-white/5 p-6 animate-pulse" style="background: rgba(255,255,255,0.02);">
+        <div class="bg-white border border-stone-200 rounded-xl p-6 animate-pulse">
           <div class="flex items-center gap-3 mb-5">
-            <div class="w-8 h-8 bg-gray-800 rounded-lg flex-shrink-0"></div>
-            <div class="space-y-2">
-              <div class="h-4 bg-gray-700 rounded-lg w-32"></div>
-              <div class="h-3 bg-gray-800 rounded w-48"></div>
+            <div class="w-8 h-8 bg-stone-100 rounded-lg"></div>
+            <div class="space-y-1.5">
+              <div class="h-4 bg-stone-100 rounded w-28"></div>
+              <div class="h-3 bg-stone-100 rounded w-44"></div>
             </div>
           </div>
           <div class="space-y-3">
             @for (j of [1, 2]; track j) {
-              <div class="flex justify-between items-center p-4 rounded-xl border border-white/5"
-                   style="background: rgba(255,255,255,0.02);">
-                <div class="space-y-2">
-                  <div class="h-4 bg-gray-700 rounded w-36"></div>
-                  <div class="h-3 bg-gray-800 rounded w-52"></div>
+              <div class="flex justify-between items-center p-4 rounded-lg border border-stone-100 bg-stone-50">
+                <div class="space-y-1.5">
+                  <div class="h-4 bg-stone-100 rounded w-32"></div>
+                  <div class="h-3 bg-stone-100 rounded w-48"></div>
                 </div>
-                <div class="w-11 h-6 bg-gray-700 rounded-full flex-shrink-0"></div>
+                <div class="w-11 h-6 bg-stone-100 rounded-full"></div>
               </div>
             }
           </div>
@@ -46,287 +47,194 @@
     <form [formGroup]="preferencesForm" (ngSubmit)="savePreferences()" class="max-w-2xl space-y-5">
 
       <!-- ① Bildirim Ayarları -->
-      <div class="relative rounded-2xl border border-white/5 overflow-hidden"
-           style="background: rgba(255,255,255,0.02);">
-        <div class="absolute top-0 left-0 w-full h-0.5"
-             style="background: linear-gradient(90deg, #3b82f6, #6366f1);"></div>
+      <div class="bg-white border border-stone-200 rounded-xl p-6 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </span>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-medium text-stone-900">Bildirim Ayarları</h3>
+              <span class="inline-flex items-center px-2 py-0.5 bg-amber-50 border border-amber-200 rounded-full text-[10px] font-medium text-amber-600">
+                Yakında Aktif
+              </span>
+            </div>
+            <p class="text-xs text-stone-500 mt-0.5">Tercihleriniz kaydedilir; bildirim sistemi entegrasyonu tamamlandığında devreye girer</p>
+          </div>
+        </div>
 
-        <div class="p-6 space-y-4">
-          <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style="background: rgba(59,130,246,0.15);">
-              <i class="fas fa-bell text-blue-400"></i>
-            </span>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="text-base font-bold text-white">Bildirim Ayarları</h3>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold
-                             border border-yellow-500/30 text-yellow-400"
-                      style="background: rgba(234,179,8,0.08);">
-                  <i class="fas fa-clock text-[8px]"></i> Yakında Aktif
-                </span>
-              </div>
-              <p class="text-xs text-gray-500 mt-0.5">Tercihleriniz kaydedilir; bildirim sistemi entegrasyonu tamamlandığında devreye girer</p>
+        <!-- E-posta Toggle -->
+        <label class="flex items-center justify-between gap-4 p-4 rounded-lg border cursor-pointer transition-all"
+               [class]="emailOn ? 'border-orange-200 bg-orange-50' : 'border-stone-100 bg-stone-50 hover:border-stone-200'">
+          <div class="flex items-center gap-3 flex-1">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
+                 [class]="emailOn ? 'bg-orange-100' : 'bg-white border border-stone-200'">
+              <svg class="w-4 h-4" [class]="emailOn ? 'text-orange-600' : 'text-stone-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium" [class]="emailOn ? 'text-stone-900' : 'text-stone-600'">E-posta Bildirimleri</p>
+              <p class="text-xs text-stone-400 mt-0.5">Sipariş güncellemeleri ve kampanyalar</p>
             </div>
           </div>
+          <div class="flex-shrink-0">
+            <input id="emailNotifications" formControlName="emailNotifications" type="checkbox" class="sr-only">
+            <div class="w-11 h-6 rounded-full relative transition-all duration-300"
+                 [class]="emailOn ? 'bg-orange-500' : 'bg-stone-200'">
+              <div class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all duration-300"
+                   [class]="emailOn ? 'left-5.5' : 'left-0.5'"></div>
+            </div>
+          </div>
+        </label>
 
-          <!-- E-posta Toggle -->
-          <label class="flex items-center justify-between gap-4 p-4 rounded-xl border cursor-pointer
-                        transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                 [class]="emailOn
-                   ? 'border-blue-500/30 hover:border-blue-500/50'
-                   : 'border-white/5 hover:border-white/10'"
-                 [style]="emailOn ? 'background: rgba(59,130,246,0.05)' : 'background: rgba(255,255,255,0.02)'">
-            <div class="flex items-center gap-3 flex-1">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
-                   [style]="emailOn ? 'background: rgba(59,130,246,0.15)' : 'background: rgba(255,255,255,0.04)'">
-                <i class="fas fa-envelope text-sm" [class]="emailOn ? 'text-blue-400' : 'text-gray-600'"></i>
-              </div>
-              <div>
-                <p class="text-sm font-semibold" [class]="emailOn ? 'text-white' : 'text-gray-400'">
-                  E-posta Bildirimleri
-                </p>
-                <p class="text-xs text-gray-500 mt-0.5">Sipariş güncellemeleri ve kampanyalar</p>
-              </div>
+        <!-- SMS Toggle -->
+        <label class="flex items-center justify-between gap-4 p-4 rounded-lg border cursor-pointer transition-all"
+               [class]="smsOn ? 'border-orange-200 bg-orange-50' : 'border-stone-100 bg-stone-50 hover:border-stone-200'">
+          <div class="flex items-center gap-3 flex-1">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
+                 [class]="smsOn ? 'bg-orange-100' : 'bg-white border border-stone-200'">
+              <svg class="w-4 h-4" [class]="smsOn ? 'text-orange-600' : 'text-stone-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+              </svg>
             </div>
-            <!-- Toggle Switch -->
-            <div class="flex-shrink-0">
-              <input id="emailNotifications" formControlName="emailNotifications"
-                     type="checkbox" class="sr-only">
-              <div class="w-12 h-6 rounded-full relative transition-all duration-300 cursor-pointer"
-                   [style]="emailOn
-                     ? 'background: #2563eb; box-shadow: 0 0 12px rgba(37,99,235,0.4)'
-                     : 'background: rgba(255,255,255,0.08)'">
-                <div class="absolute top-0.5 w-5 h-5 rounded-full shadow-lg transition-all duration-300"
-                     [class]="emailOn ? 'bg-white left-6' : 'bg-gray-500 left-0.5'"></div>
-              </div>
+            <div>
+              <p class="text-sm font-medium" [class]="smsOn ? 'text-stone-900' : 'text-stone-600'">SMS Bildirimleri</p>
+              <p class="text-xs text-stone-400 mt-0.5">Kargo durumu ve acil uyarılar</p>
             </div>
-          </label>
-
-          <!-- SMS Toggle -->
-          <label class="flex items-center justify-between gap-4 p-4 rounded-xl border cursor-pointer
-                        transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                 [class]="smsOn
-                   ? 'border-blue-500/30 hover:border-blue-500/50'
-                   : 'border-white/5 hover:border-white/10'"
-                 [style]="smsOn ? 'background: rgba(59,130,246,0.05)' : 'background: rgba(255,255,255,0.02)'">
-            <div class="flex items-center gap-3 flex-1">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
-                   [style]="smsOn ? 'background: rgba(59,130,246,0.15)' : 'background: rgba(255,255,255,0.04)'">
-                <i class="fas fa-sms text-sm" [class]="smsOn ? 'text-blue-400' : 'text-gray-600'"></i>
-              </div>
-              <div>
-                <p class="text-sm font-semibold" [class]="smsOn ? 'text-white' : 'text-gray-400'">
-                  SMS Bildirimleri
-                </p>
-                <p class="text-xs text-gray-500 mt-0.5">Kargo durumu ve acil uyarılar</p>
-              </div>
+          </div>
+          <div class="flex-shrink-0">
+            <input id="smsNotifications" formControlName="smsNotifications" type="checkbox" class="sr-only">
+            <div class="w-11 h-6 rounded-full relative transition-all duration-300"
+                 [class]="smsOn ? 'bg-orange-500' : 'bg-stone-200'">
+              <div class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all duration-300"
+                   [class]="smsOn ? 'left-5.5' : 'left-0.5'"></div>
             </div>
-            <div class="flex-shrink-0">
-              <input id="smsNotifications" formControlName="smsNotifications"
-                     type="checkbox" class="sr-only">
-              <div class="w-12 h-6 rounded-full relative transition-all duration-300 cursor-pointer"
-                   [style]="smsOn
-                     ? 'background: #2563eb; box-shadow: 0 0 12px rgba(37,99,235,0.4)'
-                     : 'background: rgba(255,255,255,0.08)'">
-                <div class="absolute top-0.5 w-5 h-5 rounded-full shadow-lg transition-all duration-300"
-                     [class]="smsOn ? 'bg-white left-6' : 'bg-gray-500 left-0.5'"></div>
-              </div>
-            </div>
-          </label>
-        </div>
+          </div>
+        </label>
       </div>
 
       <!-- ② Tema Seçimi -->
-      <div class="relative rounded-2xl border border-white/5 overflow-hidden"
-           style="background: rgba(255,255,255,0.02);">
-        <div class="absolute top-0 left-0 w-full h-0.5"
-             style="background: linear-gradient(90deg, #8b5cf6, #ec4899);"></div>
-
-        <div class="p-6 space-y-4">
-          <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style="background: rgba(139,92,246,0.15);">
-              <i class="fas fa-palette text-violet-400"></i>
-            </span>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="text-base font-bold text-white">Tema Seçimi</h3>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold
-                             border border-violet-500/30 text-violet-400"
-                      style="background: rgba(139,92,246,0.08);">
-                  <i class="fas fa-clock text-[8px]"></i> Yakında
-                </span>
-              </div>
-              <p class="text-xs text-gray-500 mt-0.5">Tema tercihiniz kaydedilir; uygulama geneli tema desteği yakında gelecek</p>
+      <div class="bg-white border border-stone-200 rounded-xl p-6 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+            </svg>
+          </span>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-medium text-stone-900">Tema Seçimi</h3>
+              <span class="inline-flex items-center px-2 py-0.5 bg-stone-100 border border-stone-200 rounded-full text-[10px] font-medium text-stone-500">
+                Yakında
+              </span>
             </div>
+            <p class="text-xs text-stone-500 mt-0.5">Tema tercihiniz kaydedilir; uygulama geneli tema desteği yakında gelecek</p>
           </div>
+        </div>
 
-          <!-- Görsel Tema Kartları -->
-          <input type="hidden" formControlName="theme">
-          <div class="grid grid-cols-3 gap-3">
-
-            <!-- Light -->
-            <button type="button" (click)="selectTheme('LIGHT')"
-              class="relative p-4 rounded-xl border text-center transition-all duration-200
-                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95 group"
-              [class]="theme === 'LIGHT'
-                ? 'border-violet-500/50 bg-violet-500/10'
-                : 'border-white/5 hover:border-white/15'"
-              [style]="theme !== 'LIGHT' ? 'background: rgba(255,255,255,0.02)' : ''">
-              @if (theme === 'LIGHT') {
-                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 flex items-center justify-center">
-                  <i class="fas fa-check text-white text-[8px]"></i>
+        <input type="hidden" formControlName="theme">
+        <div class="grid grid-cols-3 gap-3">
+          @for (t of [{ val: 'LIGHT', emoji: '☀️', label: 'Açık', sub: 'Light mode' }, { val: 'DARK', emoji: '🌙', label: 'Koyu', sub: 'Dark mode' }, { val: 'SYSTEM', emoji: '💻', label: 'Sistem', sub: 'Auto' }]; track t.val) {
+            <button type="button" (click)="selectTheme(t.val)"
+              class="relative p-4 rounded-xl border text-center transition-all hover:-translate-y-0.5 hover:shadow-sm active:scale-95"
+              [class]="theme === t.val ? 'border-orange-300 bg-orange-50' : 'border-stone-200 bg-stone-50 hover:border-stone-300'">
+              @if (theme === t.val) {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-orange-500 flex items-center justify-center">
+                  <svg class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
                 </div>
               }
-              <div class="text-2xl mb-2">☀️</div>
-              <p class="text-xs font-bold" [class]="theme === 'LIGHT' ? 'text-violet-300' : 'text-gray-400'">Açık</p>
-              <p class="text-[10px] text-gray-600 mt-0.5">Light mode</p>
+              <div class="text-2xl mb-2">{{ t.emoji }}</div>
+              <p class="text-xs font-medium" [class]="theme === t.val ? 'text-orange-600' : 'text-stone-600'">{{ t.label }}</p>
+              <p class="text-[10px] text-stone-400 mt-0.5">{{ t.sub }}</p>
             </button>
-
-            <!-- Dark -->
-            <button type="button" (click)="selectTheme('DARK')"
-              class="relative p-4 rounded-xl border text-center transition-all duration-200
-                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
-              [class]="theme === 'DARK'
-                ? 'border-violet-500/50 bg-violet-500/10'
-                : 'border-white/5 hover:border-white/15'"
-              [style]="theme !== 'DARK' ? 'background: rgba(255,255,255,0.02)' : ''">
-              @if (theme === 'DARK') {
-                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 flex items-center justify-center">
-                  <i class="fas fa-check text-white text-[8px]"></i>
-                </div>
-              }
-              <div class="text-2xl mb-2">🌙</div>
-              <p class="text-xs font-bold" [class]="theme === 'DARK' ? 'text-violet-300' : 'text-gray-400'">Koyu</p>
-              <p class="text-[10px] text-gray-600 mt-0.5">Dark mode</p>
-            </button>
-
-            <!-- System -->
-            <button type="button" (click)="selectTheme('SYSTEM')"
-              class="relative p-4 rounded-xl border text-center transition-all duration-200
-                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
-              [class]="theme === 'SYSTEM'
-                ? 'border-violet-500/50 bg-violet-500/10'
-                : 'border-white/5 hover:border-white/15'"
-              [style]="theme !== 'SYSTEM' ? 'background: rgba(255,255,255,0.02)' : ''">
-              @if (theme === 'SYSTEM') {
-                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-violet-500 flex items-center justify-center">
-                  <i class="fas fa-check text-white text-[8px]"></i>
-                </div>
-              }
-              <div class="text-2xl mb-2">💻</div>
-              <p class="text-xs font-bold" [class]="theme === 'SYSTEM' ? 'text-violet-300' : 'text-gray-400'">Sistem</p>
-              <p class="text-[10px] text-gray-600 mt-0.5">Auto</p>
-            </button>
-          </div>
+          }
         </div>
       </div>
 
       <!-- ③ Dil Seçimi -->
-      <div class="relative rounded-2xl border border-white/5 overflow-hidden"
-           style="background: rgba(255,255,255,0.02);">
-        <div class="absolute top-0 left-0 w-full h-0.5"
-             style="background: linear-gradient(90deg, #10b981, #06b6d4);"></div>
-
-        <div class="p-6 space-y-4">
-          <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style="background: rgba(16,185,129,0.15);">
-              <i class="fas fa-globe text-emerald-400"></i>
-            </span>
-            <div class="flex-1">
-              <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="text-base font-bold text-white">Dil Seçimi</h3>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold
-                             border border-emerald-500/30 text-emerald-400"
-                      style="background: rgba(16,185,129,0.08);">
-                  <i class="fas fa-clock text-[8px]"></i> Yakında
-                </span>
-              </div>
-              <p class="text-xs text-gray-500 mt-0.5">Dil tercihiniz kaydedilir; çoklu dil desteği yakında eklenecek</p>
+      <div class="bg-white border border-stone-200 rounded-xl p-6 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-lime-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-lime-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+            </svg>
+          </span>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <h3 class="text-sm font-medium text-stone-900">Dil Seçimi</h3>
+              <span class="inline-flex items-center px-2 py-0.5 bg-lime-50 border border-lime-200 rounded-full text-[10px] font-medium text-lime-700">
+                Yakında
+              </span>
             </div>
+            <p class="text-xs text-stone-500 mt-0.5">Dil tercihiniz kaydedilir; çoklu dil desteği yakında eklenecek</p>
           </div>
+        </div>
 
-          <input type="hidden" formControlName="language">
-          <div class="grid grid-cols-2 gap-3">
-
-            <!-- Türkçe -->
-            <button type="button" (click)="selectLanguage('TR')"
-              class="relative flex items-center gap-3 p-4 rounded-xl border text-left transition-all duration-200
-                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
-              [class]="language === 'TR'
-                ? 'border-emerald-500/50 bg-emerald-500/8'
-                : 'border-white/5 hover:border-white/15'"
-              [style]="language !== 'TR' ? 'background: rgba(255,255,255,0.02)' : 'background: rgba(16,185,129,0.06)'">
-              @if (language === 'TR') {
-                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
-                  <i class="fas fa-check text-white text-[8px]"></i>
+        <input type="hidden" formControlName="language">
+        <div class="grid grid-cols-2 gap-3">
+          @for (l of [{ val: 'TR', flag: '🇹🇷', label: 'Türkçe', sub: 'Turkish' }, { val: 'EN', flag: '🇬🇧', label: 'English', sub: 'İngilizce' }]; track l.val) {
+            <button type="button" (click)="selectLanguage(l.val)"
+              class="relative flex items-center gap-3 p-4 rounded-xl border text-left transition-all hover:-translate-y-0.5 hover:shadow-sm active:scale-95"
+              [class]="language === l.val ? 'border-lime-300 bg-lime-50' : 'border-stone-200 bg-stone-50 hover:border-stone-300'">
+              @if (language === l.val) {
+                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-lime-600 flex items-center justify-center">
+                  <svg class="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
                 </div>
               }
-              <span class="text-2xl">🇹🇷</span>
+              <span class="text-2xl">{{ l.flag }}</span>
               <div>
-                <p class="text-sm font-bold" [class]="language === 'TR' ? 'text-emerald-300' : 'text-gray-400'">Türkçe</p>
-                <p class="text-[10px] text-gray-600">Turkish</p>
+                <p class="text-sm font-medium" [class]="language === l.val ? 'text-lime-700' : 'text-stone-700'">{{ l.label }}</p>
+                <p class="text-[10px] text-stone-400 mt-0.5">{{ l.sub }}</p>
               </div>
             </button>
-
-            <!-- English -->
-            <button type="button" (click)="selectLanguage('EN')"
-              class="relative flex items-center gap-3 p-4 rounded-xl border text-left transition-all duration-200
-                     hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
-              [class]="language === 'EN'
-                ? 'border-emerald-500/50 bg-emerald-500/8'
-                : 'border-white/5 hover:border-white/15'"
-              [style]="language !== 'EN' ? 'background: rgba(255,255,255,0.02)' : 'background: rgba(16,185,129,0.06)'">
-              @if (language === 'EN') {
-                <div class="absolute top-2 right-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
-                  <i class="fas fa-check text-white text-[8px]"></i>
-                </div>
-              }
-              <span class="text-2xl">🇬🇧</span>
-              <div>
-                <p class="text-sm font-bold" [class]="language === 'EN' ? 'text-emerald-300' : 'text-gray-400'">English</p>
-                <p class="text-[10px] text-gray-600">İngilizce</p>
-              </div>
-            </button>
-          </div>
+          }
         </div>
       </div>
 
-      <!-- Feedback -->
+      <!-- Başarı / Hata Feedback -->
       @if (saveSuccess()) {
-        <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-emerald-500/30 text-emerald-400 text-sm font-medium"
-             style="background: rgba(16,185,129,0.08);">
-          <span class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                style="background: rgba(16,185,129,0.15);">
-            <i class="fas fa-check-circle text-sm"></i>
-          </span>
+        <div class="flex items-center gap-3 px-4 py-3 bg-lime-50 border border-lime-200 rounded-lg text-sm text-lime-700">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
           Tercihleriniz başarıyla kaydedildi!
         </div>
       }
       @if (saveError()) {
-        <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium"
-             style="background: rgba(239,68,68,0.08);">
-          <i class="fas fa-exclamation-circle flex-shrink-0"></i> {{ saveError() }}
+        <div class="flex items-center gap-3 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          {{ saveError() }}
         </div>
       }
 
       <!-- Submit -->
-      <div class="flex items-center justify-between pt-2">
-        <p class="text-xs text-gray-600 hidden sm:flex items-center gap-1.5">
-          <i class="fas fa-lock"></i> Ayarlarınız güvenle saklanmaktadır.
+      <div class="flex items-center justify-between pt-1">
+        <p class="text-xs text-stone-400 hidden sm:flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          Ayarlarınız güvenle saklanmaktadır.
         </p>
         <button type="submit"
           [disabled]="isSaving() || !preferencesForm.dirty"
-          class="inline-flex items-center gap-2.5 px-7 py-3 rounded-xl text-sm font-bold text-white
-                 transition-all duration-200 hover:shadow-lg hover:shadow-violet-900/30
-                 disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
-          style="background: linear-gradient(135deg, #8b5cf6, #6366f1);">
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
           @if (isSaving()) {
-            <i class="fas fa-circle-notch fa-spin"></i> Kaydediliyor...
+            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            Kaydediliyor...
           } @else {
-            <i class="fas fa-save"></i> Değişiklikleri Kaydet
+            Değişiklikleri Kaydet
           }
         </button>
       </div>

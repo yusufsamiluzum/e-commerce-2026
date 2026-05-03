@@ -1,276 +1,271 @@
-<div class="min-h-screen bg-gray-950">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-      <div>
-        <h1 class="text-3xl font-bold text-white">Ürün Kataloğu</h1>
-        <p class="text-gray-400 text-sm mt-1">Mağazanızdaki ürünleri yönetin</p>
-      </div>
-      <button (click)="toggleAddForm()"
-        class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors text-sm">
-        @if (showAddForm()) {
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          İptal
-        } @else {
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          Yeni Ürün Ekle
-        }
-      </button>
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-semibold text-stone-900">Ürün Kataloğu</h1>
+      <p class="text-sm text-stone-500 mt-0.5">Mağazanızdaki ürünleri yönetin</p>
     </div>
-
-    <!-- Add Product Form (Expandable) -->
-    @if (showAddForm()) {
-      <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6 mb-8 animate-in">
-        <h2 class="text-lg font-semibold text-white mb-5">Yeni Ürün</h2>
-        
-        @if (formError() !== null) {
-          <div class="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm">{{ formError() }}</div>
-        }
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">SKU *</label>
-            <input [(ngModel)]="newProduct.sku" type="text" placeholder="ör: SKU-001"
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder-gray-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Ürün Adı *</label>
-            <input [(ngModel)]="newProduct.name" type="text" placeholder="ör: Kablosuz Kulaklık"
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder-gray-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Kategori</label>
-            <select [(ngModel)]="newProduct.categoryId"
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 outline-none transition-all appearance-none">
-              <option [ngValue]="undefined" class="bg-gray-800">Seçiniz</option>
-              @for (cat of categories(); track cat.id) {
-                <option [ngValue]="cat.id" class="bg-gray-800">{{ cat.name }}</option>
-              }
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Birim Fiyat ($) *</label>
-            <input [(ngModel)]="newProduct.unitPrice" type="number" step="0.01" min="0.01"
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 outline-none transition-all">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Orijinal Fiyat ($)</label>
-            <input [(ngModel)]="newProduct.originalPrice" type="number" step="0.01" min="0"
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 outline-none transition-all">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Stok Miktarı *</label>
-            <input [(ngModel)]="newProduct.stockQuantity" type="number" min="0"
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 outline-none transition-all">
-          </div>
-          <div class="md:col-span-2 lg:col-span-3">
-            <label class="block text-xs font-semibold text-gray-400 mb-1.5">Açıklama</label>
-            <textarea [(ngModel)]="newProduct.description" rows="2" placeholder="Ürün açıklaması..."
-              class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-2.5 px-3.5 text-white text-sm focus:border-blue-500 outline-none transition-all resize-none placeholder-gray-500"></textarea>
-          </div>
-          <div class="flex items-center gap-2">
-            <input [(ngModel)]="newProduct.isFeatured" type="checkbox" id="isFeaturedNew"
-              class="h-4 w-4 rounded bg-gray-800 border-gray-600 text-blue-600 focus:ring-blue-500">
-            <label for="isFeaturedNew" class="text-sm text-gray-300">Öne Çıkan Ürün</label>
-          </div>
-        </div>
-
-        <div class="flex justify-end mt-5">
-          <button (click)="submitNewProduct()" [disabled]="isSaving()"
-            class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-colors text-sm disabled:opacity-50 flex items-center gap-2">
-            @if (isSaving()) {
-              <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-              Kaydediliyor...
-            } @else {
-              Kaydet
-            }
-          </button>
-        </div>
-      </div>
-    }
-
-    <!-- Filters -->
-    <div class="flex flex-col sm:flex-row gap-4 mb-6">
-      <div class="flex-1">
-        <input [(ngModel)]="searchTerm" type="text" placeholder="Ürün adı veya SKU ile ara..."
-          (ngModelChange)="searchTerm.set($event)"
-          class="w-full bg-gray-900/80 border border-gray-800 rounded-xl py-2.5 px-4 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all placeholder-gray-500">
-      </div>
-      <div class="flex gap-2">
-        <button (click)="filterStatus.set('all')"
-          [class]="filterStatus() === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'"
-          class="px-4 py-2.5 rounded-xl text-sm font-medium transition-colors">Tümü</button>
-        <button (click)="filterStatus.set('active')"
-          [class]="filterStatus() === 'active' ? 'bg-emerald-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'"
-          class="px-4 py-2.5 rounded-xl text-sm font-medium transition-colors">Aktif</button>
-        <button (click)="filterStatus.set('inactive')"
-          [class]="filterStatus() === 'inactive' ? 'bg-red-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'"
-          class="px-4 py-2.5 rounded-xl text-sm font-medium transition-colors">Pasif</button>
-      </div>
-    </div>
-
-    <!-- Loading -->
-    @if (isLoading()) {
-      <div class="grid gap-4">
-        @for (i of [1,2,3]; track i) {
-          <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-5 animate-pulse">
-            <div class="flex items-center gap-4">
-              <div class="h-16 w-16 bg-gray-700 rounded-xl"></div>
-              <div class="flex-1">
-                <div class="h-5 bg-gray-700 rounded w-48 mb-2"></div>
-                <div class="h-3 bg-gray-800 rounded w-32"></div>
-              </div>
-              <div class="h-8 bg-gray-700 rounded w-20"></div>
-            </div>
-          </div>
-        }
-      </div>
-    } @else if (filteredProducts.length === 0) {
-      <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-12 text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-        </svg>
-        <h3 class="text-xl font-semibold text-white mb-2">Ürün Bulunamadı</h3>
-        <p class="text-gray-400 text-sm">
-          @if (searchTerm()) {
-            "{{ searchTerm() }}" aramasıyla eşleşen ürün yok.
-          } @else {
-            Henüz ürün eklenmemiş. "Yeni Ürün Ekle" butonuyla başlayın.
-          }
-        </p>
-      </div>
-    } @else {
-      <!-- Product Table -->
-      <div class="bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="border-b border-gray-800">
-                <th class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">Ürün</th>
-                <th class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">SKU</th>
-                <th class="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">Kategori</th>
-                <th class="text-right text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">Fiyat</th>
-                <th class="text-right text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">Stok</th>
-                <th class="text-center text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">Durum</th>
-                <th class="text-right text-xs font-semibold text-gray-400 uppercase tracking-wider py-4 px-5">İşlem</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (product of filteredProducts; track product.id) {
-                <!-- Normal View Row -->
-                @if (editingId() !== product.id) {
-                  <tr class="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
-                    <td class="py-4 px-5">
-                      <div class="flex items-center gap-3">
-                        <div class="h-12 w-12 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden flex-shrink-0">
-                          @if (product.imageUrl) {
-                            <img [src]="product.imageUrl" [alt]="product.name" class="h-full w-full object-cover">
-                          } @else {
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                          }
-                        </div>
-                        <div>
-                          <p class="text-sm font-semibold text-white">{{ product.name }}</p>
-                          <div class="flex items-center gap-2 mt-0.5">
-                            @if (product.isFeatured) {
-                              <span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-1.5 py-0.5 rounded font-medium">ÖNE ÇIKAN</span>
-                            }
-                            @if (product.averageRating > 0) {
-                              <span class="text-[11px] text-gray-500">⭐ {{ product.averageRating | number:'1.1-1' }} ({{ product.reviewCount }})</span>
-                            }
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="py-4 px-5 text-sm text-gray-400 font-mono">{{ product.sku }}</td>
-                    <td class="py-4 px-5 text-sm text-gray-400">{{ product.categoryName || '—' }}</td>
-                    <td class="py-4 px-5 text-sm text-right font-semibold text-white">
-                      ${{ product.unitPrice | number:'1.2-2' }}
-                      @if (product.originalPrice && product.originalPrice > product.unitPrice) {
-                        <span class="block text-xs text-gray-500 line-through">${{ product.originalPrice | number:'1.2-2' }}</span>
-                      }
-                    </td>
-                    <td class="py-4 px-5 text-right">
-                      <span [class]="product.stockQuantity < 10 ? 'text-amber-400 font-semibold' : 'text-gray-300'" class="text-sm">
-                        {{ product.stockQuantity }}
-                      </span>
-                    </td>
-                    <td class="py-4 px-5 text-center">
-                      @if (product.isActive) {
-                        <span class="inline-flex items-center gap-1 text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg">
-                          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Aktif
-                        </span>
-                      } @else {
-                        <span class="inline-flex items-center gap-1 text-xs font-medium text-red-400 bg-red-500/10 px-2.5 py-1 rounded-lg">
-                          <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Pasif
-                        </span>
-                      }
-                    </td>
-                    <td class="py-4 px-5 text-right">
-                      <div class="flex items-center justify-end gap-2">
-                        <button (click)="startEdit(product)" title="Düzenle"
-                          class="p-2 hover:bg-gray-700 rounded-lg transition-colors text-gray-400 hover:text-blue-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                        </button>
-                        <button (click)="toggleActive(product)" [title]="product.isActive ? 'Pasifleştir' : 'Aktifleştir'"
-                          [class]="product.isActive ? 'hover:text-red-400' : 'hover:text-emerald-400'"
-                          class="p-2 hover:bg-gray-700 rounded-lg transition-colors text-gray-400">
-                          @if (product.isActive) {
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                          } @else {
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                          }
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                } @else {
-                  <!-- Inline Edit Row -->
-                  <tr class="border-b border-blue-800/30 bg-blue-900/10">
-                    <td colspan="7" class="py-4 px-5">
-                      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        <div>
-                          <label class="block text-xs text-gray-400 mb-1">SKU</label>
-                          <input [(ngModel)]="editProduct.sku" type="text"
-                            class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-blue-500 outline-none">
-                        </div>
-                        <div>
-                          <label class="block text-xs text-gray-400 mb-1">Ürün Adı</label>
-                          <input [(ngModel)]="editProduct.name" type="text"
-                            class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-blue-500 outline-none">
-                        </div>
-                        <div>
-                          <label class="block text-xs text-gray-400 mb-1">Fiyat ($)</label>
-                          <input [(ngModel)]="editProduct.unitPrice" type="number" step="0.01"
-                            class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-blue-500 outline-none">
-                        </div>
-                        <div>
-                          <label class="block text-xs text-gray-400 mb-1">Stok</label>
-                          <input [(ngModel)]="editProduct.stockQuantity" type="number" min="0"
-                            class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-3 text-white text-sm focus:border-blue-500 outline-none">
-                        </div>
-                      </div>
-                      <div class="flex justify-end gap-2 mt-3">
-                        <button (click)="cancelEdit()"
-                          class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm rounded-lg transition-colors">İptal</button>
-                        <button (click)="submitEdit(product.id)" [disabled]="isSaving()"
-                          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition-colors disabled:opacity-50">Kaydet</button>
-                      </div>
-                    </td>
-                  </tr>
-                }
-              }
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Count Footer -->
-        <div class="px-5 py-3 border-t border-gray-800 text-xs text-gray-500">
-          Toplam {{ filteredProducts.length }} ürün gösteriliyor
-        </div>
-      </div>
-    }
-
+    <button (click)="toggleAddForm()"
+      class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors"
+      [class]="showAddForm() ? 'bg-stone-100 hover:bg-stone-200 text-stone-700' : 'bg-ember-500 hover:bg-ember-600 text-white'">
+      @if (showAddForm()) {
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        İptal
+      } @else {
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Yeni Ürün Ekle
+      }
+    </button>
   </div>
+
+  <!-- Add Product Form -->
+  @if (showAddForm()) {
+    <div class="bg-white border border-stone-200 rounded-xl p-6 mb-6">
+      <h2 class="text-base font-semibold text-stone-900 mb-5">Yeni Ürün</h2>
+
+      @if (formError() !== null) {
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{{ formError() }}</div>
+      }
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">SKU *</label>
+          <input [(ngModel)]="newProduct.sku" type="text" placeholder="ör: SKU-001"
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all placeholder-stone-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">Ürün Adı *</label>
+          <input [(ngModel)]="newProduct.name" type="text" placeholder="ör: Kablosuz Kulaklık"
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all placeholder-stone-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">Kategori</label>
+          <select [(ngModel)]="newProduct.categoryId"
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 outline-none transition-all appearance-none">
+            <option [ngValue]="undefined">Seçiniz</option>
+            @for (cat of categories(); track cat.id) {
+              <option [ngValue]="cat.id">{{ cat.name }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">Birim Fiyat ($) *</label>
+          <input [(ngModel)]="newProduct.unitPrice" type="number" step="0.01" min="0.01"
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">Orijinal Fiyat ($)</label>
+          <input [(ngModel)]="newProduct.originalPrice" type="number" step="0.01" min="0"
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">Stok Miktarı *</label>
+          <input [(ngModel)]="newProduct.stockQuantity" type="number" min="0"
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all">
+        </div>
+        <div class="md:col-span-2 lg:col-span-3">
+          <label class="block text-xs font-semibold text-stone-500 mb-1.5">Açıklama</label>
+          <textarea [(ngModel)]="newProduct.description" rows="2" placeholder="Ürün açıklaması..."
+            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-3.5 text-stone-800 text-sm focus:border-ember-500 outline-none transition-all resize-none placeholder-stone-400"></textarea>
+        </div>
+        <div class="flex items-center gap-2">
+          <input [(ngModel)]="newProduct.isFeatured" type="checkbox" id="isFeaturedNew"
+            class="h-4 w-4 rounded border-stone-300 text-ember-500 focus:ring-ember-500">
+          <label for="isFeaturedNew" class="text-sm text-stone-700">Öne Çıkan Ürün</label>
+        </div>
+      </div>
+
+      <div class="flex justify-end mt-5">
+        <button (click)="submitNewProduct()" [disabled]="isSaving()"
+          class="px-5 py-2.5 bg-lime-600 hover:bg-lime-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2">
+          @if (isSaving()) {
+            <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+            Kaydediliyor...
+          } @else {
+            Kaydet
+          }
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Filters -->
+  <div class="flex flex-col sm:flex-row gap-3 mb-5">
+    <div class="flex-1">
+      <input [(ngModel)]="searchTerm" type="text" placeholder="Ürün adı veya SKU ile ara..."
+        (ngModelChange)="searchTerm.set($event)"
+        class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2.5 px-4 text-stone-800 text-sm focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all placeholder-stone-400">
+    </div>
+    <div class="flex gap-2">
+      <button (click)="filterStatus.set('all')"
+        [class]="filterStatus() === 'all' ? 'bg-ember-500 text-white' : 'bg-white border border-stone-200 text-stone-500 hover:bg-stone-50'"
+        class="px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">Tümü</button>
+      <button (click)="filterStatus.set('active')"
+        [class]="filterStatus() === 'active' ? 'bg-lime-600 text-white' : 'bg-white border border-stone-200 text-stone-500 hover:bg-stone-50'"
+        class="px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">Aktif</button>
+      <button (click)="filterStatus.set('inactive')"
+        [class]="filterStatus() === 'inactive' ? 'bg-red-500 text-white' : 'bg-white border border-stone-200 text-stone-500 hover:bg-stone-50'"
+        class="px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">Pasif</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+    <div class="space-y-3">
+      @for (i of [1,2,3]; track i) {
+        <div class="bg-white border border-stone-200 rounded-xl p-5 animate-pulse">
+          <div class="flex items-center gap-4">
+            <div class="h-16 w-16 bg-stone-100 rounded-xl"></div>
+            <div class="flex-1">
+              <div class="h-4 bg-stone-100 rounded w-48 mb-2"></div>
+              <div class="h-3 bg-stone-100 rounded w-32"></div>
+            </div>
+            <div class="h-8 bg-stone-100 rounded w-20"></div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (filteredProducts.length === 0) {
+    <div class="bg-white border border-stone-200 rounded-xl p-12 text-center">
+      <div class="w-14 h-14 rounded-full bg-stone-100 flex items-center justify-center mx-auto mb-4">
+        <svg class="h-7 w-7 text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+      </div>
+      <h3 class="text-base font-medium text-stone-900 mb-1">Ürün Bulunamadı</h3>
+      <p class="text-sm text-stone-500">
+        @if (searchTerm()) { "{{ searchTerm() }}" aramasıyla eşleşen ürün yok. }
+        @else { Henüz ürün eklenmemiş. "Yeni Ürün Ekle" butonuyla başlayın. }
+      </p>
+    </div>
+  } @else {
+    <!-- Product Table -->
+    <div class="bg-white border border-stone-200 rounded-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-stone-100">
+              <th class="text-left text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">Ürün</th>
+              <th class="text-left text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">SKU</th>
+              <th class="text-left text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">Kategori</th>
+              <th class="text-right text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">Fiyat</th>
+              <th class="text-right text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">Stok</th>
+              <th class="text-center text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">Durum</th>
+              <th class="text-right text-xs font-semibold text-stone-400 uppercase tracking-wider py-3.5 px-5">İşlem</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of filteredProducts; track product.id) {
+              @if (editingId() !== product.id) {
+                <tr class="border-b border-stone-100 hover:bg-stone-50 transition-colors">
+                  <td class="py-4 px-5">
+                    <div class="flex items-center gap-3">
+                      <div class="h-11 w-11 rounded-lg bg-stone-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                        @if (product.imageUrl) {
+                          <img [src]="product.imageUrl" [alt]="product.name" class="h-full w-full object-cover">
+                        } @else {
+                          <svg class="h-5 w-5 text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        }
+                      </div>
+                      <div>
+                        <p class="text-sm font-semibold text-stone-900">{{ product.name }}</p>
+                        <div class="flex items-center gap-2 mt-0.5">
+                          @if (product.isFeatured) {
+                            <span class="text-[10px] bg-amber-50 text-amber-600 border border-amber-200 px-1.5 py-0.5 rounded font-medium">ÖNE ÇIKAN</span>
+                          }
+                          @if (product.averageRating > 0) {
+                            <span class="text-[11px] text-stone-400">★ {{ product.averageRating | number:'1.1-1' }} ({{ product.reviewCount }})</span>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-5 text-sm text-stone-400 font-mono">{{ product.sku }}</td>
+                  <td class="py-4 px-5 text-sm text-stone-500">{{ product.categoryName || '—' }}</td>
+                  <td class="py-4 px-5 text-sm text-right font-semibold text-stone-900">
+                    ${{ product.unitPrice | number:'1.2-2' }}
+                    @if (product.originalPrice && product.originalPrice > product.unitPrice) {
+                      <span class="block text-xs text-stone-400 line-through">${{ product.originalPrice | number:'1.2-2' }}</span>
+                    }
+                  </td>
+                  <td class="py-4 px-5 text-right">
+                    <span [class]="product.stockQuantity < 10 ? 'text-amber-600 font-semibold' : 'text-stone-700'" class="text-sm">
+                      {{ product.stockQuantity }}
+                    </span>
+                  </td>
+                  <td class="py-4 px-5 text-center">
+                    @if (product.isActive) {
+                      <span class="inline-flex items-center gap-1 text-xs font-medium text-lime-700 bg-lime-50 border border-lime-200 px-2.5 py-1 rounded-lg">
+                        <span class="w-1.5 h-1.5 rounded-full bg-lime-500"></span> Aktif
+                      </span>
+                    } @else {
+                      <span class="inline-flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-lg">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span> Pasif
+                      </span>
+                    }
+                  </td>
+                  <td class="py-4 px-5 text-right">
+                    <div class="flex items-center justify-end gap-1">
+                      <button (click)="startEdit(product)" title="Düzenle"
+                        class="p-2 hover:bg-stone-100 rounded-lg transition-colors text-stone-400 hover:text-ember-500">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                      </button>
+                      <button (click)="toggleActive(product)" [title]="product.isActive ? 'Pasifleştir' : 'Aktifleştir'"
+                        [class]="product.isActive ? 'hover:text-red-500' : 'hover:text-lime-600'"
+                        class="p-2 hover:bg-stone-100 rounded-lg transition-colors text-stone-400">
+                        @if (product.isActive) {
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                        } @else {
+                          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        }
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @else {
+                <!-- Inline Edit Row -->
+                <tr class="border-b border-ember-100 bg-orange-50/40">
+                  <td colspan="7" class="py-4 px-5">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      <div>
+                        <label class="block text-xs text-stone-500 mb-1">SKU</label>
+                        <input [(ngModel)]="editProduct.sku" type="text"
+                          class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:border-ember-500 outline-none">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-stone-500 mb-1">Ürün Adı</label>
+                        <input [(ngModel)]="editProduct.name" type="text"
+                          class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:border-ember-500 outline-none">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-stone-500 mb-1">Fiyat ($)</label>
+                        <input [(ngModel)]="editProduct.unitPrice" type="number" step="0.01"
+                          class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:border-ember-500 outline-none">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-stone-500 mb-1">Stok</label>
+                        <input [(ngModel)]="editProduct.stockQuantity" type="number" min="0"
+                          class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:border-ember-500 outline-none">
+                      </div>
+                    </div>
+                    <div class="flex justify-end gap-2 mt-3">
+                      <button (click)="cancelEdit()"
+                        class="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-sm rounded-lg transition-colors">İptal</button>
+                      <button (click)="submitEdit(product.id)" [disabled]="isSaving()"
+                        class="px-4 py-2 bg-ember-500 hover:bg-ember-600 text-white text-sm rounded-lg transition-colors disabled:opacity-50">Kaydet</button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="px-5 py-3 border-t border-stone-100 text-xs text-stone-400">
+        Toplam {{ filteredProducts.length }} ürün
+      </div>
+    </div>
+  }
+
 </div>

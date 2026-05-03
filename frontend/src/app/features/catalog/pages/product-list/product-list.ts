@@ -17,11 +17,9 @@ import { FilterComponent, FilterOptions } from '../../components/filter/filter';
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
 
-  // Lists
   products$!: Observable<Product[]>;
   categories$!: Observable<any[]>;
 
-  // Filters
   filters = {
     search: '',
     categoryId: null as number | null,

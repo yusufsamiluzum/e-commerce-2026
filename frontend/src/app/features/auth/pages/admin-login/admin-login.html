@@ -1,45 +1,48 @@
-<div class="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-stone-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="mx-auto h-12 w-12 bg-red-600 rounded-xl flex items-center justify-center shadow-md">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-      </svg>
+    <!-- Logo -->
+    <div class="flex items-center justify-center gap-2.5 mb-6">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg shadow-orange-900/40">
+        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.017 2C12.017 2 6 8 6 13.5a6.017 6.017 0 0 0 12 0C18 8 12.017 2 12.017 2zm-.017 15a2 2 0 0 1-2-2c0-1.5 1-3 2-4 1 1 2 2.5 2 4a2 2 0 0 1-2 2z"/>
+        </svg>
+      </div>
+      <span class="text-xl font-semibold text-white tracking-tight">ember</span>
     </div>
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-white">Yönetici Girişi</h2>
-    <p class="mt-2 text-center text-sm text-gray-400">
+    <h2 class="text-center text-2xl font-bold text-white">Yönetici Girişi</h2>
+    <p class="mt-2 text-center text-sm text-stone-500">
       Yetkisiz erişimler kayıt altına alınmaktadır
     </p>
   </div>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-gray-800 py-8 px-4 shadow-xl sm:rounded-2xl sm:px-10 border border-gray-700">
-      
+    <div class="bg-stone-900 py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-stone-800">
+
       <!-- Error Alert -->
-      <div *ngIf="errorMsg" class="mb-5 bg-red-900/50 p-4 rounded-lg flex items-start border border-red-800">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mt-0.5 mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div *ngIf="errorMsg" class="mb-5 bg-red-900/40 p-4 rounded-xl flex items-start gap-2 border border-red-800/60">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span class="text-sm font-medium text-red-200">{{ errorMsg }}</span>
+        <span class="text-sm font-medium text-red-300">{{ errorMsg }}</span>
       </div>
 
-      <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="space-y-5">
         <div>
-          <label for="admin-email" class="block text-sm font-medium text-gray-300">Yönetici E-posta</label>
-          <div class="mt-2 relative">
-            <input id="admin-email" formControlName="email" type="email" autocomplete="email" class="appearance-none block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent sm:text-sm transition-all duration-200">
-          </div>
+          <label for="admin-email" class="block text-sm font-medium text-stone-300 mb-1.5">Yönetici E-posta</label>
+          <input id="admin-email" formControlName="email" type="email" autocomplete="email"
+            class="appearance-none block w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-xl text-white placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500 sm:text-sm transition-all">
         </div>
 
         <div>
-          <label for="admin-password" class="block text-sm font-medium text-gray-300">Sistem Şifresi</label>
-          <div class="mt-2 relative">
-            <input id="admin-password" formControlName="password" type="password" autocomplete="current-password" class="appearance-none block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent sm:text-sm transition-all duration-200">
-          </div>
+          <label for="admin-password" class="block text-sm font-medium text-stone-300 mb-1.5">Sistem Şifresi</label>
+          <input id="admin-password" formControlName="password" type="password" autocomplete="current-password"
+            class="appearance-none block w-full px-4 py-3 bg-stone-800 border border-stone-700 rounded-xl text-white placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500 sm:text-sm transition-all">
         </div>
 
-        <div class="pt-2">
-          <button type="submit" [disabled]="adminForm.invalid || isLoading" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
-            <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <div class="pt-1">
+          <button type="submit" [disabled]="adminForm.invalid || isLoading"
+            class="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            <svg *ngIf="isLoading" class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -47,8 +50,10 @@
           </button>
         </div>
       </form>
-
     </div>
+
+    <p class="mt-4 text-center text-xs text-stone-600">
+      <a routerLink="/auth/login" class="hover:text-stone-400 transition-colors">← Normal giriş</a>
+    </p>
   </div>
 </div>
-

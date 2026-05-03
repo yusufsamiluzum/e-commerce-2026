@@ -91,12 +91,12 @@ export class UserOrders {
 
   getStatusColor(status: string): string {
     switch (status) {
-      case 'DELIVERED':   return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
-      case 'SHIPPED':     return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
-      case 'PROCESSING':  return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30';
-      case 'PENDING':     return 'bg-orange-500/10 text-orange-400 border-orange-500/30';
-      case 'CANCELLED':   return 'bg-red-500/10 text-red-400 border-red-500/30';
-      default:            return 'bg-gray-500/10 text-gray-400 border-gray-500/30';
+      case 'DELIVERED':   return 'bg-lime-50 text-lime-700 border-lime-200';
+      case 'SHIPPED':     return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'PROCESSING':  return 'bg-amber-50 text-amber-700 border-amber-200';
+      case 'PENDING':     return 'bg-orange-50 text-orange-600 border-orange-200';
+      case 'CANCELLED':   return 'bg-red-50 text-red-600 border-red-200';
+      default:            return 'bg-stone-50 text-stone-500 border-stone-200';
     }
   }
 
@@ -113,12 +113,12 @@ export class UserOrders {
 
   getStatusDotColor(status: string): string {
     switch (status) {
-      case 'DELIVERED':   return 'bg-emerald-400';
-      case 'SHIPPED':     return 'bg-blue-400';
-      case 'PROCESSING':  return 'bg-indigo-400';
-      case 'PENDING':     return 'bg-orange-400 animate-pulse';
-      case 'CANCELLED':   return 'bg-red-400';
-      default:            return 'bg-gray-400';
+      case 'DELIVERED':   return 'bg-lime-500';
+      case 'SHIPPED':     return 'bg-blue-500';
+      case 'PROCESSING':  return 'bg-amber-500';
+      case 'PENDING':     return 'bg-orange-500 animate-pulse';
+      case 'CANCELLED':   return 'bg-red-500';
+      default:            return 'bg-stone-400';
     }
   }
 
@@ -134,12 +134,12 @@ export class UserOrders {
 
   getStepClass(stepIndex: number, status: string): string {
     const current = this.getProgressStep(status);
-    if (stepIndex < current) return 'bg-blue-600 border-blue-500 text-white';
-    if (stepIndex === current - 1) return 'bg-blue-600 border-blue-400 text-white shadow-lg shadow-blue-900/40';
-    return 'border-gray-700 text-gray-600';
+    if (stepIndex < current) return 'bg-orange-500 border-orange-400 text-white';
+    if (stepIndex === current - 1) return 'bg-orange-500 border-orange-400 text-white shadow-sm';
+    return 'border-stone-200 text-stone-400 bg-white';
   }
 
   getConnectorClass(stepIndex: number, status: string): string {
-    return stepIndex < this.getProgressStep(status) - 1 ? 'bg-blue-600' : 'bg-gray-800';
+    return stepIndex < this.getProgressStep(status) - 1 ? 'bg-orange-400' : 'bg-stone-100';
   }
 }

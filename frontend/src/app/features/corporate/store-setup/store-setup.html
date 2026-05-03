@@ -1,111 +1,111 @@
-<div class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-indigo-950 flex items-center justify-center px-4 py-12">
+<div class="min-h-screen bg-ember-50 flex items-center justify-center px-4 py-12">
   <div class="w-full max-w-lg">
-    
+
     <!-- Header -->
     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600/20 border border-blue-500/30 mb-5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-ember-100 border border-ember-200 mb-5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-ember-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
       </div>
-      <h1 class="text-3xl font-bold text-white mb-2">Create Your Store</h1>
-      <p class="text-gray-400 text-sm">Set up your store to start selling on DataPulse</p>
+      <h1 class="text-3xl font-bold text-stone-900 mb-2">Mağazanızı Oluşturun</h1>
+      <p class="text-stone-500 text-sm">Satış yapmaya başlamak için mağazanızı kurun</p>
     </div>
 
     <!-- Form Card -->
-    <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
-      
+    <div class="bg-white border border-stone-200 rounded-2xl p-8 shadow-sm">
+
       <!-- Error -->
       @if (errorMessage() !== null) {
-        <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
           </svg>
-          <p class="text-red-300 text-sm">{{ errorMessage() }}</p>
+          <p class="text-red-600 text-sm">{{ errorMessage() }}</p>
         </div>
       }
 
       <!-- Success -->
       @if (successMessage() !== null) {
-        <div class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-start gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <p class="text-emerald-300 text-sm">{{ successMessage() }}</p>
+          <p class="text-emerald-700 text-sm">{{ successMessage() }}</p>
         </div>
       }
 
       <form [formGroup]="storeForm" (ngSubmit)="onSubmit()" class="space-y-6">
-        
+
         <!-- Store Name -->
         <div>
-          <label for="storeName" class="block text-sm font-semibold text-gray-300 mb-2">Store Name *</label>
-          <input 
+          <label for="storeName" class="block text-sm font-semibold text-stone-700 mb-2">Mağaza Adı *</label>
+          <input
             id="storeName"
-            formControlName="name" 
-            type="text" 
-            placeholder="e.g. Tech Haven, Fashion Hub..."
-            class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-3 px-4 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm"
+            formControlName="name"
+            type="text"
+            placeholder="Örn. Tech Haven, Fashion Hub..."
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-900 placeholder-stone-400 focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all text-sm"
           >
           @if (storeForm.get('name')?.touched && storeForm.get('name')?.errors?.['required']) {
-            <p class="text-red-400 text-xs mt-1.5">Store name is required</p>
+            <p class="text-red-500 text-xs mt-1.5">Mağaza adı zorunludur</p>
           }
           @if (storeForm.get('name')?.touched && storeForm.get('name')?.errors?.['minlength']) {
-            <p class="text-red-400 text-xs mt-1.5">Store name must be at least 2 characters</p>
+            <p class="text-red-500 text-xs mt-1.5">Mağaza adı en az 2 karakter olmalıdır</p>
           }
         </div>
 
         <!-- Description -->
         <div>
-          <label for="storeDescription" class="block text-sm font-semibold text-gray-300 mb-2">Description</label>
-          <textarea 
+          <label for="storeDescription" class="block text-sm font-semibold text-stone-700 mb-2">Açıklama</label>
+          <textarea
             id="storeDescription"
-            formControlName="description" 
+            formControlName="description"
             rows="3"
-            placeholder="Tell customers about your store..."
-            class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-3 px-4 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm resize-none"
+            placeholder="Müşterilere mağazanızı tanıtın..."
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-900 placeholder-stone-400 focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all text-sm resize-none"
           ></textarea>
         </div>
 
         <!-- Currency -->
         <div>
-          <label for="baseCurrency" class="block text-sm font-semibold text-gray-300 mb-2">Base Currency *</label>
-          <select 
+          <label for="baseCurrency" class="block text-sm font-semibold text-stone-700 mb-2">Para Birimi *</label>
+          <select
             id="baseCurrency"
             formControlName="baseCurrency"
-            class="w-full bg-gray-800/50 border border-gray-700 rounded-xl py-3 px-4 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm appearance-none cursor-pointer"
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-900 focus:border-ember-500 focus:ring-2 focus:ring-ember-500/20 outline-none transition-all text-sm appearance-none cursor-pointer"
           >
             @for (currency of currencies; track currency.code) {
-              <option [value]="currency.code" class="bg-gray-800">{{ currency.label }}</option>
+              <option [value]="currency.code">{{ currency.label }}</option>
             }
           </select>
         </div>
 
         <!-- Submit Button -->
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           [disabled]="storeForm.invalid || isLoading()"
-          class="w-full py-3.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20"
+          class="w-full py-3.5 px-6 bg-ember-500 hover:bg-ember-600 text-white font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm shadow-orange-200"
         >
           @if (isLoading()) {
             <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
             </svg>
-            <span>Creating Store...</span>
+            <span>Oluşturuluyor...</span>
           } @else {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            <span>Launch Store</span>
+            <span>Mağazayı Kur</span>
           }
         </button>
       </form>
     </div>
 
     <!-- Footer Note -->
-    <p class="text-center text-gray-500 text-xs mt-6">
-      You can update your store details later from your profile settings.
+    <p class="text-center text-stone-400 text-xs mt-6">
+      Mağaza bilgilerinizi daha sonra profil ayarlarından güncelleyebilirsiniz.
     </p>
   </div>
 </div>

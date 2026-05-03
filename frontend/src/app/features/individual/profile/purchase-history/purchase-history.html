@@ -1,57 +1,60 @@
-<div class="p-6 md:p-8 space-y-6">
+<div class="p-6 md:p-8 space-y-5">
 
-  <!-- Page Header + Arama -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-white/5 gap-4">
+  <!-- Sayfa Başlığı + Arama -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-stone-100 gap-4">
     <div>
-      <h2 class="text-2xl font-black text-white tracking-tight">Satın Alım Geçmişi</h2>
-      <p class="text-gray-500 text-sm mt-1">Teslim alınan tüm siparişleriniz</p>
+      <h2 class="text-xl font-medium text-stone-900">Satın Alım Geçmişi</h2>
+      <p class="text-sm text-stone-500 mt-0.5">Teslim alınan tüm siparişleriniz</p>
     </div>
     <div class="flex gap-2 flex-shrink-0">
       <div class="relative">
-        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-600 text-sm pointer-events-none"></i>
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
         <input type="text" placeholder="Sipariş no, ürün, mağaza..."
           [ngModel]="searchQuery()"
           (ngModelChange)="onSearch($event)"
-          class="bg-gray-900/60 border border-gray-700/60 text-white text-sm rounded-xl pl-10 pr-4 py-2.5 w-52
-                 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60
-                 transition-all duration-200 placeholder-gray-600">
+          class="pl-10 pr-4 py-2.5 w-52 rounded-lg border border-stone-200 bg-stone-50 focus:bg-white text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all placeholder:text-stone-400">
       </div>
       @if (searchQuery()) {
         <button (click)="onSearch('')"
-          class="w-10 h-10 flex items-center justify-center rounded-xl border border-red-500/30 text-red-400
-                 hover:bg-red-500/10 transition-all duration-200 active:scale-95 flex-shrink-0">
-          <i class="fas fa-times text-sm"></i>
+          class="w-10 h-10 flex items-center justify-center rounded-lg border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
         </button>
       }
     </div>
   </div>
 
-  <!-- API Hata -->
+  <!-- Hata -->
   @if (apiError()) {
-    <div class="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-red-500/30 text-red-400 text-sm font-medium"
-         style="background: rgba(239,68,68,0.08);">
-      <i class="fas fa-exclamation-circle"></i> {{ apiError() }}
+    <div class="flex items-center gap-3 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      {{ apiError() }}
     </div>
   }
 
+  <!-- Skeleton -->
   @if (filteredHistory() === null) {
-    <!-- Skeleton -->
-    <div class="space-y-5">
+    <div class="space-y-4">
       @for (i of [1, 2, 3]; track i) {
-        <div class="rounded-2xl border border-white/5 overflow-hidden animate-pulse"
-             style="background: rgba(255,255,255,0.02);">
-          <div class="flex justify-between px-5 py-4 border-b border-white/5">
-            <div class="flex gap-6">
-              <div class="h-4 bg-gray-800 rounded-lg w-20"></div>
-              <div class="h-4 bg-gray-800 rounded-lg w-24"></div>
-            </div>
-            <div class="h-7 bg-gray-700 rounded-lg w-28"></div>
+        <div class="bg-white border border-stone-200 rounded-xl overflow-hidden animate-pulse">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 px-5 py-4 bg-stone-50 border-b border-stone-100">
+            @for (j of [1,2,3,4]; track j) {
+              <div class="space-y-1">
+                <div class="h-2.5 bg-stone-100 rounded w-16"></div>
+                <div class="h-4 bg-stone-100 rounded w-20"></div>
+              </div>
+            }
           </div>
           <div class="p-5 flex items-center gap-4">
-            <div class="w-14 h-14 bg-gray-800 rounded-xl flex-shrink-0"></div>
+            <div class="w-14 h-14 bg-stone-100 rounded-lg flex-shrink-0"></div>
             <div class="flex-1 space-y-2">
-              <div class="h-4 bg-gray-700 rounded-lg w-2/3"></div>
-              <div class="h-3 bg-gray-800 rounded-lg w-1/4"></div>
+              <div class="h-4 bg-stone-100 rounded w-3/4"></div>
+              <div class="h-3 bg-stone-100 rounded w-1/4"></div>
             </div>
           </div>
         </div>
@@ -60,85 +63,77 @@
 
   } @else if (filteredHistory()!.length === 0) {
     <!-- Boş Durum -->
-    <div class="flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-white/5"
-         style="background: rgba(255,255,255,0.01);">
+    <div class="flex flex-col items-center justify-center py-16 text-center bg-white border border-stone-200 rounded-xl">
       @if (searchQuery()) {
-        <i class="fas fa-search text-3xl text-gray-700 mb-4"></i>
-        <h3 class="text-lg font-black text-white mb-2">Sonuç Bulunamadı</h3>
-        <p class="text-gray-500 text-sm">"{{ searchQuery() }}" ile eşleşen sipariş yok.</p>
+        <div class="w-12 h-12 rounded-xl bg-stone-100 flex items-center justify-center mb-3">
+          <svg class="w-6 h-6 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-medium text-stone-900 mb-1">Sonuç Bulunamadı</h3>
+        <p class="text-sm text-stone-500">"{{ searchQuery() }}" ile eşleşen sipariş yok.</p>
         <button (click)="onSearch('')"
-          class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-gray-300
-                 border border-gray-600 hover:text-white transition-all active:scale-95"
-          style="background: rgba(255,255,255,0.03);">
-          <i class="fas fa-times"></i> Aramayı Temizle
+          class="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-stone-600 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors">
+          Aramayı Temizle
         </button>
       } @else {
-        <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-5 shadow-lg"
-             style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1));">
-          <i class="fas fa-receipt text-3xl text-emerald-400"></i>
+        <div class="w-16 h-16 rounded-xl bg-lime-50 flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-lime-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
         </div>
-        <h3 class="text-xl font-black text-white mb-2">Geçmiş Bulunamadı</h3>
-        <p class="text-gray-500 max-w-sm text-sm">Henüz tamamlanmış bir siparişiniz bulunmamaktadır.</p>
-        <button routerLink="/katalog"
-          class="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white
-                 transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-          style="background: linear-gradient(135deg, #10b981, #059669);">
-          <i class="fas fa-shopping-bag"></i> Ürünlere Göz At
-        </button>
+        <h3 class="text-base font-medium text-stone-900 mb-1">Geçmiş Bulunamadı</h3>
+        <p class="text-sm text-stone-500">Henüz tamamlanmış bir siparişiniz bulunmamaktadır.</p>
+        <a routerLink="/catalog"
+          class="mt-5 inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors">
+          Ürünlere Göz At
+        </a>
       }
     </div>
 
   } @else {
-    <!-- Arama özeti -->
+    <!-- Arama Özeti -->
     @if (searchQuery()) {
-      <div class="text-xs text-gray-500 flex items-center gap-2">
-        <i class="fas fa-filter text-gray-700"></i>
-        "{{ searchQuery() }}" için
-        <span class="text-white font-bold">{{ filteredHistory()!.length }}</span> sonuç
-      </div>
+      <p class="text-xs text-stone-500">
+        "<span class="font-medium text-stone-700">{{ searchQuery() }}</span>" için
+        <span class="font-semibold text-stone-900">{{ filteredHistory()!.length }}</span> sonuç
+      </p>
     }
 
-    <div class="space-y-6">
+    <div class="space-y-4">
       @for (order of filteredHistory()!; track order.id) {
-
-        <div class="relative rounded-2xl border border-white/5 overflow-hidden group
-                    transition-all duration-300 hover:border-emerald-500/15 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/20"
-             style="background: rgba(255,255,255,0.02);">
-          <!-- Yeşil üst çizgi hover -->
-          <div class="absolute top-0 left-0 w-full h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-               style="background: linear-gradient(90deg, #10b981, #059669);"></div>
+        <div class="bg-white border border-stone-200 rounded-xl overflow-hidden hover:border-stone-300 hover:shadow-sm transition-all">
 
           <!-- Sipariş Header -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 px-5 md:px-6 py-4 border-b border-white/5"
-               style="background: rgba(255,255,255,0.02);">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 px-5 py-4 bg-gradient-to-r from-orange-50/60 to-amber-50/40 border-b border-stone-100">
             <div>
-              <p class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mb-1">Sipariş No</p>
-              <p class="text-sm font-black text-white">#{{ order.id.toString().padStart(6, '0') }}</p>
+              <p class="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">Sipariş No</p>
+              <p class="text-sm font-semibold text-stone-900">#{{ order.id.toString().padStart(6, '0') }}</p>
             </div>
             @if (order.orderDate) {
               <div>
-                <p class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mb-1">Tarih</p>
-                <p class="text-sm font-semibold text-gray-200">{{ order.orderDate | date:'dd MMM yyyy' }}</p>
+                <p class="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">Tarih</p>
+                <p class="text-sm text-stone-700">{{ order.orderDate | date:'dd MMM yyyy' }}</p>
               </div>
             }
             <div>
-              <p class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mb-1">Toplam</p>
-              <p class="text-sm font-black text-emerald-400">${{ order.totalPrice | number:'1.2-2' }}</p>
+              <p class="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">Toplam</p>
+              <p class="text-sm font-semibold text-lime-600">${{ order.totalPrice | number:'1.2-2' }}</p>
             </div>
             @if (order.storeName) {
               <div>
-                <p class="text-[10px] text-gray-600 uppercase tracking-widest font-bold mb-1">Mağaza</p>
-                <p class="text-sm font-semibold text-blue-400">{{ order.storeName }}</p>
+                <p class="text-[10px] text-stone-400 uppercase tracking-wider font-medium mb-0.5">Mağaza</p>
+                <p class="text-sm font-medium text-orange-600">{{ order.storeName }}</p>
               </div>
             }
           </div>
 
-          <!-- Ürünler (her biri için iade butonu) -->
-          <div class="divide-y divide-white/5">
+          <!-- Ürünler -->
+          <div class="divide-y divide-stone-50">
             @for (item of (order.items || []); track item.id) {
               <div>
                 <!-- Ürün Satırı -->
-                <div class="px-5 md:px-6 py-3 flex items-center gap-4 group/item">
+                <div class="px-5 py-3 flex items-center gap-3">
                   <div class="flex-1 min-w-0">
                     <app-order-item
                       [imageUrl]="item.productImageUrl"
@@ -152,125 +147,101 @@
                   <!-- İade Butonu -->
                   <div class="flex-shrink-0 pl-3">
                     @if (isRefunded(item.id)) {
-                      <!-- Başarıyla talep edildi -->
-                      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold
-                                   border border-emerald-500/30 text-emerald-400"
-                            style="background: rgba(16,185,129,0.08);">
-                        <i class="fas fa-check-circle text-[10px]"></i> Talep Edildi
+                      <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-lime-50 border border-lime-200 rounded-full text-xs font-medium text-lime-700">
+                        <span class="w-1.5 h-1.5 rounded-full bg-lime-500"></span>Talep Edildi
                       </span>
                     } @else if (isRefundFormOpen(item.id)) {
-                      <!-- Form açık — kapat butonu -->
                       <button (click)="closeRefundForm()"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold border
-                               border-gray-600 text-gray-400 hover:text-white hover:border-gray-500
-                               transition-all duration-200 active:scale-95"
-                        style="background: rgba(255,255,255,0.03);">
-                        <i class="fas fa-chevron-up text-[10px]"></i> Kapat
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-500 border border-stone-200 rounded-lg hover:bg-stone-50 transition-colors">
+                        Kapat
                       </button>
                     } @else {
-                      <!-- İade İste butonu -->
                       <button (click)="openRefundForm(order.id, item.id)"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold border
-                               border-violet-500/30 text-violet-400 hover:bg-violet-500/10 hover:border-violet-500/50
-                               transition-all duration-200 active:scale-95"
-                        style="background: rgba(139,92,246,0.05);">
-                        <i class="fas fa-undo-alt text-[10px]"></i> İade İste
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-stone-600 border border-stone-200 rounded-lg hover:bg-stone-50 hover:border-stone-300 transition-colors">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                        </svg>
+                        İade İste
                       </button>
                     }
                   </div>
                 </div>
 
-                <!-- İade Formu — Slide Down -->
+                <!-- İade Formu -->
                 @if (isRefundFormOpen(item.id)) {
-                  <div class="mx-5 md:mx-6 mb-4 rounded-xl border border-violet-500/20 overflow-hidden"
-                       style="background: rgba(139,92,246,0.04);">
+                  <div class="mx-5 mb-4 bg-stone-50 border border-stone-200 rounded-xl overflow-hidden">
 
                     @if (activeRefundForm()?.success) {
-                      <!-- Başarı mesajı -->
                       <div class="flex flex-col items-center justify-center py-8 gap-3">
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center"
-                             style="background: rgba(16,185,129,0.15);">
-                          <i class="fas fa-check-circle text-xl text-emerald-400"></i>
+                        <div class="w-11 h-11 rounded-full bg-lime-100 flex items-center justify-center">
+                          <svg class="w-5 h-5 text-lime-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
                         </div>
-                        <p class="text-emerald-400 font-bold text-sm">İade talebiniz alındı!</p>
-                        <p class="text-gray-500 text-xs">En kısa sürede incelenecektir.</p>
+                        <p class="text-sm font-medium text-lime-700">İade talebiniz alındı!</p>
+                        <p class="text-xs text-stone-500">En kısa sürede incelenecektir.</p>
                       </div>
                     } @else {
-                      <!-- Form içeriği -->
                       <div class="p-4 space-y-3">
-                        <div class="flex items-center gap-2 mb-1">
-                          <i class="fas fa-undo-alt text-violet-400 text-xs"></i>
-                          <p class="text-sm font-bold text-white">İade Talebi — {{ item.productName }}</p>
-                        </div>
-                        <p class="text-[11px] text-gray-500">
-                          İade tutarı: <span class="text-emerald-400 font-bold">${{ item.totalPrice | number:'1.2-2' }}</span>
-                          otomatik hesaplanacaktır.
-                        </p>
-
-                        <!-- Sebep textarea -->
                         <div>
-                          <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
-                            İade Sebebi <span class="text-red-400">*</span>
+                          <p class="text-sm font-medium text-stone-900">İade Talebi — {{ item.productName }}</p>
+                          <p class="text-xs text-stone-500 mt-0.5">
+                            İade tutarı: <span class="font-medium text-lime-600">${{ item.totalPrice | number:'1.2-2' }}</span> otomatik hesaplanacaktır.
+                          </p>
+                        </div>
+
+                        <div>
+                          <label class="block text-xs font-medium text-stone-600 mb-1.5">
+                            İade Sebebi <span class="text-red-500">*</span>
                           </label>
                           <textarea rows="3"
                             placeholder="Ürünle ilgili yaşadığınız sorunu kısaca açıklayın..."
                             [ngModel]="activeRefundForm()?.reason"
                             (ngModelChange)="updateReason($event)"
-                            class="w-full bg-gray-900/60 border border-gray-700/60 text-white text-sm rounded-xl px-4 py-3
-                                   focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-violet-500/60
-                                   transition-all duration-200 placeholder-gray-600 resize-none">
+                            class="w-full rounded-lg border border-stone-200 bg-white py-2.5 px-3.5 text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all placeholder:text-stone-400 resize-none">
                           </textarea>
                         </div>
 
-                        <!-- Hata -->
                         @if (activeRefundForm()?.error) {
-                          <p class="text-red-400 text-xs flex items-center gap-1.5">
-                            <i class="fas fa-exclamation-triangle"></i> {{ activeRefundForm()?.error }}
-                          </p>
+                          <p class="text-red-600 text-xs">{{ activeRefundForm()?.error }}</p>
                         }
 
-                        <!-- Butonlar -->
-                        <div class="flex gap-2 justify-end pt-1">
+                        <div class="flex gap-2 justify-end">
                           <button (click)="closeRefundForm()"
                             [disabled]="activeRefundForm()?.submitting"
-                            class="px-4 py-2 rounded-xl text-xs font-bold text-gray-300 border border-gray-600
-                                   hover:border-gray-500 hover:text-white transition-all duration-200
-                                   disabled:opacity-40 active:scale-95"
-                            style="background: rgba(255,255,255,0.03);">
+                            class="px-4 py-2 text-xs font-medium text-stone-600 border border-stone-200 rounded-lg hover:bg-stone-100 disabled:opacity-40 transition-colors">
                             İptal
                           </button>
                           <button (click)="submitRefund()"
                             [disabled]="!activeRefundForm()?.reason?.trim() || activeRefundForm()?.submitting"
-                            class="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold text-white
-                                   transition-all duration-200 hover:shadow-lg
-                                   disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
-                            style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            class="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                             @if (activeRefundForm()?.submitting) {
-                              <i class="fas fa-circle-notch fa-spin"></i> Gönderiliyor...
+                              <svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                              </svg>
+                              Gönderiliyor...
                             } @else {
-                              <i class="fas fa-paper-plane"></i> Talebi Gönder
+                              Talebi Gönder
                             }
                           </button>
                         </div>
                       </div>
                     }
-
                   </div>
                 }
 
               </div>
             } @empty {
-              <div class="px-5 py-4 text-xs text-gray-600 italic">Ürün detayları yükleniyor...</div>
+              <div class="px-5 py-4 text-xs text-stone-400 italic">Ürün detayları yükleniyor...</div>
             }
           </div>
 
-          <!-- Alt footer: Teslim badgei -->
-          <div class="flex items-center justify-between px-5 md:px-6 py-3 border-t border-white/5"
-               style="background: rgba(255,255,255,0.01);">
-            <span class="text-xs text-gray-600">{{ (order.items || []).length }} ürün</span>
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-[11px] font-bold border border-emerald-500/30 text-emerald-400"
-                  style="background: rgba(16,185,129,0.07);">
-              <i class="fas fa-check-circle text-[10px]"></i> Teslim Edildi
+          <!-- Footer -->
+          <div class="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-orange-50/40 to-amber-50/20 border-t border-stone-100">
+            <span class="text-xs text-stone-400">{{ (order.items || []).length }} ürün</span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-lime-50 border border-lime-200 rounded-full text-xs font-medium text-lime-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-lime-500"></span>Teslim Edildi
             </span>
           </div>
 
