@@ -47,6 +47,7 @@ class ChatRequest(BaseModel):
     # Admin tarafından ayarlanan LLM provider bilgisi
     llm_provider: str = Field(default="openai")
     llm_model: str = Field(default="gpt-4o-mini")
+    api_key: Optional[str] = None  # Admin panelinden DB'ye kaydedilen key
 
 
 class ChatResponse(BaseModel):
@@ -59,35 +60,34 @@ class ChatResponse(BaseModel):
 
 # --- LLM Provider Factory ---
 
-def get_llm(provider: str, model: str):
+def get_llm(provider: str, model: str, api_key: Optional[str] = None):
     """
     Admin ayarlarına göre uygun LLM provider'ı döndürür.
-    Desteklenen provider'lar: openai, anthropic, gemini, ollama
+    api_key önce parametreden, yoksa .env'den okunur.
+    Desteklenen provider'lar: openai, anthropic, gemini, groq, ollama
     """
     if provider == "openai":
         from langchain_openai import ChatOpenAI
         return ChatOpenAI(
             model=model or "gpt-4o-mini",
-            api_key=os.getenv("OPENAI_API_KEY"),
+            api_key=api_key or os.getenv("OPENAI_API_KEY"),
             temperature=0
         )
     elif provider == "anthropic":
         from langchain_community.chat_models import ChatAnthropic
         return ChatAnthropic(
             model=model or "claude-3-haiku-20240307",
-            api_key=os.getenv("ANTHROPIC_API_KEY"),
+            api_key=api_key or os.getenv("ANTHROPIC_API_KEY"),
             temperature=0
         )
     elif provider == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
-        # Google API'de eski modeller (1.5, 1.0) deprecate olduğu için 2.5 flash'a zorluyoruz
         gemini_model = model or "gemini-2.5-flash"
         if "1.5" in gemini_model or "gemini-pro" == gemini_model:
             gemini_model = "gemini-2.5-flash"
-            
         return ChatGoogleGenerativeAI(
             model=gemini_model,
-            google_api_key=os.getenv("GOOGLE_API_KEY"),
+            google_api_key=api_key or os.getenv("GOOGLE_API_KEY"),
             temperature=0
         )
     elif provider == "ollama":
@@ -99,14 +99,13 @@ def get_llm(provider: str, model: str):
         )
     elif provider == "groq":
         from langchain_groq import ChatGroq
-        # Eski modeller (llama3-70b-8192 vb.) Groq'ta kaldırıldı, güncel modellere zorluyoruz
         groq_model = model or "llama-3.3-70b-versatile"
         deprecated_models = ["llama3-70b-8192", "llama3-8b-8192", "mixtral-8x7b-32768"]
         if groq_model in deprecated_models:
             groq_model = "llama-3.3-70b-versatile"
         return ChatGroq(
             model=groq_model,
-            api_key=os.getenv("GROQ_API_KEY"),
+            api_key=api_key or os.getenv("GROQ_API_KEY"),
             temperature=0
         )
     else:
@@ -133,8 +132,17 @@ async def chat(request: ChatRequest):
     )
 
     try:
-        # LLM provider'ı oluştur
-        llm = get_llm(request.llm_provider, request.llm_model)
+        # DB'den api_key gelmiyorsa .env'deki DEFAULT_LLM_PROVIDER'a düş
+        effective_provider = request.llm_provider.lower()
+        effective_model = request.llm_model
+        if not request.api_key:
+            env_provider = os.getenv("DEFAULT_LLM_PROVIDER")
+            env_model = os.getenv("DEFAULT_LLM_MODEL")
+            if env_provider:
+                effective_provider = env_provider.lower()
+                effective_model = env_model or effective_model
+
+        llm = get_llm(effective_provider, effective_model, request.api_key)
 
         # LangGraph'ı import et ve graph'ı oluştur
         from agents.graph import build_graph

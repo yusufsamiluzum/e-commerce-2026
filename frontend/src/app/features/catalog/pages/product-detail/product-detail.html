@@ -98,10 +98,10 @@
 
         <!-- Fiyat -->
         <div class="flex items-end gap-3">
-          <span class="text-3xl font-semibold text-stone-900">${{ product()!.price | number:'1.2-2' }}</span>
+          <span class="text-3xl font-semibold text-stone-900">{{ product()!.price | number:'1.2-2' }}</span>
           @if (product()!.originalPrice) {
             <div class="flex items-center gap-2 mb-0.5">
-              <span class="text-base text-stone-400 line-through">${{ product()!.originalPrice | number:'1.2-2' }}</span>
+              <span class="text-base text-stone-400 line-through">{{ product()!.originalPrice | number:'1.2-2' }}</span>
               <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold text-white bg-red-600">
                 -{{ ((1 - product()!.price / product()!.originalPrice!) * 100) | number:'1.0-0' }}%
               </span>
